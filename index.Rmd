@@ -30,10 +30,10 @@ Acesse: [Lucas Andrade](info/index.html){target="_blank"}
 
 # Página dos alunos da disciplina
 
-- Acesse: [Página dos alunos da disciplina MA 41 (PROFMAT)](https://bendeivide.github.io/profmatma41/){target="_blank"}
+- Acesse: [Página dos alunos da disciplina MA 41 (PROFMAT)](https://gitLucasAndrade.github.io/relatorio-estprob/){target="_blank"}
 # Visão geral sobre os relatórios {.tabset .tabset-fade}
 
-Este projeto está disponível em <https://github.com/bendeivide/profmatma41.git>.
+Este projeto está disponível em <https://gitLucasAndrade.github.io/relatorio-estprob/>.
 
 ## O que é necessário?
 
