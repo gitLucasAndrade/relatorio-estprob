@@ -1,0 +1,161 @@
+---
+# Só mude aqui!!!!
+author: "Lucas Reis Oliveira de Andrade"
+title: "1° Relatório: Descrição do Experimento da Catapulta."
+bibliography: referencias.bib
+# A partir daqui nao faca alteracoes!!!!!
+link-citations: true
+csl: associacao-brasileira-de-normas-tecnicas-ipea.csl
+subtitle: "<a href='https://bendeivide.github.io/courses/epaec/' target='_blank'>Estatística e Probabilidade</a> </br> <a href='https://bendeivide.github.io' target='_blank'>Prof. Ben Dêivide (DEFIM/CAP/UFSJ)</a>"
+include-before-body: header.html
+date: now
+date-format: "DD/MM/YYYY, HH:mm"
+lang: pt-BR
+format:
+  html:
+    toc: true
+    number-sections: true
+    theme: bootstrap
+    #css: styles.css
+    code-fold: true
+    code-tools: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+
+## 📌 Introdução
+
+Descreva o contexto da prática e sua importância.
+
+>Usaremos o experimento da catapulta para estudarmos os conceitos da disciplina de estatística e probabilidade de forma prática durante todo semestre!
+
+
+## 🎯 Objetivos
+
+### Objetivo geral
+
+O objetivo geral: Usando a catapulta para atirar uma bolinha, entender como funciona a coleta, organização e apresentação de dados.
+
+### Objetivos específicos
+
+- Coletar dados experimentais dos lançamentos da catapulta, medindo a distância de cada lançamento.
+- Organizar os dados em uma planilha.  
+- Aplicar estatística descritiva.
+
+---
+
+## 📚  Fundamentação Teórica
+
+Nessa primeira prática a ideia principal gira em torno de entender os conceitos de:
+
+- Coleta de dados.
+- Dados brutos.
+- Dados em Rol.
+- Frequência absoluta (Fi).
+- Frequência relativa (Fr).
+
+- Média e distribuição normal.
+
+
+$$
+\bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i
+$$
+
+---
+
+## ⚙️ Metodologia
+
+
+- Materiais utilizados: 1 Catapulta de mesa; 1 Bolinha de "ping-pong"; Uma Trena; 
+
+- Procedimento: Um aluno ficou responsável pela execução de todos os lançamentos para que houvesse o mínimo de diferença possível na forma como a bolinha seria lançada. Outros dois, ficaram responsáveis pela medição da distância do arremesso. Por fim, mais dois ficaram responsáveis pela anotação e organização dos dados obtidos.  
+
+- Número de repetições: O experimento teve um total de 40 arremessos. 
+
+---
+
+## 🔍 Resultados e Discussão
+
+Com os dados coletados, organizamos tudo em formato de tabela com a ajuda do professor Ben Dêivide. A tabela foi feita com os seguintes paramêtros: 
+
+- Frequência absoluta(Fi): Número de observações dentro de cada classe.
+- Ponto médio(PM).
+- Frequência relativa(Fr).
+- Frequência percentual(Fp%).
+- Frequência acumulada abaixo de(Fac1).
+- Frequência acumulada acima de(Fac2).
+- Frequência acumulada percentual abaixo de(Fac1p).
+- Frequência acumulada percentual acima de(Fac2p).
+
+
+De acordo com o gráfico observado em sala de aula, o gráfico deveria se aproximar da distribuição normal. Porém, foi observado um gráfico um pouco diferente.
+
+Os últimos arremessos executados podem ser considerados valores discrepantes (outliers). Isso pois, o que observamos foram 3 distâncias com valores muito acima da média observada até então.
+
+
+Em seguida, discuta os resultados à luz dos conceitos teóricos:
+
+- Os resultados estão de acordo com o esperado?
+De forma geral, o experimento e os resultados ficaram dentro do esperado, apesar dos outliers nos arremessos finais. Pois os valores quase todos estavam seguindo a tendência da distribuição normal.
+
+- Há grande variabilidade? O que isso significa no contexto do experimento? 
+Não há grande variabilidade nos dados, mas existem alguns valores extremos. Os dados se concentram principalmente entre 1.60m e 2,05m. Isso indica pouca dispersão e dados relativamente homogêneos.
+
+- Quais fatores podem ter influenciado os resultados?
+O que pode ter influenciado nos resultados nesse caso pode ter sido uma possível modificação (não intencional) na posição da catapulta.
+
+- Existem possíveis fontes de erro experimental?
+Os principais erros que podem ter influenciado nos outliers são: Erro de medição e erro de anotação.
+
+
+### 💬 Exemplo de como citar uma referência bibliográfica
+
+Depois de inserido as informaçõe no arquivo **referencias.bib**, use:
+
+- Segundo @Rbasico2022
+- Tudo é um objeto em R [@Rbasico2022]
+
+### 📊  Análise de Dados
+
+## Importação dos dados
+
+```{r}
+library(leem)
+
+ap01 <- read.csv2("ap01.csv")
+str(ap01)
+
+## Tratamento dos dados
+
+dist <- ap01$dist
+sort(dist)
+
+## Tabela de Frequência
+
+tab <- dist |>
+  new_leem(variable = 2) |>
+  tabfreq(k = 5)
+
+tab
+```
+
+## 🧠 Considerações finais
+
+A prática pode ser considerada como bem sucedida.
+Os principais objetivos foram cumpridos.
+Os dados apresentam baixa variabilidade, pois a maior parte das observações está concentrada em um intervalo relativamente estreito.
+No entanto, observa-se a presença de valores extremos (como 2.50 e 2.80), que aumentam a dispersão total do conjunto.
+Os métodos e passos que foram seguidos serviram para uma boa dinâmica de aprendizado sobre como executar um experimento com objetivo de análise estatística.Visando nesse caso, a coleta, organização e apresentação de dados.
+
+- Sugestão para possíveis melhorias nos próximos procedimentos experimentais.
+Pode-se para os próximos experimentos verificar uma melhor forma de fixar a catapulta, com intenção de minimizar variação entre os lançamentos.
+
+
+## Aprenda Quarto
+
+Acesse [Quarto](https://quarto.org/).
+
+## 📖 Referências
