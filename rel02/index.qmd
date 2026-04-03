@@ -1,0 +1,129 @@
+---
+# Só mude aqui!!!!
+author: "Lucas Reis Oliveira de Andrade"
+title: "Relatório sobre os conceitos básicos do R"
+bibliography: referencias.bib
+# A partir daqui nao faca alteracoes!!!!!
+link-citations: true
+csl: associacao-brasileira-de-normas-tecnicas-ipea.csl
+subtitle: "<a href='https://bendeivide.github.io/courses/epaec/' target='_blank'>Estatística e Probabilidade</a> </br> <a href='https://bendeivide.github.io' target='_blank'>Prof. Ben Dêivide (DEFIM/CAP/UFSJ)</a>"
+include-before-body: header.html
+date: now
+date-format: "DD/MM/YYYY, HH:mm"
+lang: pt-BR
+format:
+  html:
+    toc: true
+    number-sections: true
+    theme: bootstrap
+    #css: styles.css
+    code-fold: true
+    code-tools: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+
+## 📌 Introdução
+
+> A linguagem R é um ambiente de software voltado especificamente para a computação estatística e gráfica.
+O relatório é baseado nas vídeo aulas disponibilizadas pelo professor Ben Dêivide.
+
+
+## 🎯 Os 3 Principais principios do R
+
+- Princípio do Objeto: Tudo no R é um objeto, que possui metadados intrínsecos, como tipo e comprimento.
+
+- Princípio da Função: Toda ação no R é realizada através de uma chamada de função, que processa dados e pode ou não imprimir resultados.
+
+- Princípio da Interface: O R é uma linguagem interpretada que permite a comunicação com outras linguagens de alto desempenho, como C e Fortran, otimizando cálculos complexos.
+
+### Exemplo de como criar um vetor.
+
+> 
+> 1:10
+ [1]  1  2  3  4  5  6  7  8  9 10
+
+Uma forma prática e rápida de gerar vetores numéricos inteiros sem precisar digitar número por número.
+
+### Como plotar um gráfico
+>
+> plot(1:10)
+
+Um exemplo de um comando para plotar um gráfico.
+
+---
+
+## O que é um escopo Léxico
+
+Escopo Léxico: Como o R busca objetos em diferentes ambientes de execução.
+Ou em outras palavras, é forma como as funções procuram pelos objetos.
+
+
+## Super Atribuição
+
+Super Atribuição: O uso do operador <<- para criar ou modificar objetos em ambientes superiores, alertando para a necessidade de cautela ao utilizar esse recurso para evitar erros de lógica.
+
+---
+
+## Sintaxe básica
+
+# Criando variáveis
+
+> operador de Atribuição <-
+usuario <- "Lucas"
+nota_final <- 8.5
+aprovado <- TRUE  # Booleanos são sempre MAIÚSCULOS
+
+## Funções e argumentos
+
+> 
+Tudo no R acontece através de funções.
+A sintaxe é sempre nome_da_funcao(argumento1, argumento2)
+
+>
+Calculando a média do vetor que criamos acima
+media_turma <- mean(notas)
+
+>
+Arredondando um número com um argumento específico
+round(3.14159, digits = 2) 
+Resultado: 3.14
+
+## Indexação
+
+Aqui está a maior diferença do R para quase todas as outras linguagens (Python, C, JavaScript): No R, a contagem começa no 1, e não no 0.
+
+>
+Exemplo:
+frutas <- c("Maçã", "Banana", "Uva")
+Acessando o primeiro item
+frutas[1] # Retorna "Maçã" (em Python seria frutas[0])
+
+## O uso de " $ " para colunas
+>
+Exemplo:
+Pegar apenas a coluna 'media' da nossa tabela
+meus_dados$media
+
+## Operador Pipe |> ou %>%
+Na sintaxe moderna do R, usamos o "Pipe" para encadear comandos.
+
+>
+Exemplo: 
+Pega os dados, filtra, e então calcula a média
+resultado <- dados |> 
+  filter(idade > 18) |> 
+  summarise(media = mean(nota))
+
+---
+
+## 🔍 Conclusão
+
+A linguagem R demonstra ser um ambiente robusto para a computação estatística, destacando-se pela sintaxe voltada à manipulação eficiente de vetores e estruturas tabulares. O domínio de seus conceitos fundamentais — como a atribuição via <-, o entendimento do escopo léxico e a lógica de indexação — constitui a base necessária para a implementação de análises complexas e o desenvolvimento de modelos com rigor matemático. Em suma, a versatilidade do R na organização e tratamento de dados oferece os recursos essenciais para a exploração científica, servindo como uma porta de entrada sólida para o uso de bibliotecas avançadas e visualizações gráficas de alta performance.
+
+## 📖 Referências
+Vídeo aulas disponibilizadas pelo professor da disciplina de Estatística e Probabilidade, Ben Dêivide.
+https://www.youtube.com/@bendeivide/videos
