@@ -26,14 +26,12 @@ execute:
 ---
 
 
-## 📌 Introdução
+## Introdução
 
-Descreva o contexto da prática e sua importância.
-
->Usaremos o experimento da catapulta para estudarmos os conceitos da disciplina de estatística e probabilidade de forma prática durante todo semestre!
+Usaremos o experimento da catapulta para estudarmos os conceitos da disciplina de estatística e probabilidade de forma prática durante todo semestre. O experimento foi proposto como uma atividade didática com o objetivo de simular a coleta e análise de dados reais, possibilitando a aplicação de técnicas estatísticas descritivas. A partir da realização de múltiplos lançamentos de uma bolinha.
 
 
-## 🎯 Objetivos
+## Objetivos
 
 ### Objetivo geral
 
@@ -41,86 +39,67 @@ O objetivo geral: Usando a catapulta para atirar uma bolinha, entender como func
 
 ### Objetivos específicos
 
-- Coletar dados experimentais dos lançamentos da catapulta, medindo a distância de cada lançamento.
-- Organizar os dados em uma planilha.  
-- Aplicar estatística descritiva.
+O primeiro passo do experimento consistiu em coletar dados experimentais dos lançamentos da catapulta, medindo a distância de cada lançamento.Após concluirmos a coleta dos dados brutos, organizamos todos dados em uma planilha. E posteriormente, usando o software Rstudio, construimos uma tabela de frequências.
 
 ---
 
-## 📚  Fundamentação Teórica
+## Fundamentação Teórica
 
-Nessa primeira prática a ideia principal gira em torno de entender os conceitos de:
+A estatística descritiva tem como finalidade organizar, resumir e descrever um conjunto de dados. Entre os principais conceitos utilizados neste experimento, destacam-se: 
 
-- Coleta de dados.
-- Dados brutos.
-- Dados em Rol.
-- Frequência absoluta (Fi).
-- Frequência relativa (Fr).
+Dados brutos: Valores coletados diretamente do experimento, sem qualquer organização prévia. Dados em Rol: Conjunto de dados ordenados em ordem crescente ou decrescente.
+Frequência absoluta (Fi): Número de vezes que um determinado valor ou classe ocorre.
+Frequência relativa (Fr): Proporção da frequência absoluta em relação ao total de observações.
+Frequência acumulada (abaixo de): Soma das frequências até aquela classe (incluindo ela).
+Frequência acumulada (acima de): Soma das frequências daquela classe até o final.
+Frequência acumulada percentual (abaixo de): Porcentagem acumulada até aquela classe.
+Frequência acumulada percentual (acima de): Porcentagem acumulada daquela classe até o final.
+Média aritimética: Medida de tendência central que representa o valor médio do conjunto de dados.
 
-- Média e distribuição normal.
+Abaixo algumas fórmulas importantes para a tabulação dos dados.
 
+Fórmula para a média aritimética.
 
+A média representa o valor central de um conjunto de dados. Ela é obtida somando todas as observações e dividindo pelo número total de elementos. No experimentos da catapulta, a média indica a distância média dos lançamentos.
 $$
 \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i
 $$
+Fórmula para a frequência relativa.
+Representa a proporção de ocorrência de um valor ou classe em relação ao total de dados.
+$$
+f_r = \frac{f_i}{n}
+$$
+Fórmula para a frequência percentual.
+Frequência relativa expressa em porcentagem.
+$$
+f_{\%} = \frac{f_i}{n} \times 100
+$$
+Fórmula para o ponto médio da classe.
+O ponto médio representa o valor central de um intervalo de classe em dados agrupados.
+$$
+x_m = \frac{L_i + L_s}{2}
+$$
+---
+
+## Metodologia
+
+Materiais utilizados: 1 Catapulta de mesa. 1 Bolinha de "ping-pong", usada nos lançamentos. 1 Trena, usada para a medição da distância de cada arremesso.
+
+Procedimento: Para minimizar variações sistemáticas, um único integrante do grupo foi responsável por realizar todos os lançamentos da catapulta. A medição das distâncias foi realizada por dois integrantes, enquanto outros dois ficaram responsáveis pelo registro e organização dos dados. Ao todo, o experimento teve um total de 40 arremessos executados.
 
 ---
 
-## ⚙️ Metodologia
+## Análise de Dados
 
+Os dados coletados a partir dos 40 lançamentos da catapulta foram organizados e analisados com o auxílio do software R. Inicialmente, os valores foram ordenados em rol, permitindo uma melhor visualização da distribuição das distâncias obtidas.
 
-- Materiais utilizados: 1 Catapulta de mesa; 1 Bolinha de "ping-pong"; Uma Trena; 
+Observa-se que a maior parte dos valores encontra-se concentrada entre aproximadamente 1,60 m e 2,05 m, indicando uma tendência de agrupamento dos dados em torno desse intervalo.
 
-- Procedimento: Um aluno ficou responsável pela execução de todos os lançamentos para que houvesse o mínimo de diferença possível na forma como a bolinha seria lançada. Outros dois, ficaram responsáveis pela medição da distância do arremesso. Por fim, mais dois ficaram responsáveis pela anotação e organização dos dados obtidos.  
+A análise da tabela mostra que a classe de maior frequência é o intervalo de 1,67 m a 1,99 m, contendo 27 observações. Isso indica que a maior parte dos lançamentos se concentrou nessa faixa de distância.
 
-- Número de repetições: O experimento teve um total de 40 arremessos. 
+Por outro lado, observa-se a presença de valores mais elevados, especialmente nas classes finais. Esses valores possuem baixa frequência e podem ser caracterizados como possíveis outliers, pois se distanciam significativamente do padrão observado na maior parte dos dados.
 
----
-
-## 🔍 Resultados e Discussão
-
-Com os dados coletados, organizamos tudo em formato de tabela com a ajuda do professor Ben Dêivide. A tabela foi feita com os seguintes paramêtros: 
-
-- Frequência absoluta(Fi): Número de observações dentro de cada classe.
-- Ponto médio(PM).
-- Frequência relativa(Fr).
-- Frequência percentual(Fp%).
-- Frequência acumulada abaixo de(Fac1).
-- Frequência acumulada acima de(Fac2).
-- Frequência acumulada percentual abaixo de(Fac1p).
-- Frequência acumulada percentual acima de(Fac2p).
-
-
-De acordo com o gráfico observado em sala de aula, o gráfico deveria se aproximar da distribuição normal. Porém, foi observado um gráfico um pouco diferente.
-
-Os últimos arremessos executados podem ser considerados valores discrepantes (outliers). Isso pois, o que observamos foram 3 distâncias com valores muito acima da média observada até então.
-
-
-Em seguida, discuta os resultados à luz dos conceitos teóricos:
-
-- Os resultados estão de acordo com o esperado?
-De forma geral, o experimento e os resultados ficaram dentro do esperado, apesar dos outliers nos arremessos finais. Pois os valores quase todos estavam seguindo a tendência da distribuição normal.
-
-- Há grande variabilidade? O que isso significa no contexto do experimento? 
-Não há grande variabilidade nos dados, mas existem alguns valores extremos. Os dados se concentram principalmente entre 1.60m e 2,05m. Isso indica pouca dispersão e dados relativamente homogêneos.
-
-- Quais fatores podem ter influenciado os resultados?
-O que pode ter influenciado nos resultados nesse caso pode ter sido uma possível modificação (não intencional) na posição da catapulta.
-
-- Existem possíveis fontes de erro experimental?
-Os principais erros que podem ter influenciado nos outliers são: Erro de medição e erro de anotação.
-
-
-### 💬 Exemplo de como citar uma referência bibliográfica
-
-Depois de inserido as informaçõe no arquivo **referencias.bib**, use:
-
-- Segundo @Rbasico2022
-- Tudo é um objeto em R [@Rbasico2022]
-
-### 📊  Análise de Dados
-
-## Importação dos dados
+De modo geral, os resultados indicam baixa variabilidade, com dados relativamente homogêneos e concentrados em um intervalo específico. No entanto, a presença de valores extremos sugere a influência de fatores externos no experimento, como pequenas variações na execução dos lançamentos ou possíveis imprecisões na medição.
 
 ```{r}
 library(leem)
@@ -142,20 +121,15 @@ tab <- dist |>
 tab
 ```
 
-## 🧠 Considerações finais
+
+## Considerações finais
 
 A prática pode ser considerada como bem sucedida.
 Os principais objetivos foram cumpridos.
 Os dados apresentam baixa variabilidade, pois a maior parte das observações está concentrada em um intervalo relativamente estreito.
 No entanto, observa-se a presença de valores extremos (como 2.50 e 2.80), que aumentam a dispersão total do conjunto.
-Os métodos e passos que foram seguidos serviram para uma boa dinâmica de aprendizado sobre como executar um experimento com objetivo de análise estatística.Visando nesse caso, a coleta, organização e apresentação de dados.
+Os métodos e passos que foram seguidos serviram para uma boa dinâmica de aprendizado sobre como executar um experimento com objetivo de análise estatística. Visando nesse caso, a coleta, organização e apresentação de dados.
 
-- Sugestão para possíveis melhorias nos próximos procedimentos experimentais.
+Sugestão para possíveis melhorias nos próximos procedimentos experimentais.
 Pode-se para os próximos experimentos verificar uma melhor forma de fixar a catapulta, com intenção de minimizar variação entre os lançamentos.
 
-
-## Aprenda Quarto
-
-Acesse [Quarto](https://quarto.org/).
-
-## 📖 Referências

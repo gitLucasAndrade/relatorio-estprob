@@ -25,34 +25,156 @@ execute:
   message: false
 ---
 
+## Introdução
 
-## 📌 Introdução
+A linguagem R é um ambiente de programação amplamente utilizado para computação estatística, análise de dados e construção de gráficos. Sua popularidade no meio acadêmico e científico deve-se à sua grande capacidade de manipulação de dados e à vasta quantidade de pacotes disponíveis.
 
-> A linguagem R é um ambiente de software voltado especificamente para a computação estatística e gráfica.
-O relatório é baseado nas vídeo aulas disponibilizadas pelo professor Ben Dêivide.
+Este relatório tem como objetivo apresentar os conceitos fundamentais da linguagem R, com foco em sua estrutura básica, principais operações e lógica de funcionamento. A abordagem adotada busca não apenas descrever os conceitos, mas também servir como um guia introdutório para iniciantes na linguagem.
+
+---
+
+## Objetivos
+
+Apresentar os principais conceitos básicos da linguagem R, de forma didática, visando facilitar o processo de aprendizagem.
+
+### Objetivos específicos
+
+Compreender a estrutura fundamental da linguagem R. Aprender a manipular objetos e funções. Entender conceitos como escopo léxico e atribuição. Explorar operações básicas e estruturas de dados.
+
+---
+
+## Fundamentos da Linguagem R
+
+Os três princípios fundamentais.
+
+A linguagem R pode ser compreendida a partir de três princípios básicos:
+
+Princípio do objeto: Tudo no R é um objeto, incluindo números, vetores, funções e até mesmo modelos estatísticos. Cada objeto possui propriedades como tipo e dimensão.
+Princípio da função: Todas as operações em R são realizadas por meio de funções, que recebem argumentos e retornam resultados.
+Princípio da interface: O R permite integração com outras linguagens, como C e Fortran, possibilitando alto desempenho computacional.
+
+---
+
+## Tipos de dados básicos
+
+Os principais tipos de dados em R são:
+
+Numérico (numeric) → números reais.
+Inteiro (integer) → números inteiros.
+Lógico (logical) → TRUE ou FALSE.
+Caractere (character) → textos.
+
+## Estruturas de dados
+
+### Operadores básicos
+
+Atribuição: <-
+Soma: +
+Subtração: -
+Multiplicação: *
+Divisão: /
+
+### Vetor.
+
+Os vetores são a estrutura mais básica do R. Eles armazenam elementos do mesmo tipo (numérico, lógico ou caractere).
+
+Exemplo:
+
+x <- c(1, 2, 3, 4, 5)
+
+Características: Todos os elementos devem ser do mesmo tipo.São indexados a partir de 1. Permitem operações vetorizadas
+
+Ou de forma automática:
+
+x <- 1:10
+
+### Indexação
+
+No R, os índices começam em 1:
+x[1]
+
+Também é possível selecionar múltiplos valores:
+x[c(1, 3, 5)]
+
+### Listas
+
+A lista é uma estrutura mais flexível, pois pode armazenar elementos de tipos diferentes.
+
+Características: Estrutura heterogênea. Pode conter vetores, números, textos e até outras listas. Muito utilizada para armazenar resultados complexos
+
+Exemplo:
+
+# Criando uma lista
+lista <- list(
+  nome = "Lucas",
+  idade = 25,
+  notas = c(8, 9, 10)
+)
+
+# Acessando elementos
+lista$nome
+lista$notas
+
+### Data Frames
+
+Os data frames são uma das estruturas mais importantes no R, sendo utilizados para representar tabelas de dados. Muito utilizados para análise de dados.
+
+Características: Estrutura bidimensional.Cada coluna pode ter um tipo diferente. Muito utilizado em estatística e ciência de dados.
+
+Exemplo:
+
+# Criando um data frame
+
+dados <- data.frame(
+  nome = c("Ana", "Lucas", "João"),
+  idade = c(20, 25, 22),
+  nota = c(8.5, 9.0, 7.5)
+)
+
+# Visualizando os dados
+dados
+
+# Acessando uma coluna
+dados$nota
+
+# Acessando linhas e colunas
+dados[1, ]   # Primeira linha
+dados[, 2]   # Segunda coluna
+
+### Funções em R
+
+As funções são o principal mecanismo de execução de tarefas na linguagem R. Toda operação realizada — desde cálculos simples até análises complexas — ocorre por meio da chamada de funções.
+
+Características: Recebem argumentos (entradas). Retornam um resultado (saída). Podem ter argumentos opcionais.
+
+Exemplos:
+
+mean(c(1, 2, 3, 4, 5)) 
+
+c(1, 2, 3, 4, 5) → cria um vetor.
+mean(...) → calcula a média desse vetor.
 
 
-## 🎯 Os 3 Principais principios do R
+sum(1:10)
 
-- Princípio do Objeto: Tudo no R é um objeto, que possui metadados intrínsecos, como tipo e comprimento.
+1:10 cria os números de 1 até 10
+sum() soma esses valores
 
-- Princípio da Função: Toda ação no R é realizada através de uma chamada de função, que processa dados e pode ou não imprimir resultados.
+nome_da_funcao(argumento1, argumento2)
 
-- Princípio da Interface: O R é uma linguagem interpretada que permite a comunicação com outras linguagens de alto desempenho, como C e Fortran, otimizando cálculos complexos.
+nome_da_funcao → o que será feito
+argumentos → com quais dados ou configurações
 
-### Exemplo de como criar um vetor.
 
-> 
-> 1:10
- [1]  1  2  3  4  5  6  7  8  9 10
+### Visualização de dados
 
-Uma forma prática e rápida de gerar vetores numéricos inteiros sem precisar digitar número por número.
+plot(1:10)
 
-### Como plotar um gráfico
->
-> plot(1:10)
+Nesse comando, a função plot() é utilizada para criar um gráfico a partir de um conjunto de dados. O vetor 1:10 representa os valores no eixo horizontal, enquanto o eixo vertical assume automaticamente os mesmos valores, resultando em uma representação gráfica simples.
 
-Um exemplo de um comando para plotar um gráfico.
+Além disso, a função plot() pode ser utilizada com diferentes tipos de dados e permite diversas personalizações, como títulos, rótulos de eixos e cores, tornando-se uma ferramenta versátil para análise exploratória.
+
+Dessa forma, a visualização de dados no R constitui um recurso essencial para a compreensão dos resultados, auxiliando tanto na análise quanto na comunicação das informações obtidas.
 
 ---
 
@@ -60,63 +182,6 @@ Um exemplo de um comando para plotar um gráfico.
 
 Escopo Léxico: Como o R busca objetos em diferentes ambientes de execução.
 Ou em outras palavras, é forma como as funções procuram pelos objetos.
-
-
-## Super Atribuição
-
-Super Atribuição: O uso do operador <<- para criar ou modificar objetos em ambientes superiores, alertando para a necessidade de cautela ao utilizar esse recurso para evitar erros de lógica.
-
----
-
-## Sintaxe básica
-
-# Criando variáveis
-
-> operador de Atribuição <-
-usuario <- "Lucas"
-nota_final <- 8.5
-aprovado <- TRUE  # Booleanos são sempre MAIÚSCULOS
-
-## Funções e argumentos
-
-> 
-Tudo no R acontece através de funções.
-A sintaxe é sempre nome_da_funcao(argumento1, argumento2)
-
->
-Calculando a média do vetor que criamos acima
-media_turma <- mean(notas)
-
->
-Arredondando um número com um argumento específico
-round(3.14159, digits = 2) 
-Resultado: 3.14
-
-## Indexação
-
-Aqui está a maior diferença do R para quase todas as outras linguagens (Python, C, JavaScript): No R, a contagem começa no 1, e não no 0.
-
->
-Exemplo:
-frutas <- c("Maçã", "Banana", "Uva")
-Acessando o primeiro item
-frutas[1] # Retorna "Maçã" (em Python seria frutas[0])
-
-## O uso de " $ " para colunas
->
-Exemplo:
-Pegar apenas a coluna 'media' da nossa tabela
-meus_dados$media
-
-## Operador Pipe |> ou %>%
-Na sintaxe moderna do R, usamos o "Pipe" para encadear comandos.
-
->
-Exemplo: 
-Pega os dados, filtra, e então calcula a média
-resultado <- dados |> 
-  filter(idade > 18) |> 
-  summarise(media = mean(nota))
 
 ---
 
