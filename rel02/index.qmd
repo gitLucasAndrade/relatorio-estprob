@@ -25,7 +25,7 @@ execute:
   message: false
 ---
 
-## Introdução
+# Introdução
 
 A linguagem R é um ambiente de programação amplamente utilizado para computação estatística, análise de dados e construção de gráficos. Sua popularidade no meio acadêmico e científico deve-se à sua grande capacidade de manipulação de dados e à vasta quantidade de pacotes disponíveis.
 
@@ -37,13 +37,13 @@ Este relatório tem como objetivo apresentar os conceitos fundamentais da lingua
 
 Apresentar os principais conceitos básicos da linguagem R, de forma didática, visando facilitar o processo de aprendizagem.
 
-### Objetivos específicos
+## Objetivos específicos
 
 Compreender a estrutura fundamental da linguagem R. Aprender a manipular objetos e funções. Entender conceitos como escopo léxico e atribuição. Explorar operações básicas e estruturas de dados.
 
 ---
 
-## Fundamentos da Linguagem R
+# Fundamentos da Linguagem R
 
 Os três princípios fundamentais.
 
@@ -55,7 +55,7 @@ Princípio da interface: O R permite integração com outras linguagens, como C 
 
 ---
 
-## Tipos de dados básicos
+# Tipos de dados básicos
 
 Os principais tipos de dados em R são:
 
@@ -64,9 +64,8 @@ Inteiro (integer) → números inteiros.
 Lógico (logical) → TRUE ou FALSE.
 Caractere (character) → textos.
 
-## Estruturas de dados
 
-### Operadores básicos
+## Operadores básicos
 
 Atribuição: <-
 Soma: +
@@ -74,7 +73,7 @@ Subtração: -
 Multiplicação: *
 Divisão: /
 
-### Vetor.
+## Vetor.
 
 Os vetores são a estrutura mais básica do R. Eles armazenam elementos do mesmo tipo (numérico, lógico ou caractere).
 
@@ -88,15 +87,30 @@ Ou de forma automática:
 
 x <- 1:10
 
-### Indexação
+## Indexação
 
-No R, os índices começam em 1:
+A indexação em R é o mecanismo utilizado para acessar elementos específicos dentro de uma estrutura de dados, como vetores, matrizes, listas ou data frames.
+
+Uma característica fundamental da linguagem R é que a indexação é baseada em 1, ou seja, a contagem dos elementos inicia-se no valor 1. Isso significa que o primeiro elemento de um vetor ou estrutura será acessado pela posição 1, diferentemente de outras linguagens de programação, como Python e C, nas quais a indexação começa em 0.
+
+Exemplo:
+
+x <- c(10, 20, 30, 40, 50)
+Nesse caso, foi criado um vetor x contendo cinco elementos numéricos.
+
+Para acessar o primeiro elemento do vetor, utiliza-se:
+
 x[1]
+Esse comando retorna o valor 10, que corresponde ao primeiro elemento do vetor.
 
-Também é possível selecionar múltiplos valores:
+Além disso, o R permite acessar múltiplos elementos simultaneamente, utilizando um vetor de índices:
+
 x[c(1, 3, 5)]
+Nesse caso, são retornados os elementos das posições 1, 3 e 5 do vetor.
 
-### Listas
+Dessa forma, a indexação em R possibilita a seleção precisa de elementos dentro de uma estrutura de dados, sendo um recurso essencial para manipulação e análise de informações.
+
+## Listas
 
 A lista é uma estrutura mais flexível, pois pode armazenar elementos de tipos diferentes.
 
@@ -104,18 +118,34 @@ Características: Estrutura heterogênea. Pode conter vetores, números, textos 
 
 Exemplo:
 
-# Criando uma lista
+Nesse código, a função list() é utilizada para criar uma lista chamada lista, contendo três elementos distintos.
+
+O primeiro elemento, denominado nome, armazena um valor do tipo caractere ("Lucas"). O segundo elemento, idade, contém um valor numérico (25). Já o terceiro elemento, notas, armazena um vetor numérico criado pela função c(), contendo três valores.
+
+## Criando uma lista
 lista <- list(
   nome = "Lucas",
   idade = 25,
   notas = c(8, 9, 10)
 )
 
-# Acessando elementos
-lista$nome
-lista$notas
+Cada elemento da lista pode ser acessado individualmente por meio do operador $, conforme ilustrado a seguir:
 
-### Data Frames
+## Acessando elementos
+lista $ nome
+lista $ notas
+
+Nesse caso, "lista $ nome" retorna o valor associado ao elemento "nome", enquanto " lista $ notas" retorna o vetor de notas armazenado.
+
+Além disso, também é possível acessar elementos da lista por posição utilizando colchetes duplos:
+
+lista[[1]]
+
+Esse comando retorna o primeiro elemento da lista, que corresponde ao valor "Lucas".
+
+Dessa forma, as listas permitem a organização de dados complexos em uma única estrutura, sendo amplamente utilizadas em situações que envolvem diferentes tipos de informação.
+
+## Data Frames
 
 Os data frames são uma das estruturas mais importantes no R, sendo utilizados para representar tabelas de dados. Muito utilizados para análise de dados.
 
@@ -123,7 +153,7 @@ Características: Estrutura bidimensional.Cada coluna pode ter um tipo diferente
 
 Exemplo:
 
-# Criando um data frame
+## Criando um data frame
 
 dados <- data.frame(
   nome = c("Ana", "Lucas", "João"),
@@ -131,17 +161,15 @@ dados <- data.frame(
   nota = c(8.5, 9.0, 7.5)
 )
 
-# Visualizando os dados
-dados
+Nesse código, a função data.frame() é utilizada para criar um objeto chamado dados, que armazena informações organizadas em colunas.
 
-# Acessando uma coluna
-dados$nota
+Cada argumento dentro da função representa uma coluna da tabela:
 
-# Acessando linhas e colunas
-dados[1, ]   # Primeira linha
-dados[, 2]   # Segunda coluna
+A coluna nome é composta por valores do tipo caractere, representando os nomes dos indivíduos. A coluna idade contém valores numéricos inteiros.A coluna nota armazena valores numéricos decimais.
 
-### Funções em R
+Os valores de cada coluna são definidos por meio da função c(), que cria vetores. Todos os vetores devem possuir o mesmo comprimento, garantindo que cada linha da tabela represente uma observação completa.
+
+# Funções em R
 
 As funções são o principal mecanismo de execução de tarefas na linguagem R. Toda operação realizada — desde cálculos simples até análises complexas — ocorre por meio da chamada de funções.
 
@@ -166,7 +194,7 @@ nome_da_funcao → o que será feito
 argumentos → com quais dados ou configurações
 
 
-### Visualização de dados
+## Visualização de dados
 
 plot(1:10)
 
@@ -185,10 +213,10 @@ Ou em outras palavras, é forma como as funções procuram pelos objetos.
 
 ---
 
-## 🔍 Conclusão
+# Conclusão
 
 A linguagem R demonstra ser um ambiente robusto para a computação estatística, destacando-se pela sintaxe voltada à manipulação eficiente de vetores e estruturas tabulares. O domínio de seus conceitos fundamentais — como a atribuição via <-, o entendimento do escopo léxico e a lógica de indexação — constitui a base necessária para a implementação de análises complexas e o desenvolvimento de modelos com rigor matemático. Em suma, a versatilidade do R na organização e tratamento de dados oferece os recursos essenciais para a exploração científica, servindo como uma porta de entrada sólida para o uso de bibliotecas avançadas e visualizações gráficas de alta performance.
 
-## 📖 Referências
+# 📖 Referências
 Vídeo aulas disponibilizadas pelo professor da disciplina de Estatística e Probabilidade, Ben Dêivide.
 https://www.youtube.com/@bendeivide/videos
