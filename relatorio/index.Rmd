@@ -122,10 +122,6 @@ Podemos também fazer esses passos por meio de botões no RStudio. No terceiro q
 A estrutura de nosso projeto será da seguinte forma:
 
 
-```{r echo=FALSE, fig.align='center', fig.cap='', out.width='40%'}
-knitr::include_graphics('imagens/im_arvore.png')
-```
-
 - `relatorio-estexp/index.html` é a página principal. Sempre use `index.Rmd` para renderizar a página em HTML;
 - `images` é o subdiretório que criamos algumas imagens. Para as imagens necessárias nos relatórios, insira nos diretórios dos relatórios;
 - `index.html` é o arquivo que representa a página das informações adicionais de cada aluno. Sempre use `index.Rmd` para renderizar a página em HTML. Caso deseje alterar a foto `logo.png` por uma sua, insira a imagem na raiz do projeto, a respectiva imagem, renomeando-a por `logo.png`, lembre-se da extensão da imagem, `.png`;- Todos os subdiretórios `./rel0X` representam os locais para desenvolver os relatórios. Para `X = 1`, isto é, `./rel01`, temos o desenvolvimento do relatório 1, e assim sucessivamente. Para a criação de mais relatórios, copie um desses subdiretórios como modelo para o desenvolvimento do próximo. Por exemplo, se criarmos o relatório 03, copie um dos subdiretórios referidos, e renomei-o como `./rel03`. Sempre use `index.Rmd` para renderizar a página em HTML. 
