@@ -1,6 +1,6 @@
 ---
 title: "Lucas Andrade"
-image: "logo.png"
+image: "IMG_perfil.jpg"
 links:
   - label: GitHub
     url: "https://github.com/gitLucasAndrade"
