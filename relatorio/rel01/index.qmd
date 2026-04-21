@@ -29,6 +29,7 @@ execute:
 ## Introdução
 
 Usaremos o experimento da catapulta para estudarmos os conceitos da disciplina de estatística e probabilidade de forma prática durante todo semestre. O experimento foi proposto como uma atividade didática com o objetivo de simular a coleta e análise de dados reais, possibilitando a aplicação de técnicas estatísticas descritivas. A partir da realização de múltiplos lançamentos de uma bolinha.
+Dessa forma, torna-se necessário estabelecer objetivos claros para orientar a realização do experimento e a análise dos dados obtidos.
 
 
 ## Objetivos
@@ -40,11 +41,12 @@ O objetivo geral: Usando a catapulta para atirar uma bolinha, entender como func
 ### Objetivos específicos
 
 O primeiro passo do experimento consistiu em coletar dados experimentais dos lançamentos da catapulta, medindo a distância de cada lançamento.Após concluirmos a coleta dos dados brutos, organizamos todos dados em uma planilha. E posteriormente, usando o software Rstudio, construimos uma tabela de frequências.
+Para a correta interpretação dos dados coletados, é fundamental compreender os conceitos estatísticos que embasam a análise, os quais serão apresentados na seção a seguir.
 
 ---
 
 ## Fundamentação Teórica
-
+Para a análise adequada dos dados obtidos no experimento, é necessário o entendimento prévio de alguns conceitos fundamentais da estatística descritiva.
 A estatística descritiva tem como finalidade organizar, resumir e descrever um conjunto de dados. Entre os principais conceitos utilizados neste experimento, destacam-se: 
 
 Dados brutos: Valores coletados diretamente do experimento, sem qualquer organização prévia. Dados em Rol: Conjunto de dados ordenados em ordem crescente ou decrescente.
@@ -56,42 +58,98 @@ Frequência acumulada percentual (abaixo de): Porcentagem acumulada até aquela 
 Frequência acumulada percentual (acima de): Porcentagem acumulada daquela classe até o final.
 Média aritimética: Medida de tendência central que representa o valor médio do conjunto de dados.
 
-Abaixo algumas fórmulas importantes para a tabulação dos dados.
+## Fórmulas
 
-Fórmula para a média aritimética.
+Abaixo algumas fórmulas importantes para a tabulação dos dados em uma tabela de distribuição de frequência:
+
+Média aritmética:
 
 A média representa o valor central de um conjunto de dados. Ela é obtida somando todas as observações e dividindo pelo número total de elementos. No experimentos da catapulta, a média indica a distância média dos lançamentos.
 $$
 \bar{x} = \frac{1}{n}\sum_{i=1}^{n} x_i
 $$
-Fórmula para a frequência relativa.
+Frequência relativa:
+
 Representa a proporção de ocorrência de um valor ou classe em relação ao total de dados.
 $$
 f_r = \frac{f_i}{n}
 $$
-Fórmula para a frequência percentual.
+Frequência percentual:
+
 Frequência relativa expressa em porcentagem.
 $$
 f_{\%} = \frac{f_i}{n} \times 100
 $$
-Fórmula para o ponto médio da classe.
+Ponto médio da classe:
+
 O ponto médio representa o valor central de um intervalo de classe em dados agrupados.
 $$
 x_m = \frac{L_i + L_s}{2}
 $$
+Frequência Acumulada (Fac1):
+
+A frequência acumulada abaixo de (Fac1) representa a soma das frequências absolutas desde a primeira classe até a classe atual. Mostra quantas observações estão até aquele ponto (de baixo para cima).
+
+$$
+Fac1_i = \sum_{j=1}^{i} f_j
+$$
+Frequência Acumulada (Fac2):
+
+A frequência acumulada acima de (Fac2) representa a soma das frequências da classe atual até a última classe. Mostra quantas observações estão daquele ponto até o final (de cima para baixo).
+
+$$
+Fac2_i = \sum_{j=i}^{k} f_j
+$$
+Frequência Acumulada Percentual (Fac1p):
+
+A frequência acumulada percentual abaixo de (Fac1p) é a frequência acumulada abaixo de dividida pelo total de observações, expressa em porcentagem. Mostra o percentual de dados até aquela classe. 
+$$
+Fac1p_i = \left( \frac{\sum_{j=1}^{i} f_j}{n} \right) \times 100
+$$
+Frequência Acumulada Percentual (Fac2p):
+
+A frequência acumulada percentual acima de (Fac2p) representa o percentual acumulado da classe atual até a última. Mostra o percentual de dados daquele ponto até o final. 
+$$
+Fac2p_i = \left( \frac{\sum_{j=i}^{k} f_j}{n} \right) \times 100
+$$
+Onde:
+
+- $f_j$ representa a frequência absoluta da classe $j$ .
+
+- $i$ representa a classe atual.
+
+- $k$ é o número total de classes.
+
+- $n$ é o número total de observações.
+
+Portanto, podemos dizer que, as frequências acumuladas permitem analisar a distribuição dos dados de forma progressiva, facilitando a identificação de padrões e a compreensão da concentração das observações ao longo das classes.
+Com base nesses conceitos, foi possível estruturar a coleta e organização dos dados, conforme descrito na metodologia a seguir.
+
 ---
 
 ## Metodologia
 
-Materiais utilizados: 1 Catapulta de mesa. 1 Bolinha de "ping-pong", usada nos lançamentos. 1 Trena, usada para a medição da distância de cada arremesso.
+A metodologia adotada neste experimento foi planejada de forma a garantir a padronização dos procedimentos e a confiabilidade dos dados coletados.
 
-Procedimento: Para minimizar variações sistemáticas, um único integrante do grupo foi responsável por realizar todos os lançamentos da catapulta. A medição das distâncias foi realizada por dois integrantes, enquanto outros dois ficaram responsáveis pelo registro e organização dos dados. Ao todo, o experimento teve um total de 40 arremessos executados.
+Para a realização do experimento utilizamos os seguintes materiais:
+
+- Uma catapulta de mesa.
+
+- Uma bolinha de "ping-pong".
+
+- Uma trena, usada para a medição da distância de cada arremesso.
+
+Iniciamos o procedimento, escolhendo um único integrante do grupo para realizar todos os lançamentos da catapulta, para dessa forma minimizar variações sistemáticas. A medição das distâncias foi realizada por dois integrantes, que observavam o ponto onde a bolinha tocava o chão, e faziam um apontamento. Logo em seguida, mediam a distância, com a trena.
+Outros dois ficaram responsáveis pelo registro e organização dos dados, fazendo o registro de forma manual, anotando as distâncias medidas a cada lançamento.
+Dessa forma, finalizamos a prática que teve ao todo, 40 arremessos executados.
+Após a coleta dos dados, procedeu-se à sua organização e análise por meio de ferramentas computacionais, conforme apresentado na seção seguinte.
 
 ---
 
 ## Análise de Dados
 
-Os dados coletados a partir dos 40 lançamentos da catapulta foram organizados e analisados com o auxílio do software R. Inicialmente, os valores foram ordenados em rol, permitindo uma melhor visualização da distribuição das distâncias obtidas.
+Com os dados devidamente coletados e organizados, iniciou-se a etapa de análise, utilizando o software R como ferramenta de apoio.
+Os dados foram coletados a partir dos 40 lançamentos da catapulta foram organizados e analisados com o auxílio do software R. Inicialmente, os valores foram ordenados em rol, permitindo uma melhor visualização da distribuição das distâncias obtidas.
 
 Observa-se que a maior parte dos valores encontra-se concentrada entre aproximadamente 1,60 m e 2,05 m, indicando uma tendência de agrupamento dos dados em torno desse intervalo.
 
@@ -100,6 +158,8 @@ A análise da tabela mostra que a classe de maior frequência é o intervalo de 
 Por outro lado, observa-se a presença de valores mais elevados, especialmente nas classes finais. Esses valores possuem baixa frequência e podem ser caracterizados como possíveis outliers, pois se distanciam significativamente do padrão observado na maior parte dos dados.
 
 De modo geral, os resultados indicam baixa variabilidade, com dados relativamente homogêneos e concentrados em um intervalo específico. No entanto, a presença de valores extremos sugere a influência de fatores externos no experimento, como pequenas variações na execução dos lançamentos ou possíveis imprecisões na medição.
+
+Para auxiliar na análise dos dados, foram utilizados comandos na linguagem R, permitindo a organização, ordenação e construção da tabela de frequência, conforme apresentado a seguir:
 
 ```{r}
 library(leem)
@@ -120,16 +180,15 @@ tab <- dist |>
 
 tab
 ```
-
+Diante dos resultados obtidos, torna-se possível sintetizar as principais conclusões do experimento, conforme apresentado a seguir.
 
 ## Considerações finais
 
-A prática pode ser considerada como bem sucedida.
-Os principais objetivos foram cumpridos.
-Os dados apresentam baixa variabilidade, pois a maior parte das observações está concentrada em um intervalo relativamente estreito.
-No entanto, observa-se a presença de valores extremos (como 2.50 e 2.80), que aumentam a dispersão total do conjunto.
-Os métodos e passos que foram seguidos serviram para uma boa dinâmica de aprendizado sobre como executar um experimento com objetivo de análise estatística. Visando nesse caso, a coleta, organização e apresentação de dados.
+A prática realizada pode ser considerada bem-sucedida, uma vez que os objetivos propostos foram alcançados. Foi possível compreender, na prática, as etapas de coleta, organização e análise de dados, aplicando conceitos fundamentais da estatística descritiva.
 
-Sugestão para possíveis melhorias nos próximos procedimentos experimentais.
-Pode-se para os próximos experimentos verificar uma melhor forma de fixar a catapulta, com intenção de minimizar variação entre os lançamentos.
+Os resultados indicaram baixa variabilidade, com a maior parte das observações concentrada em um intervalo relativamente estreito, evidenciando consistência nos lançamentos. No entanto, a presença de valores extremos (como 2,50 m e 2,80 m) sugere a influência de fatores externos, como pequenas variações na execução do experimento ou possíveis imprecisões na medição.
+
+Dessa forma, o experimento contribuiu significativamente para o entendimento prático dos conceitos estatísticos, reforçando a importância da organização e interpretação adequada dos dados em estudos experimentais.
+
+Por fim, como melhoria para futuras aplicações, recomenda-se uma maior estabilização da catapulta e um controle mais rigoroso das medições, a fim de reduzir a ocorrência de valores discrepantes.
 
