@@ -1,0 +1,141 @@
+---
+# Só mude aqui!!!!
+author: "Lucas Reis Oliveira de Andrade"
+title: "Aproximação à Distribuição Normal"
+bibliography: referencias.bib
+# A partir daqui nao faca alteracoes!!!!!
+link-citations: true
+csl: associacao-brasileira-de-normas-tecnicas-ipea.csl
+subtitle: "<a href='https://bendeivide.github.io/courses/epaec/' target='_blank'>Estatística e Probabilidade</a> </br> <a href='https://bendeivide.github.io' target='_blank'>Prof. Ben Dêivide (DEFIM/CAP/UFSJ)</a>"
+include-before-body: header.html
+date: now
+date-format: "DD/MM/YYYY, HH:mm"
+lang: pt-BR
+format:
+  html:
+    toc: true
+    number-sections: true
+    theme: bootstrap
+    #css: styles.css
+    code-fold: true
+    code-tools: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Introdução
+
+No estudo de probabilidade e estatística aplicadas à engenharia, lidamos frequentemente com fenômenos de natureza discreta, como a contagem de pacotes de dados em uma rede ou a verificação de bits errados em uma transmissão digital. Tais eventos são perfeitamente descritos pelas distribuições Binomial e de Poisson. No entanto, em sistemas de telecomunicações de alta capacidade, o número de eventos ($n$) ou a taxa de ocorrência ($\lambda$) tende a assumir valores astronômicos. Nesses cenários, o cálculo exato dessas probabilidades discretas torna-se computacionalmente inviável devido à presença de fatoriais gigantescos. É neste ponto que o Teorema do Limite Central (TLC) atua como uma ponte matemática fundamental, permitindo que essas distribuições discretas sejam modeladas e aproximadas de forma elegante e eficiente pela distribuição Normal, uma variável contínua.
+
+
+# Objetivos 
+
+- Demonstrar o embasamento teórico que permite a aproximação das distribuições Binomial e de Poisson para a Normal.
+
+- Apresentar os critérios matemáticos necessários para que essa aproximação seja válida.
+
+- Ilustrar a aplicabilidade prática desses conceitos através de exemplos no contexto da Engenharia de Telecomunicações.
+
+
+# Fundamentação Teórica
+
+## Aproximação da Binomial para a Normal (Teorema de De Moivre-Laplace): 
+
+A distribuição Binomial modela o número de sucessos em $n$ ensaios de Bernoulli independentes, com probabilidade de sucesso $p$.
+$$X \sim B(n, p)$$
+De acordo com o Teorema Central do Limite, à medida que o número de ensaios $n$ cresce, a distribuição da soma dessas variáveis aleatórias independentes converge para uma distribuição Gaussiana. Formalmente, o Teorema de De Moivre-Laplace (um caso especial do TCL) afirma que, se $n$ for suficientemente grande, a variável $X$ pode ser aproximada por uma Normal com os seguintes parâmetros:
+
+Média: $\mu = np$
+
+Variância: $\sigma^2 = npq$ (onde $q = 1 - p$)
+
+$$X \approx N(np, npq)$$
+
+Critério de Validade: 
+
+A aproximação é considerada excelente na engenharia prática quando $np \ge 5$ e $nq \ge 5$ (algumas literaturas adotam um limiar mais conservador de $10$). Correção de Continuidade (Correção de Yates): Como estamos usando uma distribuição contínua para aproximar uma variável discreta, aplicamos uma correção de $\pm 0,5$ aos limites do intervalo para mitigar erros nas "bordas" dos retângulos do histograma discreto.
+$$P(X \le k) \approx P\left(Z \le \frac{(k + 0,5) - \mu}{\sigma}\right)$$
+
+## Aproximação da Poisson para a Normal: 
+
+A distribuição de Poisson é usada para modelar o número de ocorrências de um evento em um intervalo contínuo, caracterizada por uma taxa média $\lambda$.$$X \sim Poisson(\lambda)$$Uma propriedade matemática da Poisson é que uma variável $Poisson(\lambda)$ pode ser vista como a soma de $n$ variáveis independentes $Poisson(\lambda/n)$. Portanto, aplicando novamente o Teorema Central do Limite, quando $\lambda$ assume valores grandes, a distribuição se torna simétrica e em formato de sino, aproximando-se da Normal com:
+
+
+Média: $\mu = \lambda$
+
+Variância: $\sigma^2 = \lambda$$$X \approx N(\lambda, \lambda)$$
+
+Critério de Validade: A aproximação Gaussiana para a Poisson é geralmente considerada adequada e segura para aplicações práticas quando $\lambda > 20$.
+
+# Aplicação em Telecomunicações
+
+## Exemplo 1:
+
+Análise de Taxa de Erro de Bit (BER) em Alta Velocidade (Binomial $\rightarrow$ Normal) 
+
+Cenário: Em um enlace de fibra óptica, a probabilidade de um bit ser recebido com erro (Bit Error Rate) é $p = 10^{-4}$. O sistema transmite blocos de dados contendo $n = 10^6$ bits. O engenheiro precisa calcular a probabilidade de um bloco conter mais de 120 erros.
+
+Análise Exata (Inviável):
+
+Calcular via Binomial exigiria resolver $1 - P(X \le 120)$, o que envolve o cálculo do coeficiente binomial $\binom{10^6}{x}$, impossível para a maioria das calculadoras ou algoritmos diretos devido ao estouro de memória no cálculo fatorial.
+
+Aproximação pela Normal: 
+
+Verificamos os critérios: $\mu = np = 10^6 \times 10^{-4} = 100$.
+
+Como $np > 5$, a aproximação é válida.
+O desvio padrão é: $\sigma = \sqrt{np(1-p)} = \sqrt{10^6 \times 10^{-4} \times (1 - 10^{-4})} \approx \sqrt{100} = 10$.
+
+Aplicando a correção de continuidade para $P(X > 120)$:
+$$Z = \frac{120,5 - 100}{10} = 2,05$$
+A probabilidade desejada é a área à direita de $Z = 2,05$ na curva Normal padrão:
+
+$$P(Z > 2,05) \approx 0,0202 \text{ ou } 2,02\%$$
+Interpretação: A aproximação normal permitiu resolver em poucos passos um problema que, de forma discreta, travaria sistemas computacionais comuns.
+
+
+## Exemplo 2: 
+
+Dimensionamento de Buffer em Roteadores Core (Poisson $\rightarrow$ Normal) 
+
+Cenário: Em teoria das filas, a chegada de pacotes a um roteador central de uma operadora segue um processo de Poisson. Durante o horário de pico, a taxa média de chegada é de $\lambda = 2500$ pacotes por segundo. Para dimensionar a fila do buffer e evitar packet loss, deseja-se saber a probabilidade de chegarem menos de 2400 pacotes em um segundo específico.
+
+Aproximação pela Normal:
+
+Como $\lambda = 2500 > 20$, a aproximação Gaussiana é extremamente precisa. Temos $\mu = 2500$ e $\sigma = \sqrt{2500} = 50$. Buscamos $P(X < 2400)$. Aplicando a correção de continuidade:
+
+$$Z = \frac{2399,5 - 2500}{50} = -2,01$$
+
+Consultando a tabela Normal para $Z = -2,01$:
+$$P(Z < -2,01) \approx 0,0222 \text{ ou } 2,22\%$$
+
+Interpretação: Modelos baseados no TLC permitem que roteadores aloquem memória de buffer de forma dinâmica, sabendo estatisticamente quais são os picos de tráfego esperados sem precisar calcular somatórios infinitos de fatoriais de Poisson.
+
+
+# Conclusão
+
+O presente relatório demonstrou a aplicabilidade matemática e prática das aproximações da distribuição Normal sobre modelos discretos. Ao lidar com processamento de sinais, análises de ruído e teoria do tráfego de redes, o Teorema do Limite Central atua como uma ferramenta facilitadora indispensável.
+
+Embora o rigor matemático da engenharia exija precisão, a transição para domínios contínuos com grandes amostras (seja modelando milhares de bits de um conversor A/D ou pacotes de dados em uma rede IP) não resulta em perda de fidelidade analítica; pelo contrário, provê modelos matemáticos tratáveis, elegantes e robustos para o design e operação de sistemas de telecomunicações modernos.
+
+
+# Referências
+
+BEN DÊIVIDE. *Estatística & Probabilidade aplicada às Engenharias e Ciências*. Disponível em:
+<https://bendeivide.github.io/book-epaec/cap06.html>.
+
+
+BEN DÊIVIDE. *Estatística Básica*. Disponível em:
+<https://bendeivide.github.io/book-estbasica/cap06.html>.
+
+
+
+
+
+
+
+
+
+
