@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Lucas Reis Oliveira de Andrade">
+
+<title>Distribuições F e Qui-quadrado</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="rel06_files/libs/clipboard/clipboard.min.js"></script>
+<script src="rel06_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="rel06_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="rel06_files/libs/quarto-html/popper.min.js"></script>
+<script src="rel06_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="rel06_files/libs/quarto-html/anchor.min.js"></script>
+<link href="rel06_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="rel06_files/libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="rel06_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="rel06_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="rel06_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução"><span class="header-section-number">1</span> Introdução</a></li>
+  <li><a href="#fundamentação-teórica" id="toc-fundamentação-teórica" class="nav-link" data-scroll-target="#fundamentação-teórica"><span class="header-section-number">2</span> Fundamentação Teórica</a>
+  <ul class="collapse">
+  <li><a href="#distribuição-f" id="toc-distribuição-f" class="nav-link" data-scroll-target="#distribuição-f"><span class="header-section-number">2.1</span> Distribuição F</a></li>
+  <li><a href="#distribuição-qui-quadrado-χ2" id="toc-distribuição-qui-quadrado-χ2" class="nav-link" data-scroll-target="#distribuição-qui-quadrado-χ2"><span class="header-section-number">2.2</span> Distribuição Qui-quadrado (χ2)</a></li>
+  </ul></li>
+  <li><a href="#relação-das-distribuições-amostrais" id="toc-relação-das-distribuições-amostrais" class="nav-link" data-scroll-target="#relação-das-distribuições-amostrais"><span class="header-section-number">3</span> Relação das distribuições amostrais</a>
+  <ul class="collapse">
+  <li><a href="#funções-da-amostra-relacionadas" id="toc-funções-da-amostra-relacionadas" class="nav-link" data-scroll-target="#funções-da-amostra-relacionadas"><span class="header-section-number">3.1</span> Funções da amostra relacionadas</a></li>
+  <li><a href="#para-a-distribuição-qui-quadrado-chi2" id="toc-para-a-distribuição-qui-quadrado-chi2" class="nav-link" data-scroll-target="#para-a-distribuição-qui-quadrado-chi2"><span class="header-section-number">3.2</span> Para a Distribuição Qui-quadrado (<span class="math inline">\(\chi^2\)</span>)</a></li>
+  <li><a href="#para-a-distribuição-f" id="toc-para-a-distribuição-f" class="nav-link" data-scroll-target="#para-a-distribuição-f"><span class="header-section-number">3.3</span> Para a Distribuição F</a></li>
+  </ul></li>
+  <li><a href="#aplicações-em-engenharia-de-telecomunicações" id="toc-aplicações-em-engenharia-de-telecomunicações" class="nav-link" data-scroll-target="#aplicações-em-engenharia-de-telecomunicações"><span class="header-section-number">4</span> Aplicações em Engenharia de Telecomunicações</a>
+  <ul class="collapse">
+  <li><a href="#qui-quadrado" id="toc-qui-quadrado" class="nav-link" data-scroll-target="#qui-quadrado"><span class="header-section-number">4.1</span> Qui-quadrado</a></li>
+  <li><a href="#distribuição-f-1" id="toc-distribuição-f-1" class="nav-link" data-scroll-target="#distribuição-f-1"><span class="header-section-number">4.2</span> Distribuição F</a></li>
+  </ul></li>
+  <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão"><span class="header-section-number">5</span> Conclusão</a></li>
+  <li><a href="#referências-bibliográficas" id="toc-referências-bibliográficas" class="nav-link" data-scroll-target="#referências-bibliográficas"><span class="header-section-number">6</span> Referências Bibliográficas</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Distribuições F e Qui-quadrado</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Código</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Mostrar o código</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Esconder o código</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">Ver o código fonte</a></li></ul></div></div>
+<p class="subtitle lead"><a href="https://bendeivide.github.io/courses/epaec/" target="_blank">Estatística e Probabilidade</a> <br> <a href="https://bendeivide.github.io" target="_blank">Prof.&nbsp;Ben Dêivide (DEFIM/CAP/UFSJ)</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor</div>
+    <div class="quarto-title-meta-contents">
+             <p>Lucas Reis Oliveira de Andrade </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">26/05/2026, 09:50</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introdução" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introdução</h1>
+<p>As distribuições Qui-quadrado e F ocupam um papel fundamental na Estatística, especialmente na análise de dados experimentais, testes de hipóteses e modelagem de fenômenos aleatórios. Essas distribuições pertencem ao conjunto das chamadas distribuições amostrais, isto é, distribuições associadas a estatísticas calculadas a partir de amostras de uma população. Seu estudo é essencial em áreas da Engenharia, pois permite avaliar a variabilidade dos dados, comparar modelos e verificar a confiabilidade de resultados obtidos em experimentos e sistemas reais.</p>
+<p>A distribuição Qui-quadrado surge principalmente em problemas relacionados à variância de populações normais, testes de aderência, independência entre variáveis e análise de frequências observadas. Já a distribuição F está associada à razão entre variâncias e é amplamente utilizada em comparações estatísticas, como na análise de variância e na avaliação de desempenho de modelos. Ambas possuem forte ligação com a distribuição normal e desempenham papel importante na inferência estatística.</p>
+<p>No contexto das distribuições amostrais, essas distribuições estão relacionadas a funções específicas da amostra, como soma de quadrados, variância amostral e razão entre variâncias. Dessa forma, elas permitem construir métodos estatísticos capazes de analisar o comportamento de sistemas e processos de forma quantitativa e confiável.</p>
+<p>Na Engenharia de Telecomunicações, as distribuições Qui-quadrado e F possuem aplicações relevantes em áreas como análise de ruído, detecção de sinais, avaliação de desempenho de canais de comunicação, processamento digital de sinais e testes de qualidade em sistemas de transmissão. Por meio dessas ferramentas estatísticas, é possível validar modelos, comparar desempenhos e garantir maior eficiência e confiabilidade nos sistemas de telecomunicações.</p>
+</section>
+<section id="fundamentação-teórica" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Fundamentação Teórica</h1>
+<p>As distribuições Qui-quadrado <span class="math inline">\((\chi^2)\)</span> e F são distribuições amostrais amplamente utilizadas na inferência estatística. Ambas derivam da distribuição normal e possuem aplicações importantes em testes estatísticos, análise de variância e avaliação de modelos.</p>
+<section id="distribuição-f" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="distribuição-f"><span class="header-section-number">2.1</span> Distribuição F</h2>
+<p>A distribuição F é definida pela razão entre duas variáveis Qui-quadrado independentes, cada uma dividida pelos respectivos graus de liberdade.</p>
+<p>Se:</p>
+<p><span class="math display">\[X1 \sim X^2(v1)\]</span> e <span class="math display">\[X2 \sim X^2(v2) \]</span> Então: <span class="math display">\[F = \frac {X1/v1}{X2/V2} \]</span> segue uma distribuição F com v1 e v2 graus de liberdade. A distribuição F é muito utilizada na comparação entre variâncias e na análise de variância.</p>
+</section>
+<section id="distribuição-qui-quadrado-χ2" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="distribuição-qui-quadrado-χ2"><span class="header-section-number">2.2</span> Distribuição Qui-quadrado (χ2)</h2>
+<p>A distribuição Qui-quadrado surge a partir da soma dos quadrados de variáveis aleatórias normais padrão independentes.</p>
+<p>Se:</p>
+<p><span class="math display">\[Zi \sim N(0,1) \space;\space  i= 1, 2, \dots , n\]</span> Então: <span class="math display">\[χ^2=∑_{i=1}^{n}​Z_{i}^{2}​\]</span> segue uma distribuição Qui-quadrado com n graus de liberdade.</p>
+<p>Essa distribuição está diretamente relacionada à variância amostral.</p>
+<p>Para uma população normal com variância σ2:</p>
+<p><span class="math display">\[χ^2=\frac{(n−1)S^2}{σ2}​\]</span></p>
+<p><span class="math inline">\(n\)</span> = tamanho da amostra.</p>
+<p><span class="math inline">\(S^2\)</span> = variância amostral.</p>
+<p><span class="math inline">\(σ2\)</span> = variãncia populacional.</p>
+</section>
+</section>
+<section id="relação-das-distribuições-amostrais" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Relação das distribuições amostrais</h1>
+<p>As distribuições Qui-quadrado (<span class="math inline">\(\chi^2\)</span>) e F são fundamentais na inferência estatística porque descrevem o comportamento de certas estatísticas extraídas de amostras, especialmente quando a população original segue uma distribuição Normal. Em vez de descreverem os dados em si (como a altura de uma onda ou a tensão de um sinal), elas descrevem as distribuições amostrais da variância.</p>
+<p><strong>- Distribuição Qui-quadrado:</strong></p>
+<p>Está diretamente relacionada à distribuição amostral da variância de uma única população. Se retirarmos infinitas amostras de uma população Normal e calcularmos a variância de cada uma, esses valores de variância (devidamente padronizados) formarão uma distribuição Qui-quadrado. Ela nasce da soma de variáveis normais padronizadas elevadas ao quadrado.</p>
+<p><strong>- Distribuição F:</strong></p>
+<p>Está relacionada à distribuição amostral da razão entre as variâncias de duas populações independentes. É construída a partir da razão de duas variáveis independentes que seguem uma distribuição Qui-quadrado, cada uma dividida por seus respectivos graus de liberdade.</p>
+<section id="funções-da-amostra-relacionadas" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="funções-da-amostra-relacionadas"><span class="header-section-number">3.1</span> Funções da amostra relacionadas</h2>
+<p>As “funções da amostra” referem-se às fórmulas matemáticas (estatísticas) que calculamos a partir dos dados coletados para realizar testes de hipóteses ou criar intervalos de confiança.</p>
+</section>
+<section id="para-a-distribuição-qui-quadrado-chi2" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="para-a-distribuição-qui-quadrado-chi2"><span class="header-section-number">3.2</span> Para a Distribuição Qui-quadrado (<span class="math inline">\(\chi^2\)</span>)</h2>
+<p>A principal função da amostra relacionada é a variância amostral (<span class="math inline">\(S^2\)</span>). Se tivermos uma amostra de tamanho <span class="math inline">\(n\)</span> retirada de uma população Normal com variância <span class="math inline">\(\sigma^2\)</span>, a estatística relacionada é:</p>
+<p><span class="math display">\[\chi^2 = \frac{(n-1)S^2}{\sigma^2}\]</span> Essa função segue uma distribuição Qui-quadrado com <span class="math inline">\(v = n - 1\)</span> graus de liberdade.</p>
+</section>
+<section id="para-a-distribuição-f" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="para-a-distribuição-f"><span class="header-section-number">3.3</span> Para a Distribuição F</h2>
+<p>A função da amostra relacionada é a razão entre duas variâncias amostrais (<span class="math inline">\(S_1^2\)</span> e <span class="math inline">\(S_2^2\)</span>). Se tivermos duas amostras independentes de tamanhos <span class="math inline">\(n_1\)</span> e <span class="math inline">\(n_2\)</span>, retiradas de populações Normais com variâncias <span class="math inline">\(\sigma_1^2\)</span> e <span class="math inline">\(\sigma_2^2\)</span>, a estatística é: <span class="math display">\[F = \frac{S_1^2 / \sigma_1^2}{S_2^2 / \sigma_2^2}\]</span> Se estivermos testando a hipótese de que as variâncias populacionais são iguais (<span class="math inline">\(\sigma_1^2 = \sigma_2^2\)</span>), a fórmula se simplifica para a razão direta das variâncias amostrais: <span class="math inline">\(F = \frac{S_1^2}{S_2^2}\)</span>. Esta função segue uma distribuição F com <span class="math inline">\(v_1 = n_1 - 1\)</span> e <span class="math inline">\(v_2 = n_2 - 1\)</span> graus de liberdade.</p>
+</section>
+</section>
+<section id="aplicações-em-engenharia-de-telecomunicações" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Aplicações em Engenharia de Telecomunicações</h1>
+<p>Nesta seção, daremos prosseguimento apresentando dois exemplos para cada distribuição, aplicados à área de Telecomunicações. As distribuições de probabilidade são a base da modelagem de sinais e ruídos em Telecomunicações. Portanto, primeiramente para a distribuição <strong>Qui-quadrado</strong> temos:</p>
+<section id="qui-quadrado" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="qui-quadrado"><span class="header-section-number">4.1</span> Qui-quadrado</h2>
+<p><strong>Exemplo nº 1:</strong></p>
+<p>Detecção de Energia em Rádio Cognitivo (Energy Detection):</p>
+<p>Um receptor precisa decidir se um canal está ocupado por um sinal ou se contém apenas ruído térmico (modelado como Ruído Branco Gaussiano Aditivo - AWGN). O receptor amostra o canal, eleva os valores de tensão/corrente ao quadrado e os soma para calcular a energia. Como o ruído é Gaussiano, a soma dos quadrados dessas amostras segue uma distribuição Qui-quadrado (Central se houver apenas ruído, e Não-Central se houver sinal + ruído).</p>
+<p>A Detecção de Energia (Energy Detection) é a técnica de sensoriamento de espectro mais popular em Rádios Cognitivos porque é “cega” — ou seja, o receptor não precisa conhecer previamente nenhuma característica do sinal do usuário primário (como modulação, frequência da portadora ou preâmbulo). Ele só precisa medir a energia. Para entender a matemática por trás disso, formulamos o problema como um clássico Teste de Hipóteses Binário:</p>
+<p><span class="math inline">\(H_0\)</span> (Canal Livre): O sinal recebido <span class="math inline">\(y(t)\)</span> contém apenas ruído.</p>
+<p><span class="math inline">\(H_1\)</span> (Canal Ocupado): O sinal recebido <span class="math inline">\(y(t)\)</span> contém o sinal do usuário primário <span class="math inline">\(s(t)\)</span> somado ao ruído.</p>
+<p>1.1 - A Estatística de Teste (A Energia):</p>
+<p>O receptor amostra o canal contínuo, obtendo <span class="math inline">\(N\)</span> amostras discretas. A energia medida (<span class="math inline">\(E\)</span>) em uma determinada janela de tempo é calculada pela soma do quadrado da magnitude dessas amostras: <span class="math display">\[E = \sum_{n=1}^{N} |y(n)|^2\]</span> Aqui, <span class="math inline">\(N\)</span> representa os graus de liberdade da nossa distribuição e está ligado ao tempo de observação e à largura de banda do canal.</p>
+<p>1.2 - O Comportamento Sob a Hipótese <span class="math inline">\(H_0\)</span> (Apenas Ruído):</p>
+<p>Se o canal estiver livre, o sinal recebido é apenas Ruído Branco Gaussiano Aditivo (AWGN). O ruído térmico tem uma característica aleatória com média zero e uma variância conhecida (<span class="math inline">\(\sigma_w^2\)</span>).Quando você pega uma variável aleatória Gaussiana de média zero, eleva ao quadrado e soma <span class="math inline">\(N\)</span> vezes, a matemática estatística dita que o resultado obrigatoriamente seguirá uma Distribuição Qui-quadrado Central com <span class="math inline">\(N\)</span> graus de liberdade.</p>
+<p>1.3 - O Comportamento Sob a Hipótese <span class="math inline">\(H_1\)</span> (Sinal + Ruído):</p>
+<p>Se o canal estiver ocupado, as amostras não têm mais média zero, pois o sinal de informação <span class="math inline">\(s(t)\)</span> empurra essa média para cima (ele adiciona potência ao canal).Quando você soma os quadrados de variáveis Gaussianas que não têm média zero, o resultado segue uma Distribuição Qui-quadrado Não-Central. O “quão não-central” ela é depende de um parâmetro chamado de não-centralidade (<span class="math inline">\(\lambda_{nc}\)</span>), que na prática é diretamente proporcional à Relação Sinal-Ruído (SNR) do sinal recebido.</p>
+<p>1.4 - O Problema do Limiar (<span class="math inline">\(\lambda\)</span>):</p>
+<p>O trabalho do Rádio Cognitivo é observar o valor de <span class="math inline">\(E\)</span> calculado e tomar uma decisão usando um Limiar (Threshold), que chamaremos de <span class="math inline">\(\lambda\)</span>:</p>
+<ul>
+<li><p>Se <span class="math inline">\(E &gt; \lambda\)</span>, decide-se por <span class="math inline">\(H_1\)</span> (ocupado).</p></li>
+<li><p>Se <span class="math inline">\(E &lt; \lambda\)</span>, decide-se por <span class="math inline">\(H_0\)</span> (livre).</p></li>
+</ul>
+<p>Como as caudas das duas distribuições (Central e Não-Central) se sobrepõem, o rádio inevitavelmente cometerá erros. Isso nos leva a duas métricas cruciais de desempenho:</p>
+<ul>
+<li><p>Probabilidade de Falso Alarme (<span class="math inline">\(P_{fa}\)</span>): O rádio mediu uma energia alta, passou do limiar <span class="math inline">\(\lambda\)</span>, e declarou o canal ocupado. Mas era apenas um “pico” aleatório do ruído (Estamos na cauda direita da Qui-quadrado Central). Isso desperdiça uma oportunidade de transmissão.</p></li>
+<li><p>Probabilidade de Detecção (<span class="math inline">\(P_d\)</span>): O rádio mediu a energia, passou do limiar e declarou corretamente que o canal estava ocupado (Estamos na área principal da Qui-quadrado Não-Central). Evita interferência.</p></li>
+</ul>
+<p>1.5 - O código abaixo mostra como o formato da distribuição Qui-quadrado muda conforme aumentamos os graus de liberdade (o que, em telecomunicações, equivaleria a aumentar o número de amostras no detector de energia).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurando o layout para o gráfico da Qui-quadrado</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>), <span class="at">type =</span> <span class="st">"n"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Valor da Estatística Qui-Quadrado"</span>, </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Densidade de Probabilidade"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Distribuição Qui-quadrado com diferentes Graus de Liberdade (gl)"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Vetor de cores e graus de liberdade</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>graus_liberdade <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">9</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>cores <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"darkgreen"</span>, <span class="st">"purple"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Desenhando as curvas</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(graus_liberdade)) {</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">curve</span>(<span class="fu">dchisq</span>(x, <span class="at">df =</span> graus_liberdade[i]), </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">20</span>, <span class="at">col =</span> cores[i], <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Adicionando a legenda</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">paste</span>(<span class="st">"gl ="</span>, graus_liberdade), </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> cores, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="rel06_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Exemplo nº 2:</strong></p>
+<p>Modelagem de Desvanecimento (Fading):</p>
+<p>Em canais sem fio, o modelo de desvanecimento de Rayleigh é usado quando não há linha de visada (NLOS). A potência do sinal recebido num canal de Rayleigh é o quadrado da envoltória do sinal e segue uma distribuição Exponencial, que é um caso especial da distribuição Qui-quadrado com 2 graus de liberdade.</p>
+<p>2.1 - O Fenômeno Físico: O Multicaminho (Multipath):</p>
+<p>Imagine que estamos transmitindo um sinal em uma cidade cheia de prédios. Se não há uma linha de visão direta entre a torre e o seu celular (cenário NLOS - Non-Line-of-Sight), o sinal vai bater em prédios, carros e árvores antes de chegar a você.</p>
+<p>O seu celular não recebe um único sinal, mas sim uma “sopa” de centenas de réplicas do mesmo sinal, cada uma chegando com um atraso de tempo diferente e uma fase diferente (algumas se somando de forma construtiva, outras se cancelando).</p>
+<p>2.2 - A Matemática: Componentes I e Q (A Origem Gaussiana):</p>
+<p>Na banda base, nós representamos esse sinal complexo recebido dividindo-o em duas partes ortogonais: <span class="math inline">\(I\)</span>: Componente em Fase (In-Phase).</p>
+<p><span class="math inline">\(Q\)</span>: Componente em Quadratura (Quadrature).</p>
+<p>Como o sinal recebido é a soma de milhares de pequenas reflexões aleatórias, o Teorema Central do Limite entra em ação. Ele dita que a soma de muitas variáveis independentes tende a uma distribuição Normal (Gaussiana). Portanto, tanto a componente <span class="math inline">\(I\)</span> quanto a componente <span class="math inline">\(Q\)</span> tornam-se variáveis aleatórias Gaussianas independentes, com média zero e uma certa variância (<span class="math inline">\(\sigma^2\)</span>).</p>
+<p>2.3 - A amplitude do sinal: Distribuição de Rayleigh.</p>
+<p>A antena do receptor não enxerga <span class="math inline">\(I\)</span> e <span class="math inline">\(Q\)</span> separados no ar; ela capta a magnitude resultante desse sinal eletromagnético, que chamamos de Envoltória (<span class="math inline">\(R\)</span>). A magnitude de um número complexo é calculada pelo Teorema de Pitágoras: <span class="math display">\[R = \sqrt{I^2 + Q^2}\]</span> Quando você tira a raiz quadrada da soma de duas variáveis Gaussianas ao quadrado, a distribuição de probabilidade dessa nova variável (<span class="math inline">\(R\)</span>) deixa de ser um “sino” (Gaussiana) e passa a ter um formato assimétrico, com cauda longa à direita. Essa é a Distribuição de Rayleigh.</p>
+<p>2.4 - A Potência: O Link com a Qui-quadrado e a ExponencialAqui chegamos ao cerne da sua citação. Em engenharia, muitas vezes nos importamos mais com a Potência (<span class="math inline">\(P\)</span>) do sinal recebido do que com a sua tensão (envoltória). A potência instantânea é proporcional ao quadrado da amplitude:</p>
+<p><span class="math display">\[P = R^2 = I^2 + Q^2\]</span> De forma mais estatística:</p>
+<ul>
+<li><p><span class="math inline">\(I\)</span> é uma Gaussiana. <span class="math inline">\(I^2\)</span> é uma Gaussiana ao quadrado.</p></li>
+<li><p><span class="math inline">\(Q\)</span> é uma Gaussiana. <span class="math inline">\(Q^2\)</span> é uma Gaussiana ao quadrado.</p></li>
+</ul>
+<p>Aqui estamos somando exatamente duas variáveis Gaussianas padrão (se normalizadas). Por definição estatística estrita, a soma dos quadrados de <span class="math inline">\(k\)</span> variáveis Gaussianas independentes segue uma Distribuição Qui-quadrado com <span class="math inline">\(k\)</span> graus de liberdade. Como temos apenas <span class="math inline">\(I\)</span> e <span class="math inline">\(Q\)</span>, nosso <span class="math inline">\(k = 2\)</span>. Logo, a potência segue uma distribuição Qui-quadrado com 2 graus de liberdade (<span class="math inline">\(\chi^2_2\)</span>).</p>
+<p>E o detalhe final: se pegarmos a fórmula da distribuição Qui-quadrado com <span class="math inline">\(k=2\)</span> e simplificá-la, ela se reduz exatamente à fórmula da Distribuição Exponencial. É por isso que dizemos que, em um canal de Rayleigh, a envoltória é Rayleigh, mas a potência cai de forma Exponencial.</p>
+<p>Dando prosseguimento aos exemplos aplicados. Falaremos agora sobre aplicações da <strong>distribuição F</strong>.</p>
+</section>
+<section id="distribuição-f-1" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="distribuição-f-1"><span class="header-section-number">4.2</span> Distribuição F</h2>
+<p><strong>Exemplo nº 1:</strong></p>
+<p>Comparação de Potência de Ruído entre Canais:</p>
+<p>Se um engenheiro precisa avaliar duas antenas diferentes ou dois canais de comunicação distintos, ele pode usar um Teste F para verificar se a variância do ruído (potência do ruído) em um sistema é estatisticamente igual ou superior à do outro.</p>
+<p>Em telecomunicações, o ruído térmico (AWGN) é modelado como um sinal elétrico aleatório cuja média de tensão é zero (<span class="math inline">\(\mu = 0\)</span>). Na estatística, a fórmula da variância (<span class="math inline">\(\sigma^2\)</span>) mede o quanto os dados se afastam da média: <span class="math display">\[\sigma^2 = E[(X - \mu)^2]\]</span></p>
+<p>Como a média (<span class="math inline">\(\mu\)</span>) do ruído é zero, a equação se simplifica para: <span class="math display">\[\sigma^2 = E[X^2]\]</span></p>
+<p>Na física e na engenharia elétrica, o valor esperado do quadrado da tensão (<span class="math inline">\(E[X^2]\)</span>) é exatamente a definição de Potência Média (assumindo uma resistência normalizada de <span class="math inline">\(1\ \Omega\)</span>). Portanto, quando um estatístico fala em “comparar variâncias”, o engenheiro de telecomunicações ouve “comparar potências de ruído”.</p>
+<p>Como o Teste F funciona na prática?</p>
+<p>Imagine um engenheiro responsável por escolher qual antena (Antena A ou Antena B) será instalada em uma nova torre de celular. Ambas prometem o mesmo ganho, mas você quer saber se uma delas capta mais ruído do ambiente (ou gera mais ruído interno) do que a outra.</p>
+<p>1.1 - Formulando as Hipóteses</p>
+<p>Você não pode simplesmente olhar para uma amostra de 1 milissegundo de cada antena e decidir. O ruído é aleatório. Você precisa de um teste estatístico formal.</p>
+<p>Hipótese Nula (<span class="math inline">\(H_0\)</span>):</p>
+<p>As variâncias são iguais (<span class="math inline">\(\sigma_A^2 = \sigma_B^2\)</span>). Ou seja, do ponto de vista estatístico, ambas as antenas têm a mesma potência de ruído.</p>
+<p>Hipótese Alternativa (<span class="math inline">\(H_1\)</span>):</p>
+<p>A variância de uma é maior que a da outra (ex: <span class="math inline">\(\sigma_A^2 &gt; \sigma_B^2\)</span>). A Antena A é mais ruidosa.</p>
+<p>1.2 - Coletando os Dados e Calculando a Estatística (<span class="math inline">\(F_{calc}\)</span>)</p>
+<p>Você liga a Antena A, sintoniza em um canal vazio (sem sinal, só ruído) e coleta <span class="math inline">\(N_A\)</span> amostras de tensão. Faz o mesmo para a Antena B, coletando <span class="math inline">\(N_B\)</span> amostras. Em seguida, você calcula a variância amostral (potência medida) para cada uma: <span class="math inline">\(S_A^2\)</span> e <span class="math inline">\(S_B^2\)</span>.A estatística de teste F é simplesmente a razão entre essas duas potências:</p>
+<p><span class="math display">\[F_{calc} = \frac{S_A^2}{S_B^2}\]</span></p>
+<p>1.3 - A Decisão (O Limiar Crítico):</p>
+<p>Se as antenas fossem idênticas (<span class="math inline">\(H_0\)</span> verdadeira), esperaríamos que <span class="math inline">\(F_{calc}\)</span> fosse muito próximo de <span class="math inline">\(1\)</span>. Mas quão maior que <span class="math inline">\(1\)</span> esse valor precisa ser para você ter certeza de que a Antena A é realmente pior, e não foi apenas um “azar” na hora de coletar as amostras?</p>
+<p>É aqui que entra a Distribuição F. Usando os graus de liberdade (<span class="math inline">\(d_A = N_A - 1\)</span> e <span class="math inline">\(d_B = N_B - 1\)</span>) e um nível de confiança (geralmente 95%, o que dá um <span class="math inline">\(\alpha = 0.05\)</span>), você encontra um valor crítico (<span class="math inline">\(F_{crit}\)</span>).</p>
+<p>Se <span class="math inline">\(F_{calc} &gt; F_{crit}\)</span>: Você rejeita <span class="math inline">\(H_0\)</span>. A diferença é estatisticamente significativa. A Antena A é comprovadamente mais ruidosa.</p>
+<p>Se <span class="math inline">\(F_{calc} &lt; F_{crit}\)</span>: Você não pode rejeitar <span class="math inline">\(H_0\)</span>. A diferença medida pode ser apenas flutuação estatística normal.</p>
+<p>1.4 - O código abaixo plota a distribuição F, que depende de dois graus de liberdade diferentes (numerador e denominador, referentes às duas amostras comparadas).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurando o layout para o gráfico da Distribuição F</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.8</span>), <span class="at">type =</span> <span class="st">"n"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Valor da Estatística F"</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Densidade de Probabilidade"</span>,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Distribuição F para diferentes Graus de Liberdade (d1, d2)"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Definindo pares de graus de liberdade (numerador, denominador)</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>df1_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>df2_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>cores_f <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"orange"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"black"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Desenhando as curvas</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(df1_vec)) {</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">curve</span>(<span class="fu">df</span>(x, <span class="at">df1 =</span> df1_vec[i], <span class="at">df2 =</span> df2_vec[i]), </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">col =</span> cores_f[i], <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Adicionando a legenda</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">paste</span>(<span class="st">"d1="</span>, df1_vec, <span class="st">", d2="</span>, df2_vec), </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> cores_f, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="rel06_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Exemplo nº 2:</strong></p>
+<p>Análise de Variância em Testes de Desempenho:</p>
+<p>Para comparar se a Taxa de Erro de Bit (BER) ou o delay variam significativamente ao testar três ou mais esquemas de modulação diferentes (ex: QPSK, 16-QAM, 64-QAM) sob as mesmas condições atmosféricas, utiliza-se a ANOVA, cujo teste estatístico base é a distribuição F.</p>
+<p>Análise de Variância (ANOVA) é a ferramenta definitiva quando você sai do laboratório de testes básicos (comparar A com B) e entra no mundo real, onde um sistema de telecomunicações precisa escolher entre múltiplos esquemas de modulação em tempo real (como o Wi-Fi ou o 5G fazem constantemente).</p>
+<p>A primeira pergunta que um estudante de engenharia costuma fazer é: “Se eu tenho três modulações (QPSK, 16-QAM e 64-QAM), por que eu não faço simplesmente três Testes F ou Testes T separados (QPSK vs 16-QAM, depois 16-QAM vs 64-QAM, depois QPSK vs 64-QAM)?”</p>
+<p>A resposta curta: Falso Alarme Cumulativo. Se você usar um nível de confiança de 95% para cada teste individual, a cada novo par que você compara, a chance de você concluir erroneamente que existe uma diferença (quando ela foi causada só por um pico de ruído) vai se multiplicando. A ANOVA resolve isso testando todas as modulações de uma única vez.</p>
+<p>A ANOVA, ironicamente, compara médias (neste caso, a média da Taxa de Erro de Bit - BER) analisando variâncias. Ela divide a variação total dos seus dados em duas partes:</p>
+<p>Variância ENTRE os grupos (Sinal/Efeito da Modulação): O quanto a média de BER do QPSK está distante da média do 16-QAM e da média do 64-QAM. Essa é a variação que você quer medir. É o efeito real da complexidade da modulação sobre a taxa de erro.</p>
+<p>Variância DENTRO dos grupos (Ruído do Canal): O quanto o BER flutua dentro dos testes de uma mesma modulação (ex: os dados do QPSK variando entre si em 30 medições diferentes). Essa variação ocorre por causas aleatórias, como ruído térmico, interferência ou desvanecimento no instante do teste.</p>
+<p>A Estatística F na ANOVAA ANOVA junta essas duas variâncias na velha conhecida estatística F, através de uma razão direta: <span class="math display">\[F = \frac{\text{Variância ENTRE os grupos (Efeito da Modulação)}}{\text{Variância DENTRO dos grupos (Ruído)}}\]</span> A lógica de decisão do engenheiro fica muito intuitiva:</p>
+<ul>
+<li><p>Se <span class="math inline">\(F \approx 1\)</span>: O afastamento entre as médias das modulações é do mesmo tamanho que o ruído aleatório. Ou seja, você não pode afirmar que mudar de QPSK para 64-QAM piorou o BER; a diferença medida foi “engolida” pela incerteza do canal. Falhamos em rejeitar <span class="math inline">\(H_0\)</span>.</p></li>
+<li><p>Se <span class="math inline">\(F \gg 1\)</span> (muito maior que 1): A diferença de BER entre as modulações é gigantesca em comparação com o ruído de fundo. A mudança de esquema de modulação causou um impacto real e mensurável. Rejeitamos <span class="math inline">\(H_0\)</span>.</p></li>
+</ul>
+<p>Para melhor visualização, o código abaixo cria um conjunto de dados simulando testes de BER em um laboratório, aplica a ANOVA e exibe a tabela de resultados.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Simulação de Dados de Teste</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>) <span class="co"># Para garantir que os resultados sejam reproduzíveis</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Criando 30 medições de Taxa de Erro para cada modulação</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># (Valores em escala linear multiplicados para facilitar visualização)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>ber_qpsk   <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="dv">15</span>, <span class="at">sd =</span> <span class="dv">4</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ber_16qam  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="dv">22</span>, <span class="at">sd =</span> <span class="dv">4</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>ber_64qam  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="dv">35</span>, <span class="at">sd =</span> <span class="fl">4.5</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Organizando os dados em um Data Frame (formato exigido pelo R)</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>dados_telecom <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">Taxa_Erro =</span> <span class="fu">c</span>(ber_qpsk, ber_16qam, ber_64qam),</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">Modulacao =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"QPSK"</span>, <span class="st">"16-QAM"</span>, <span class="st">"64-QAM"</span>), <span class="at">each =</span> <span class="dv">30</span>))</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Aplicando a Análise de Variância (ANOVA)</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Lendo a fórmula: "Taxa_Erro em função da Modulacao"</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>modelo_anova <span class="ot">&lt;-</span> <span class="fu">aov</span>(Taxa_Erro <span class="sc">~</span> Modulacao, <span class="at">data =</span> dados_telecom)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Exibindo a Tabela ANOVA clássica</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Tabela de Resultados da ANOVA:</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tabela de Resultados da ANOVA:</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_anova)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>            Df Sum Sq Mean Sq F value Pr(&gt;F)    
+Modulacao    2   6517    3259     185 &lt;2e-16 ***
+Residuals   87   1533      18                   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Visualização em Boxplot para o Relatório</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Taxa_Erro <span class="sc">~</span> Modulacao, <span class="at">data =</span> dados_telecom,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"lightgreen"</span>, <span class="st">"salmon"</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"Comparação de Taxa de Erro por Esquema de Modulação"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Esquema de Modulação"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Taxa de Erro (Medida)"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">border =</span> <span class="st">"darkgray"</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="rel06_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Nota para interpretação: </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># No output do summary(modelo_anova), observe a coluna 'Pr(&gt;F)'. </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Esse é o Valor-p. Se for menor que 0.05, existe diferença significativa </span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># no desempenho entre as modulações testadas.</span></span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+</section>
+<section id="conclusão" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Conclusão</h1>
+<p>Em suma, as distribuições Qui-quadrado (<span class="math inline">\(\chi^2\)</span>) e F de Snedecor transcendem a teoria estatística pura, atuando como pilares matemáticos indispensáveis na Engenharia de Telecomunicações. Elas fornecem a base analítica necessária para modelar a imprevisibilidade dos canais de comunicação e embasar a tomada de decisão em projetos e testes de redes.</p>
+<p>A distribuição Qui-quadrado, intrinsecamente ligada à variância de uma amostra, demonstrou ser a ferramenta adequada para lidar com o acúmulo de energia de sinais aleatórios. Como explorado neste relatório, seja na detecção de espectro por rádios cognitivos (avaliando se um canal está livre ou ocupado) ou na modelagem da potência recebida sob o efeito de desvanecimento de Rayleigh (cenários sem linha de visada), essa distribuição permite quantificar o impacto do ruído térmico (AWGN) e estabelecer limiares confiáveis de operação.</p>
+<p>Por outro lado, a distribuição F, fundamentada na razão entre variâncias amostrais, consolida-se como o mecanismo definitivo para a comparação estatística. Desde a aplicação de um Teste F direto para confrontar a potência de ruído intrínseco de diferentes antenas, até o uso da Análise de Variância (ANOVA) para validar qual esquema de modulação (como QPSK, 16-QAM ou 64-QAM) oferece a melhor Taxa de Erro de Bit (BER) em um canal real, essa distribuição garante que as escolhas técnicas sejam guiadas por evidências matemáticas sólidas, isolando as métricas de desempenho das flutuações aleatórias do ambiente.</p>
+<p>Conclui-se, portanto, que o domínio destas distribuições e de suas respectivas funções amostrais — aliado à capacidade de simulação e análise de dados em ambientes como o R — é uma competência essencial. É essa base que permite projetar, avaliar e otimizar sistemas de comunicação robustos, garantindo eficiência e resiliência na complexa fronteira entre o sinal de informação desejado e o ruído inevitável.</p>
+</section>
+<section id="referências-bibliográficas" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Referências Bibliográficas</h1>
+<p>Comunicações Sem Fio e Propagação (Desvanecimento e Rayleigh)</p>
+<p>RAPPAPORT, T. S. Comunicações Sem Fio: Princípios e Práticas. 2. ed.&nbsp;São Paulo: Pearson Prentice Hall, 2009. (A principal referência em engenharia para modelagem de canais sem linha de visada e desvanecimento de Rayleigh).</p>
+<p>Processamento de Sinais e Rádio Cognitivo</p>
+<p>PROAKIS, J. G.; SALEHI, M. Fundamentos de Sistemas de Comunicação. 2. ed.&nbsp;São Paulo: Pearson, 2014. (Base para entender esquemas de modulação como QPSK e QAM, além de análise de Taxa de Erro de Bit - BER).</p>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiada");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiada");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Código fonte</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Só mude aqui!!!!</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Lucas Reis Oliveira de Andrade"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Distribuições F e Qui-quadrado"</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> referencias.bib</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># A partir daqui nao faca alteracoes!!!!!</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="an">link-citations:</span><span class="co"> true</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="an">csl:</span><span class="co"> associacao-brasileira-de-normas-tecnicas-ipea.csl</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "&lt;a href='https://bendeivide.github.io/courses/epaec/' target='_blank'&gt;Estatística e Probabilidade&lt;/a&gt; &lt;/br&gt; &lt;a href='https://bendeivide.github.io' target='_blank'&gt;Prof. Ben Dêivide (DEFIM/CAP/UFSJ)&lt;/a&gt;"</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="an">include-before-body:</span><span class="co"> header.html</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> now</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="an">date-format:</span><span class="co"> "DD/MM/YYYY, HH:mm"</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-BR</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: bootstrap</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="co">    #css: styles.css</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="fu"># Introdução</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>As distribuições Qui-quadrado e F ocupam um papel fundamental na Estatística, especialmente na análise de dados experimentais, testes de hipóteses e modelagem de fenômenos aleatórios. Essas distribuições pertencem ao conjunto das chamadas distribuições amostrais, isto é, distribuições associadas a estatísticas calculadas a partir de amostras de uma população. Seu estudo é essencial em áreas da Engenharia, pois permite avaliar a variabilidade dos dados, comparar modelos e verificar a confiabilidade de resultados obtidos em experimentos e sistemas reais.</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>A distribuição Qui-quadrado surge principalmente em problemas relacionados à variância de populações normais, testes de aderência, independência entre variáveis e análise de frequências observadas. Já a distribuição F está associada à razão entre variâncias e é amplamente utilizada em comparações estatísticas, como na análise de variância e na avaliação de desempenho de modelos. Ambas possuem forte ligação com a distribuição normal e desempenham papel importante na inferência estatística.</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>No contexto das distribuições amostrais, essas distribuições estão relacionadas a funções específicas da amostra, como soma de quadrados, variância amostral e razão entre variâncias. Dessa forma, elas permitem construir métodos estatísticos capazes de analisar o comportamento de sistemas e processos de forma quantitativa e confiável.</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>Na Engenharia de Telecomunicações, as distribuições Qui-quadrado e F possuem aplicações relevantes em áreas como análise de ruído, detecção de sinais, avaliação de desempenho de canais de comunicação, processamento digital de sinais e testes de qualidade em sistemas de transmissão. Por meio dessas ferramentas estatísticas, é possível validar modelos, comparar desempenhos e garantir maior eficiência e confiabilidade nos sistemas de telecomunicações.</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="fu"># Fundamentação Teórica </span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>As distribuições Qui-quadrado $(\chi^2)$ e F são distribuições amostrais amplamente utilizadas na inferência estatística. Ambas derivam da distribuição normal e possuem aplicações importantes em testes estatísticos, análise de variância e avaliação de modelos.</span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## Distribuição F</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>A distribuição F é definida pela razão entre duas variáveis Qui-quadrado independentes, cada uma dividida pelos respectivos graus de liberdade.</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>Se:</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>$$X1 \sim X^2(v1)$$</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a>e</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a>$$X2 \sim X^2(v2) $$</span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>Então:</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>$$F = \frac {X1/v1}{X2/V2} $$</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>segue uma distribuição F com v1 e v2 graus de liberdade.</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>A distribuição F é muito utilizada na comparação entre variâncias e na análise de variância.</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a><span class="fu">## Distribuição Qui-quadrado (χ2)</span></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>A distribuição Qui-quadrado surge a partir da soma dos quadrados de variáveis aleatórias normais padrão independentes. </span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>Se:</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>$$Zi \sim N(0,1) \space;\space  i= 1, 2, \dots , n$$ </span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>Então:</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>$$χ^2=∑_{i=1}^{n}​Z_{i}^{2}​$$</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>segue uma distribuição Qui-quadrado com n graus de liberdade.</span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>Essa distribuição está diretamente relacionada à variância amostral. </span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>Para uma população normal com variância σ2:</span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>$$χ^2=\frac{(n−1)S^2}{σ2}​$$</span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a>$n$ = tamanho da amostra.</span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>$S^2$ = variância amostral.</span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a>$σ2$ = variãncia populacional.</span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a><span class="fu"># Relação das distribuições amostrais</span></span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>As distribuições Qui-quadrado ($\chi^2$) e F são fundamentais na inferência estatística porque descrevem o comportamento de certas estatísticas extraídas de amostras, especialmente quando a população original segue uma distribuição Normal. Em vez de descreverem os dados em si (como a altura de uma onda ou a tensão de um sinal), elas descrevem as distribuições amostrais da variância.</span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a>**- Distribuição Qui-quadrado:** </span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a>Está diretamente relacionada à distribuição amostral da variância de uma única população. Se retirarmos infinitas amostras de uma população Normal e calcularmos a variância de cada uma, esses valores de variância (devidamente padronizados) formarão uma distribuição Qui-quadrado. Ela nasce da soma de variáveis normais padronizadas elevadas ao quadrado.</span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a>**- Distribuição F:** </span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a>Está relacionada à distribuição amostral da razão entre as variâncias de duas populações independentes. É construída a partir da razão de duas variáveis independentes que seguem uma distribuição Qui-quadrado, cada uma dividida por seus respectivos graus de liberdade.</span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a><span class="fu">## Funções da amostra relacionadas</span></span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a>As "funções da amostra" referem-se às fórmulas matemáticas (estatísticas) que calculamos a partir dos dados coletados para realizar testes de hipóteses ou criar intervalos de confiança.</span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para a Distribuição Qui-quadrado ($\chi^2$)</span></span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a>A principal função da amostra relacionada é a variância amostral ($S^2$). Se tivermos uma amostra de tamanho $n$ retirada de uma população Normal com variância $\sigma^2$, a estatística relacionada é:</span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a>$$\chi^2 = \frac{(n-1)S^2}{\sigma^2}$$</span>
+<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a>Essa função segue uma distribuição Qui-quadrado com $v = n - 1$ graus de liberdade.</span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para a Distribuição F</span></span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a>A função da amostra relacionada é a razão entre duas variâncias amostrais ($S_1^2$ e $S_2^2$). Se tivermos duas amostras independentes de tamanhos $n_1$ e $n_2$, retiradas de populações Normais com variâncias $\sigma_1^2$ e $\sigma_2^2$, a estatística é:</span>
+<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a>$$F = \frac{S_1^2 / \sigma_1^2}{S_2^2 / \sigma_2^2}$$</span>
+<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a>Se estivermos testando a hipótese de que as variâncias populacionais são iguais ($\sigma_1^2 = \sigma_2^2$), a fórmula se simplifica para a razão direta das variâncias amostrais: $F = \frac{S_1^2}{S_2^2}$. Esta função segue uma distribuição F com $v_1 = n_1 - 1$ e $v_2 = n_2 - 1$ graus de liberdade.</span>
+<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a><span class="fu"># Aplicações em Engenharia de Telecomunicações</span></span>
+<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a>Nesta seção, daremos prosseguimento apresentando dois exemplos para cada distribuição, aplicados à área de Telecomunicações.</span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a>As distribuições de probabilidade são a base da modelagem de sinais e ruídos em Telecomunicações. Portanto, primeiramente para a distribuição **Qui-quadrado** temos: </span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a><span class="fu">## Qui-quadrado</span></span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a>**Exemplo nº 1:**</span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a>Detecção de Energia em Rádio Cognitivo (Energy Detection): </span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a>Um receptor precisa decidir se um canal está ocupado por um sinal ou se contém apenas ruído térmico (modelado como Ruído Branco Gaussiano Aditivo - AWGN). O receptor amostra o canal, eleva os valores de tensão/corrente ao quadrado e os soma para calcular a energia. Como o ruído é Gaussiano, a soma dos quadrados dessas amostras segue uma distribuição Qui-quadrado (Central se houver apenas ruído, e Não-Central se houver sinal + ruído).</span>
+<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a> A Detecção de Energia (Energy Detection) é a técnica de sensoriamento de espectro mais popular em Rádios Cognitivos porque é "cega" — ou seja, o receptor não precisa conhecer previamente nenhuma característica do sinal do usuário primário (como modulação, frequência da portadora ou preâmbulo). Ele só precisa medir a energia. Para entender a matemática por trás disso, formulamos o problema como um clássico Teste de Hipóteses Binário:</span>
+<span id="cb9-124"><a href="#cb9-124" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a>$H_0$ (Canal Livre): O sinal recebido $y(t)$ contém apenas ruído.</span>
+<span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a>$H_1$ (Canal Ocupado): O sinal recebido $y(t)$ contém o sinal do usuário primário $s(t)$ somado ao ruído.</span>
+<span id="cb9-128"><a href="#cb9-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-129"><a href="#cb9-129" aria-hidden="true" tabindex="-1"></a>1.1 - A Estatística de Teste (A Energia): </span>
+<span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a>O receptor amostra o canal contínuo, obtendo $N$ amostras discretas. A energia medida ($E$) em uma determinada janela de tempo é calculada pela soma do quadrado da magnitude dessas amostras:</span>
+<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a>$$E = \sum_{n=1}^{N} |y(n)|^2$$</span>
+<span id="cb9-133"><a href="#cb9-133" aria-hidden="true" tabindex="-1"></a>Aqui, $N$ representa os graus de liberdade da nossa distribuição e está ligado ao tempo de observação e à largura de banda do canal.</span>
+<span id="cb9-134"><a href="#cb9-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-135"><a href="#cb9-135" aria-hidden="true" tabindex="-1"></a>1.2 - O Comportamento Sob a Hipótese $H_0$ (Apenas Ruído):</span>
+<span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a>Se o canal estiver livre, o sinal recebido é apenas Ruído Branco Gaussiano Aditivo (AWGN). O ruído térmico tem uma característica aleatória com média zero e uma variância conhecida ($\sigma_w^2$).Quando você pega uma variável aleatória Gaussiana de média zero, eleva ao quadrado e soma $N$ vezes, a matemática estatística dita que o resultado obrigatoriamente seguirá uma Distribuição Qui-quadrado Central com $N$ graus de liberdade.</span>
+<span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a>1.3 - O Comportamento Sob a Hipótese $H_1$ (Sinal + Ruído):</span>
+<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a>Se o canal estiver ocupado, as amostras não têm mais média zero, pois o sinal de informação $s(t)$ empurra essa média para cima (ele adiciona potência ao canal).Quando você soma os quadrados de variáveis Gaussianas que não têm média zero, o resultado segue uma Distribuição Qui-quadrado Não-Central. O "quão não-central" ela é depende de um parâmetro chamado de não-centralidade ($\lambda_{nc}$), que na prática é diretamente proporcional à Relação Sinal-Ruído (SNR) do sinal recebido.</span>
+<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-143"><a href="#cb9-143" aria-hidden="true" tabindex="-1"></a>1.4 - O Problema do Limiar ($\lambda$):</span>
+<span id="cb9-144"><a href="#cb9-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-145"><a href="#cb9-145" aria-hidden="true" tabindex="-1"></a>O trabalho do Rádio Cognitivo é observar o valor de $E$ calculado e tomar uma decisão usando um Limiar (Threshold), que chamaremos de $\lambda$:</span>
+<span id="cb9-146"><a href="#cb9-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-147"><a href="#cb9-147" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Se $E &gt; \lambda$, decide-se por $H_1$ (ocupado).</span>
+<span id="cb9-148"><a href="#cb9-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-149"><a href="#cb9-149" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Se $E &lt; \lambda$, decide-se por $H_0$ (livre).</span>
+<span id="cb9-150"><a href="#cb9-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-151"><a href="#cb9-151" aria-hidden="true" tabindex="-1"></a>Como as caudas das duas distribuições (Central e Não-Central) se sobrepõem, o rádio inevitavelmente cometerá erros. Isso nos leva a duas métricas cruciais de desempenho:</span>
+<span id="cb9-152"><a href="#cb9-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-153"><a href="#cb9-153" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Probabilidade de Falso Alarme ($P_{fa}$): O rádio mediu uma energia alta, passou do limiar $\lambda$, e declarou o canal ocupado. Mas era apenas um "pico" aleatório do ruído (Estamos na cauda direita da Qui-quadrado Central). Isso desperdiça uma oportunidade de transmissão.</span>
+<span id="cb9-154"><a href="#cb9-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-155"><a href="#cb9-155" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Probabilidade de Detecção ($P_d$): O rádio mediu a energia, passou do limiar e declarou corretamente que o canal estava ocupado (Estamos na área principal da Qui-quadrado Não-Central). Evita interferência.</span>
+<span id="cb9-156"><a href="#cb9-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-157"><a href="#cb9-157" aria-hidden="true" tabindex="-1"></a>1.5 - O código abaixo mostra como o formato da distribuição Qui-quadrado muda conforme aumentamos os graus de liberdade (o que, em telecomunicações, equivaleria a aumentar o número de amostras no detector de energia).</span>
+<span id="cb9-158"><a href="#cb9-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-161"><a href="#cb9-161" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-162"><a href="#cb9-162" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurando o layout para o gráfico da Qui-quadrado</span></span>
+<span id="cb9-163"><a href="#cb9-163" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">20</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.5</span>), <span class="at">type =</span> <span class="st">"n"</span>,</span>
+<span id="cb9-164"><a href="#cb9-164" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Valor da Estatística Qui-Quadrado"</span>, </span>
+<span id="cb9-165"><a href="#cb9-165" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Densidade de Probabilidade"</span>,</span>
+<span id="cb9-166"><a href="#cb9-166" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Distribuição Qui-quadrado com diferentes Graus de Liberdade (gl)"</span>)</span>
+<span id="cb9-167"><a href="#cb9-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-168"><a href="#cb9-168" aria-hidden="true" tabindex="-1"></a><span class="co"># Vetor de cores e graus de liberdade</span></span>
+<span id="cb9-169"><a href="#cb9-169" aria-hidden="true" tabindex="-1"></a>graus_liberdade <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">9</span>)</span>
+<span id="cb9-170"><a href="#cb9-170" aria-hidden="true" tabindex="-1"></a>cores <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"darkgreen"</span>, <span class="st">"purple"</span>)</span>
+<span id="cb9-171"><a href="#cb9-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-172"><a href="#cb9-172" aria-hidden="true" tabindex="-1"></a><span class="co"># Desenhando as curvas</span></span>
+<span id="cb9-173"><a href="#cb9-173" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(graus_liberdade)) {</span>
+<span id="cb9-174"><a href="#cb9-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">curve</span>(<span class="fu">dchisq</span>(x, <span class="at">df =</span> graus_liberdade[i]), </span>
+<span id="cb9-175"><a href="#cb9-175" aria-hidden="true" tabindex="-1"></a>        <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">20</span>, <span class="at">col =</span> cores[i], <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-176"><a href="#cb9-176" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-177"><a href="#cb9-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-178"><a href="#cb9-178" aria-hidden="true" tabindex="-1"></a><span class="co"># Adicionando a legenda</span></span>
+<span id="cb9-179"><a href="#cb9-179" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">paste</span>(<span class="st">"gl ="</span>, graus_liberdade), </span>
+<span id="cb9-180"><a href="#cb9-180" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> cores, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span>)</span>
+<span id="cb9-181"><a href="#cb9-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-182"><a href="#cb9-182" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-183"><a href="#cb9-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-184"><a href="#cb9-184" aria-hidden="true" tabindex="-1"></a>**Exemplo nº 2:**</span>
+<span id="cb9-185"><a href="#cb9-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-186"><a href="#cb9-186" aria-hidden="true" tabindex="-1"></a>Modelagem de Desvanecimento (Fading): </span>
+<span id="cb9-187"><a href="#cb9-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-188"><a href="#cb9-188" aria-hidden="true" tabindex="-1"></a>Em canais sem fio, o modelo de desvanecimento de Rayleigh é usado quando não há linha de visada (NLOS). A potência do sinal recebido num canal de Rayleigh é o quadrado da envoltória do sinal e segue uma distribuição Exponencial, que é um caso especial da distribuição Qui-quadrado com 2 graus de liberdade.</span>
+<span id="cb9-189"><a href="#cb9-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-190"><a href="#cb9-190" aria-hidden="true" tabindex="-1"></a>2.1 - O Fenômeno Físico: O Multicaminho (Multipath):</span>
+<span id="cb9-191"><a href="#cb9-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-192"><a href="#cb9-192" aria-hidden="true" tabindex="-1"></a>Imagine que estamos transmitindo um sinal em uma cidade cheia de prédios. Se não há uma linha de visão direta entre a torre e o seu celular (cenário NLOS - Non-Line-of-Sight), o sinal vai bater em prédios, carros e árvores antes de chegar a você.</span>
+<span id="cb9-193"><a href="#cb9-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-194"><a href="#cb9-194" aria-hidden="true" tabindex="-1"></a>O seu celular não recebe um único sinal, mas sim uma "sopa" de centenas de réplicas do mesmo sinal, cada uma chegando com um atraso de tempo diferente e uma fase diferente (algumas se somando de forma construtiva, outras se cancelando).</span>
+<span id="cb9-195"><a href="#cb9-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-196"><a href="#cb9-196" aria-hidden="true" tabindex="-1"></a>2.2 - A Matemática: Componentes I e Q (A Origem Gaussiana):</span>
+<span id="cb9-197"><a href="#cb9-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-198"><a href="#cb9-198" aria-hidden="true" tabindex="-1"></a>Na banda base, nós representamos esse sinal complexo recebido dividindo-o em duas partes ortogonais:</span>
+<span id="cb9-199"><a href="#cb9-199" aria-hidden="true" tabindex="-1"></a>$I$: Componente em Fase (In-Phase).</span>
+<span id="cb9-200"><a href="#cb9-200" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-201"><a href="#cb9-201" aria-hidden="true" tabindex="-1"></a>$Q$: Componente em Quadratura (Quadrature).</span>
+<span id="cb9-202"><a href="#cb9-202" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-203"><a href="#cb9-203" aria-hidden="true" tabindex="-1"></a>Como o sinal recebido é a soma de milhares de pequenas reflexões aleatórias, o Teorema Central do Limite entra em ação. Ele dita que a soma de muitas variáveis independentes tende a uma distribuição Normal (Gaussiana). Portanto, tanto a componente $I$ quanto a componente $Q$ tornam-se variáveis aleatórias Gaussianas independentes, com média zero e uma certa variância ($\sigma^2$).</span>
+<span id="cb9-204"><a href="#cb9-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-205"><a href="#cb9-205" aria-hidden="true" tabindex="-1"></a>2.3 - A amplitude do sinal: Distribuição de Rayleigh.</span>
+<span id="cb9-206"><a href="#cb9-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-207"><a href="#cb9-207" aria-hidden="true" tabindex="-1"></a>A antena do receptor não enxerga $I$ e $Q$ separados no ar; ela capta a magnitude resultante desse sinal eletromagnético, que chamamos de Envoltória ($R$). A magnitude de um número complexo é calculada pelo Teorema de Pitágoras:</span>
+<span id="cb9-208"><a href="#cb9-208" aria-hidden="true" tabindex="-1"></a>$$R = \sqrt{I^2 + Q^2}$$</span>
+<span id="cb9-209"><a href="#cb9-209" aria-hidden="true" tabindex="-1"></a>Quando você tira a raiz quadrada da soma de duas variáveis Gaussianas ao quadrado, a distribuição de probabilidade dessa nova variável ($R$) deixa de ser um "sino" (Gaussiana) e passa a ter um formato assimétrico, com cauda longa à direita. Essa é a Distribuição de Rayleigh.</span>
+<span id="cb9-210"><a href="#cb9-210" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-211"><a href="#cb9-211" aria-hidden="true" tabindex="-1"></a>2.4 - A Potência: </span>
+<span id="cb9-212"><a href="#cb9-212" aria-hidden="true" tabindex="-1"></a>O Link com a Qui-quadrado e a ExponencialAqui chegamos ao cerne da sua citação. Em engenharia, muitas vezes nos importamos mais com a Potência ($P$) do sinal recebido do que com a sua tensão (envoltória). A potência instantânea é proporcional ao quadrado da amplitude:</span>
+<span id="cb9-213"><a href="#cb9-213" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-214"><a href="#cb9-214" aria-hidden="true" tabindex="-1"></a>$$P = R^2 = I^2 + Q^2$$</span>
+<span id="cb9-215"><a href="#cb9-215" aria-hidden="true" tabindex="-1"></a>De forma mais estatística:</span>
+<span id="cb9-216"><a href="#cb9-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-217"><a href="#cb9-217" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$I$ é uma Gaussiana. $I^2$ é uma Gaussiana ao quadrado.</span>
+<span id="cb9-218"><a href="#cb9-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-219"><a href="#cb9-219" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$Q$ é uma Gaussiana. $Q^2$ é uma Gaussiana ao quadrado.</span>
+<span id="cb9-220"><a href="#cb9-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-221"><a href="#cb9-221" aria-hidden="true" tabindex="-1"></a>Aqui estamos somando exatamente duas variáveis Gaussianas padrão (se normalizadas). Por definição estatística estrita, a soma dos quadrados de $k$ variáveis Gaussianas independentes segue uma Distribuição Qui-quadrado com $k$ graus de liberdade. Como temos apenas $I$ e $Q$, nosso $k = 2$. Logo, a potência segue uma distribuição Qui-quadrado com 2 graus de liberdade ($\chi^2_2$).</span>
+<span id="cb9-222"><a href="#cb9-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-223"><a href="#cb9-223" aria-hidden="true" tabindex="-1"></a>E o detalhe final: se pegarmos a fórmula da distribuição Qui-quadrado com $k=2$ e simplificá-la, ela se reduz exatamente à fórmula da Distribuição Exponencial. É por isso que dizemos que, em um canal de Rayleigh, a envoltória é Rayleigh, mas a potência cai de forma Exponencial.</span>
+<span id="cb9-224"><a href="#cb9-224" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-225"><a href="#cb9-225" aria-hidden="true" tabindex="-1"></a>Dando prosseguimento aos exemplos aplicados. Falaremos agora sobre aplicações da **distribuição F**.</span>
+<span id="cb9-226"><a href="#cb9-226" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-227"><a href="#cb9-227" aria-hidden="true" tabindex="-1"></a><span class="fu">## Distribuição F</span></span>
+<span id="cb9-228"><a href="#cb9-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-229"><a href="#cb9-229" aria-hidden="true" tabindex="-1"></a>**Exemplo nº 1:**</span>
+<span id="cb9-230"><a href="#cb9-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-231"><a href="#cb9-231" aria-hidden="true" tabindex="-1"></a>Comparação de Potência de Ruído entre Canais:</span>
+<span id="cb9-232"><a href="#cb9-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-233"><a href="#cb9-233" aria-hidden="true" tabindex="-1"></a>Se um engenheiro precisa avaliar duas antenas diferentes ou dois canais de comunicação distintos, ele pode usar um Teste F para verificar se a variância do ruído (potência do ruído) em um sistema é estatisticamente igual ou superior à do outro.</span>
+<span id="cb9-234"><a href="#cb9-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-235"><a href="#cb9-235" aria-hidden="true" tabindex="-1"></a>Em telecomunicações, o ruído térmico (AWGN) é modelado como um sinal elétrico aleatório cuja média de tensão é zero ($\mu = 0$). Na estatística, a fórmula da variância ($\sigma^2$) mede o quanto os dados se afastam da média:</span>
+<span id="cb9-236"><a href="#cb9-236" aria-hidden="true" tabindex="-1"></a>$$\sigma^2 = E<span class="co">[</span><span class="ot">(X - \mu)^2</span><span class="co">]</span>$$</span>
+<span id="cb9-237"><a href="#cb9-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-238"><a href="#cb9-238" aria-hidden="true" tabindex="-1"></a>Como a média ($\mu$) do ruído é zero, a equação se simplifica para:</span>
+<span id="cb9-239"><a href="#cb9-239" aria-hidden="true" tabindex="-1"></a>$$\sigma^2 = E<span class="co">[</span><span class="ot">X^2</span><span class="co">]</span>$$</span>
+<span id="cb9-240"><a href="#cb9-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-241"><a href="#cb9-241" aria-hidden="true" tabindex="-1"></a>Na física e na engenharia elétrica, o valor esperado do quadrado da tensão ($E<span class="co">[</span><span class="ot">X^2</span><span class="co">]</span>$) é exatamente a definição de Potência Média (assumindo uma resistência normalizada de $1\ \Omega$). Portanto, quando um estatístico fala em "comparar variâncias", o engenheiro de telecomunicações ouve "comparar potências de ruído".</span>
+<span id="cb9-242"><a href="#cb9-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-243"><a href="#cb9-243" aria-hidden="true" tabindex="-1"></a>Como o Teste F funciona na prática?</span>
+<span id="cb9-244"><a href="#cb9-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-245"><a href="#cb9-245" aria-hidden="true" tabindex="-1"></a>Imagine um engenheiro responsável por escolher qual antena (Antena A ou Antena B) será instalada em uma nova torre de celular. Ambas prometem o mesmo ganho, mas você quer saber se uma delas capta mais ruído do ambiente (ou gera mais ruído interno) do que a outra.</span>
+<span id="cb9-246"><a href="#cb9-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-247"><a href="#cb9-247" aria-hidden="true" tabindex="-1"></a>1.1 - Formulando as Hipóteses</span>
+<span id="cb9-248"><a href="#cb9-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-249"><a href="#cb9-249" aria-hidden="true" tabindex="-1"></a>Você não pode simplesmente olhar para uma amostra de 1 milissegundo de cada antena e decidir. O ruído é aleatório. Você precisa de um teste estatístico formal. </span>
+<span id="cb9-250"><a href="#cb9-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-251"><a href="#cb9-251" aria-hidden="true" tabindex="-1"></a>Hipótese Nula ($H_0$): </span>
+<span id="cb9-252"><a href="#cb9-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-253"><a href="#cb9-253" aria-hidden="true" tabindex="-1"></a>As variâncias são iguais ($\sigma_A^2 = \sigma_B^2$). Ou seja, do ponto de vista estatístico, ambas as antenas têm a mesma potência de ruído.</span>
+<span id="cb9-254"><a href="#cb9-254" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-255"><a href="#cb9-255" aria-hidden="true" tabindex="-1"></a>Hipótese Alternativa ($H_1$):</span>
+<span id="cb9-256"><a href="#cb9-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-257"><a href="#cb9-257" aria-hidden="true" tabindex="-1"></a>A variância de uma é maior que a da outra (ex: $\sigma_A^2 &gt; \sigma_B^2$). A Antena A é mais ruidosa.</span>
+<span id="cb9-258"><a href="#cb9-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-259"><a href="#cb9-259" aria-hidden="true" tabindex="-1"></a>1.2 - Coletando os Dados e Calculando a Estatística ($F_{calc}$)</span>
+<span id="cb9-260"><a href="#cb9-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-261"><a href="#cb9-261" aria-hidden="true" tabindex="-1"></a>Você liga a Antena A, sintoniza em um canal vazio (sem sinal, só ruído) e coleta $N_A$ amostras de tensão. Faz o mesmo para a Antena B, coletando $N_B$ amostras.</span>
+<span id="cb9-262"><a href="#cb9-262" aria-hidden="true" tabindex="-1"></a>Em seguida, você calcula a variância amostral (potência medida) para cada uma: </span>
+<span id="cb9-263"><a href="#cb9-263" aria-hidden="true" tabindex="-1"></a>$S_A^2$ e $S_B^2$.A estatística de teste F é simplesmente a razão entre essas duas potências:</span>
+<span id="cb9-264"><a href="#cb9-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-265"><a href="#cb9-265" aria-hidden="true" tabindex="-1"></a>$$F_{calc} = \frac{S_A^2}{S_B^2}$$</span>
+<span id="cb9-266"><a href="#cb9-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-267"><a href="#cb9-267" aria-hidden="true" tabindex="-1"></a>1.3 - A Decisão (O Limiar Crítico):</span>
+<span id="cb9-268"><a href="#cb9-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-269"><a href="#cb9-269" aria-hidden="true" tabindex="-1"></a>Se as antenas fossem idênticas ($H_0$ verdadeira), esperaríamos que $F_{calc}$ fosse muito próximo de $1$. Mas quão maior que $1$ esse valor precisa ser para você ter certeza de que a Antena A é realmente pior, e não foi apenas um "azar" na hora de coletar as amostras?</span>
+<span id="cb9-270"><a href="#cb9-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-271"><a href="#cb9-271" aria-hidden="true" tabindex="-1"></a>É aqui que entra a Distribuição F. Usando os graus de liberdade ($d_A = N_A - 1$ e $d_B = N_B - 1$) e um nível de confiança (geralmente 95%, o que dá um $\alpha = 0.05$), você encontra um valor crítico ($F_{crit}$).</span>
+<span id="cb9-272"><a href="#cb9-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-273"><a href="#cb9-273" aria-hidden="true" tabindex="-1"></a>Se $F_{calc} &gt; F_{crit}$: Você rejeita $H_0$. A diferença é estatisticamente significativa. A Antena A é comprovadamente mais ruidosa.</span>
+<span id="cb9-274"><a href="#cb9-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-275"><a href="#cb9-275" aria-hidden="true" tabindex="-1"></a>Se $F_{calc} &lt; F_{crit}$: Você não pode rejeitar $H_0$. A diferença medida pode ser apenas flutuação estatística normal.</span>
+<span id="cb9-276"><a href="#cb9-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-277"><a href="#cb9-277" aria-hidden="true" tabindex="-1"></a>1.4 - O código abaixo plota a distribuição F, que depende de dois graus de liberdade diferentes (numerador e denominador, referentes às duas amostras comparadas).</span>
+<span id="cb9-280"><a href="#cb9-280" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-281"><a href="#cb9-281" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurando o layout para o gráfico da Distribuição F</span></span>
+<span id="cb9-282"><a href="#cb9-282" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>), <span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.8</span>), <span class="at">type =</span> <span class="st">"n"</span>,</span>
+<span id="cb9-283"><a href="#cb9-283" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Valor da Estatística F"</span>, </span>
+<span id="cb9-284"><a href="#cb9-284" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="st">"Densidade de Probabilidade"</span>,</span>
+<span id="cb9-285"><a href="#cb9-285" aria-hidden="true" tabindex="-1"></a>     <span class="at">main =</span> <span class="st">"Distribuição F para diferentes Graus de Liberdade (d1, d2)"</span>)</span>
+<span id="cb9-286"><a href="#cb9-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-287"><a href="#cb9-287" aria-hidden="true" tabindex="-1"></a><span class="co"># Definindo pares de graus de liberdade (numerador, denominador)</span></span>
+<span id="cb9-288"><a href="#cb9-288" aria-hidden="true" tabindex="-1"></a>df1_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>)</span>
+<span id="cb9-289"><a href="#cb9-289" aria-hidden="true" tabindex="-1"></a>df2_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>)</span>
+<span id="cb9-290"><a href="#cb9-290" aria-hidden="true" tabindex="-1"></a>cores_f <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"orange"</span>, <span class="st">"blue"</span>, <span class="st">"red"</span>, <span class="st">"black"</span>)</span>
+<span id="cb9-291"><a href="#cb9-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-292"><a href="#cb9-292" aria-hidden="true" tabindex="-1"></a><span class="co"># Desenhando as curvas</span></span>
+<span id="cb9-293"><a href="#cb9-293" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(df1_vec)) {</span>
+<span id="cb9-294"><a href="#cb9-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">curve</span>(<span class="fu">df</span>(x, <span class="at">df1 =</span> df1_vec[i], <span class="at">df2 =</span> df2_vec[i]), </span>
+<span id="cb9-295"><a href="#cb9-295" aria-hidden="true" tabindex="-1"></a>        <span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">5</span>, <span class="at">col =</span> cores_f[i], <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-296"><a href="#cb9-296" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-297"><a href="#cb9-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-298"><a href="#cb9-298" aria-hidden="true" tabindex="-1"></a><span class="co"># Adicionando a legenda</span></span>
+<span id="cb9-299"><a href="#cb9-299" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">"topright"</span>, <span class="at">legend =</span> <span class="fu">paste</span>(<span class="st">"d1="</span>, df1_vec, <span class="st">", d2="</span>, df2_vec), </span>
+<span id="cb9-300"><a href="#cb9-300" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> cores_f, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">bty =</span> <span class="st">"n"</span>)</span>
+<span id="cb9-301"><a href="#cb9-301" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-302"><a href="#cb9-302" aria-hidden="true" tabindex="-1"></a>**Exemplo nº 2:**</span>
+<span id="cb9-303"><a href="#cb9-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-304"><a href="#cb9-304" aria-hidden="true" tabindex="-1"></a>Análise de Variância em Testes de Desempenho:</span>
+<span id="cb9-305"><a href="#cb9-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-306"><a href="#cb9-306" aria-hidden="true" tabindex="-1"></a>Para comparar se a Taxa de Erro de Bit (BER) ou o delay variam significativamente ao testar três ou mais esquemas de modulação diferentes (ex: QPSK, 16-QAM, 64-QAM) sob as mesmas condições atmosféricas, utiliza-se a ANOVA, cujo teste estatístico base é a distribuição F.</span>
+<span id="cb9-307"><a href="#cb9-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-308"><a href="#cb9-308" aria-hidden="true" tabindex="-1"></a>Análise de Variância (ANOVA) é a ferramenta definitiva quando você sai do laboratório de testes básicos (comparar A com B) e entra no mundo real, onde um sistema de telecomunicações precisa escolher entre múltiplos esquemas de modulação em tempo real (como o Wi-Fi ou o 5G fazem constantemente).</span>
+<span id="cb9-309"><a href="#cb9-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-310"><a href="#cb9-310" aria-hidden="true" tabindex="-1"></a>A primeira pergunta que um estudante de engenharia costuma fazer é: "Se eu tenho três modulações (QPSK, 16-QAM e 64-QAM), por que eu não faço simplesmente três Testes F ou Testes T separados (QPSK vs 16-QAM, depois 16-QAM vs 64-QAM, depois QPSK vs 64-QAM)?"</span>
+<span id="cb9-311"><a href="#cb9-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-312"><a href="#cb9-312" aria-hidden="true" tabindex="-1"></a>A resposta curta: Falso Alarme Cumulativo.</span>
+<span id="cb9-313"><a href="#cb9-313" aria-hidden="true" tabindex="-1"></a>Se você usar um nível de confiança de 95% para cada teste individual, a cada novo par que você compara, a chance de você concluir erroneamente que existe uma diferença (quando ela foi causada só por um pico de ruído) vai se multiplicando. A ANOVA resolve isso testando todas as modulações de uma única vez.</span>
+<span id="cb9-314"><a href="#cb9-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-315"><a href="#cb9-315" aria-hidden="true" tabindex="-1"></a>A ANOVA, ironicamente, compara médias (neste caso, a média da Taxa de Erro de Bit - BER) analisando variâncias. Ela divide a variação total dos seus dados em duas partes:</span>
+<span id="cb9-316"><a href="#cb9-316" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-317"><a href="#cb9-317" aria-hidden="true" tabindex="-1"></a>Variância ENTRE os grupos (Sinal/Efeito da Modulação): O quanto a média de BER do QPSK está distante da média do 16-QAM e da média do 64-QAM. Essa é a variação que você quer medir. É o efeito real da complexidade da modulação sobre a taxa de erro.</span>
+<span id="cb9-318"><a href="#cb9-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-319"><a href="#cb9-319" aria-hidden="true" tabindex="-1"></a>Variância DENTRO dos grupos (Ruído do Canal): O quanto o BER flutua dentro dos testes de uma mesma modulação (ex: os dados do QPSK variando entre si em 30 medições diferentes). Essa variação ocorre por causas aleatórias, como ruído térmico, interferência ou desvanecimento no instante do teste.</span>
+<span id="cb9-320"><a href="#cb9-320" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-321"><a href="#cb9-321" aria-hidden="true" tabindex="-1"></a>A Estatística F na ANOVAA ANOVA junta essas duas variâncias na velha conhecida estatística F, através de uma razão direta:</span>
+<span id="cb9-322"><a href="#cb9-322" aria-hidden="true" tabindex="-1"></a>$$F = \frac{\text{Variância ENTRE os grupos (Efeito da Modulação)}}{\text{Variância DENTRO dos grupos (Ruído)}}$$</span>
+<span id="cb9-323"><a href="#cb9-323" aria-hidden="true" tabindex="-1"></a>A lógica de decisão do engenheiro fica muito intuitiva:</span>
+<span id="cb9-324"><a href="#cb9-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-325"><a href="#cb9-325" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Se $F \approx 1$: O afastamento entre as médias das modulações é do mesmo tamanho que o ruído aleatório. Ou seja, você não pode afirmar que mudar de QPSK para 64-QAM piorou o BER; a diferença medida foi "engolida" pela incerteza do canal. Falhamos em rejeitar $H_0$.</span>
+<span id="cb9-326"><a href="#cb9-326" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-327"><a href="#cb9-327" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Se $F \gg 1$ (muito maior que 1): A diferença de BER entre as modulações é gigantesca em comparação com o ruído de fundo. A mudança de esquema de modulação causou um impacto real e mensurável. Rejeitamos $H_0$.</span>
+<span id="cb9-328"><a href="#cb9-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-329"><a href="#cb9-329" aria-hidden="true" tabindex="-1"></a>Para melhor visualização, o código abaixo cria um conjunto de dados simulando testes de BER em um laboratório, aplica a ANOVA e exibe a tabela de resultados.</span>
+<span id="cb9-330"><a href="#cb9-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-333"><a href="#cb9-333" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-334"><a href="#cb9-334" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Simulação de Dados de Teste</span></span>
+<span id="cb9-335"><a href="#cb9-335" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>) <span class="co"># Para garantir que os resultados sejam reproduzíveis</span></span>
+<span id="cb9-336"><a href="#cb9-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-337"><a href="#cb9-337" aria-hidden="true" tabindex="-1"></a><span class="co"># Criando 30 medições de Taxa de Erro para cada modulação</span></span>
+<span id="cb9-338"><a href="#cb9-338" aria-hidden="true" tabindex="-1"></a><span class="co"># (Valores em escala linear multiplicados para facilitar visualização)</span></span>
+<span id="cb9-339"><a href="#cb9-339" aria-hidden="true" tabindex="-1"></a>ber_qpsk   <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="dv">15</span>, <span class="at">sd =</span> <span class="dv">4</span>)</span>
+<span id="cb9-340"><a href="#cb9-340" aria-hidden="true" tabindex="-1"></a>ber_16qam  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="dv">22</span>, <span class="at">sd =</span> <span class="dv">4</span>)</span>
+<span id="cb9-341"><a href="#cb9-341" aria-hidden="true" tabindex="-1"></a>ber_64qam  <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>, <span class="at">mean =</span> <span class="dv">35</span>, <span class="at">sd =</span> <span class="fl">4.5</span>)</span>
+<span id="cb9-342"><a href="#cb9-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-343"><a href="#cb9-343" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Organizando os dados em um Data Frame (formato exigido pelo R)</span></span>
+<span id="cb9-344"><a href="#cb9-344" aria-hidden="true" tabindex="-1"></a>dados_telecom <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-345"><a href="#cb9-345" aria-hidden="true" tabindex="-1"></a>  <span class="at">Taxa_Erro =</span> <span class="fu">c</span>(ber_qpsk, ber_16qam, ber_64qam),</span>
+<span id="cb9-346"><a href="#cb9-346" aria-hidden="true" tabindex="-1"></a>  <span class="at">Modulacao =</span> <span class="fu">factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"QPSK"</span>, <span class="st">"16-QAM"</span>, <span class="st">"64-QAM"</span>), <span class="at">each =</span> <span class="dv">30</span>))</span>
+<span id="cb9-347"><a href="#cb9-347" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-348"><a href="#cb9-348" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-349"><a href="#cb9-349" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Aplicando a Análise de Variância (ANOVA)</span></span>
+<span id="cb9-350"><a href="#cb9-350" aria-hidden="true" tabindex="-1"></a><span class="co"># Lendo a fórmula: "Taxa_Erro em função da Modulacao"</span></span>
+<span id="cb9-351"><a href="#cb9-351" aria-hidden="true" tabindex="-1"></a>modelo_anova <span class="ot">&lt;-</span> <span class="fu">aov</span>(Taxa_Erro <span class="sc">~</span> Modulacao, <span class="at">data =</span> dados_telecom)</span>
+<span id="cb9-352"><a href="#cb9-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-353"><a href="#cb9-353" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Exibindo a Tabela ANOVA clássica</span></span>
+<span id="cb9-354"><a href="#cb9-354" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Tabela de Resultados da ANOVA:</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb9-355"><a href="#cb9-355" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modelo_anova)</span>
+<span id="cb9-356"><a href="#cb9-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-357"><a href="#cb9-357" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Visualização em Boxplot para o Relatório</span></span>
+<span id="cb9-358"><a href="#cb9-358" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(Taxa_Erro <span class="sc">~</span> Modulacao, <span class="at">data =</span> dados_telecom,</span>
+<span id="cb9-359"><a href="#cb9-359" aria-hidden="true" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">c</span>(<span class="st">"lightblue"</span>, <span class="st">"lightgreen"</span>, <span class="st">"salmon"</span>),</span>
+<span id="cb9-360"><a href="#cb9-360" aria-hidden="true" tabindex="-1"></a>        <span class="at">main =</span> <span class="st">"Comparação de Taxa de Erro por Esquema de Modulação"</span>,</span>
+<span id="cb9-361"><a href="#cb9-361" aria-hidden="true" tabindex="-1"></a>        <span class="at">xlab =</span> <span class="st">"Esquema de Modulação"</span>,</span>
+<span id="cb9-362"><a href="#cb9-362" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab =</span> <span class="st">"Taxa de Erro (Medida)"</span>,</span>
+<span id="cb9-363"><a href="#cb9-363" aria-hidden="true" tabindex="-1"></a>        <span class="at">border =</span> <span class="st">"darkgray"</span>)</span>
+<span id="cb9-364"><a href="#cb9-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-365"><a href="#cb9-365" aria-hidden="true" tabindex="-1"></a><span class="co"># Nota para interpretação: </span></span>
+<span id="cb9-366"><a href="#cb9-366" aria-hidden="true" tabindex="-1"></a><span class="co"># No output do summary(modelo_anova), observe a coluna 'Pr(&gt;F)'. </span></span>
+<span id="cb9-367"><a href="#cb9-367" aria-hidden="true" tabindex="-1"></a><span class="co"># Esse é o Valor-p. Se for menor que 0.05, existe diferença significativa </span></span>
+<span id="cb9-368"><a href="#cb9-368" aria-hidden="true" tabindex="-1"></a><span class="co"># no desempenho entre as modulações testadas.</span></span>
+<span id="cb9-369"><a href="#cb9-369" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-370"><a href="#cb9-370" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-371"><a href="#cb9-371" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusão</span></span>
+<span id="cb9-372"><a href="#cb9-372" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-373"><a href="#cb9-373" aria-hidden="true" tabindex="-1"></a>Em suma, as distribuições Qui-quadrado ($\chi^2$) e F de Snedecor transcendem a teoria estatística pura, atuando como pilares matemáticos indispensáveis na Engenharia de Telecomunicações. Elas fornecem a base analítica necessária para modelar a imprevisibilidade dos canais de comunicação e embasar a tomada de decisão em projetos e testes de redes.</span>
+<span id="cb9-374"><a href="#cb9-374" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-375"><a href="#cb9-375" aria-hidden="true" tabindex="-1"></a>A distribuição Qui-quadrado, intrinsecamente ligada à variância de uma amostra, demonstrou ser a ferramenta adequada para lidar com o acúmulo de energia de sinais aleatórios. Como explorado neste relatório, seja na detecção de espectro por rádios cognitivos (avaliando se um canal está livre ou ocupado) ou na modelagem da potência recebida sob o efeito de desvanecimento de Rayleigh (cenários sem linha de visada), essa distribuição permite quantificar o impacto do ruído térmico (AWGN) e estabelecer limiares confiáveis de operação.</span>
+<span id="cb9-376"><a href="#cb9-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-377"><a href="#cb9-377" aria-hidden="true" tabindex="-1"></a>Por outro lado, a distribuição F, fundamentada na razão entre variâncias amostrais, consolida-se como o mecanismo definitivo para a comparação estatística. Desde a aplicação de um Teste F direto para confrontar a potência de ruído intrínseco de diferentes antenas, até o uso da Análise de Variância (ANOVA) para validar qual esquema de modulação (como QPSK, 16-QAM ou 64-QAM) oferece a melhor Taxa de Erro de Bit (BER) em um canal real, essa distribuição garante que as escolhas técnicas sejam guiadas por evidências matemáticas sólidas, isolando as métricas de desempenho das flutuações aleatórias do ambiente.</span>
+<span id="cb9-378"><a href="#cb9-378" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-379"><a href="#cb9-379" aria-hidden="true" tabindex="-1"></a>Conclui-se, portanto, que o domínio destas distribuições e de suas respectivas funções amostrais — aliado à capacidade de simulação e análise de dados em ambientes como o R — é uma competência essencial. É essa base que permite projetar, avaliar e otimizar sistemas de comunicação robustos, garantindo eficiência e resiliência na complexa fronteira entre o sinal de informação desejado e o ruído inevitável.</span>
+<span id="cb9-380"><a href="#cb9-380" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-381"><a href="#cb9-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-382"><a href="#cb9-382" aria-hidden="true" tabindex="-1"></a><span class="fu"># Referências Bibliográficas</span></span>
+<span id="cb9-383"><a href="#cb9-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-384"><a href="#cb9-384" aria-hidden="true" tabindex="-1"></a>Comunicações Sem Fio e Propagação (Desvanecimento e Rayleigh)</span>
+<span id="cb9-385"><a href="#cb9-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-386"><a href="#cb9-386" aria-hidden="true" tabindex="-1"></a>RAPPAPORT, T. S. Comunicações Sem Fio: Princípios e Práticas. 2. ed. São Paulo: Pearson Prentice Hall, 2009. (A principal referência em engenharia para modelagem de canais sem linha de visada e desvanecimento de Rayleigh).</span>
+<span id="cb9-387"><a href="#cb9-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-388"><a href="#cb9-388" aria-hidden="true" tabindex="-1"></a>Processamento de Sinais e Rádio Cognitivo</span>
+<span id="cb9-389"><a href="#cb9-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-390"><a href="#cb9-390" aria-hidden="true" tabindex="-1"></a>PROAKIS, J. G.; SALEHI, M. Fundamentos de Sistemas de Comunicação. 2. ed. São Paulo: Pearson, 2014. (Base para entender esquemas de modulação como QPSK e QAM, além de análise de Taxa de Erro de Bit - BER).</span>
+</code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

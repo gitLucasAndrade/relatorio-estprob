@@ -1,0 +1,384 @@
+---
+# Só mude aqui!!!!
+author: "Lucas Reis Oliveira de Andrade"
+title: "Distribuições F e Qui-quadrado"
+bibliography: referencias.bib
+# A partir daqui nao faca alteracoes!!!!!
+link-citations: true
+csl: associacao-brasileira-de-normas-tecnicas-ipea.csl
+subtitle: "<a href='https://bendeivide.github.io/courses/epaec/' target='_blank'>Estatística e Probabilidade</a> </br> <a href='https://bendeivide.github.io' target='_blank'>Prof. Ben Dêivide (DEFIM/CAP/UFSJ)</a>"
+include-before-body: header.html
+date: now
+date-format: "DD/MM/YYYY, HH:mm"
+lang: pt-BR
+format:
+  html:
+    toc: true
+    number-sections: true
+    theme: bootstrap
+    #css: styles.css
+    code-fold: true
+    code-tools: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Introdução
+
+As distribuições Qui-quadrado e F ocupam um papel fundamental na Estatística, especialmente na análise de dados experimentais, testes de hipóteses e modelagem de fenômenos aleatórios. Essas distribuições pertencem ao conjunto das chamadas distribuições amostrais, isto é, distribuições associadas a estatísticas calculadas a partir de amostras de uma população. Seu estudo é essencial em áreas da Engenharia, pois permite avaliar a variabilidade dos dados, comparar modelos e verificar a confiabilidade de resultados obtidos em experimentos e sistemas reais.
+
+A distribuição Qui-quadrado surge principalmente em problemas relacionados à variância de populações normais, testes de aderência, independência entre variáveis e análise de frequências observadas. Já a distribuição F está associada à razão entre variâncias e é amplamente utilizada em comparações estatísticas, como na análise de variância e na avaliação de desempenho de modelos. Ambas possuem forte ligação com a distribuição normal e desempenham papel importante na inferência estatística.
+
+No contexto das distribuições amostrais, essas distribuições estão relacionadas a funções específicas da amostra, como soma de quadrados, variância amostral e razão entre variâncias. Dessa forma, elas permitem construir métodos estatísticos capazes de analisar o comportamento de sistemas e processos de forma quantitativa e confiável.
+
+Na Engenharia de Telecomunicações, as distribuições Qui-quadrado e F possuem aplicações relevantes em áreas como análise de ruído, detecção de sinais, avaliação de desempenho de canais de comunicação, processamento digital de sinais e testes de qualidade em sistemas de transmissão. Por meio dessas ferramentas estatísticas, é possível validar modelos, comparar desempenhos e garantir maior eficiência e confiabilidade nos sistemas de telecomunicações.
+
+
+# Fundamentação Teórica 
+
+As distribuições Qui-quadrado $(\chi^2)$ e F são distribuições amostrais amplamente utilizadas na inferência estatística. Ambas derivam da distribuição normal e possuem aplicações importantes em testes estatísticos, análise de variância e avaliação de modelos.
+
+## Distribuição F
+
+A distribuição F é definida pela razão entre duas variáveis Qui-quadrado independentes, cada uma dividida pelos respectivos graus de liberdade.
+
+Se:
+
+$$X1 \sim X^2(v1)$$
+e
+$$X2 \sim X^2(v2) $$
+Então:
+$$F = \frac {X1/v1}{X2/V2} $$
+segue uma distribuição F com v1 e v2 graus de liberdade.
+A distribuição F é muito utilizada na comparação entre variâncias e na análise de variância.
+
+## Distribuição Qui-quadrado (χ2)
+
+A distribuição Qui-quadrado surge a partir da soma dos quadrados de variáveis aleatórias normais padrão independentes. 
+
+Se:
+
+$$Zi \sim N(0,1) \space;\space  i= 1, 2, \dots , n$$ 
+Então:
+$$χ^2=∑_{i=1}^{n}​Z_{i}^{2}​$$
+segue uma distribuição Qui-quadrado com n graus de liberdade.
+
+Essa distribuição está diretamente relacionada à variância amostral. 
+
+Para uma população normal com variância σ2:
+
+$$χ^2=\frac{(n−1)S^2}{σ2}​$$
+
+$n$ = tamanho da amostra.
+
+$S^2$ = variância amostral.
+
+$σ2$ = variãncia populacional.
+
+# Relação das distribuições amostrais
+
+As distribuições Qui-quadrado ($\chi^2$) e F são fundamentais na inferência estatística porque descrevem o comportamento de certas estatísticas extraídas de amostras, especialmente quando a população original segue uma distribuição Normal. Em vez de descreverem os dados em si (como a altura de uma onda ou a tensão de um sinal), elas descrevem as distribuições amostrais da variância.
+
+**- Distribuição Qui-quadrado:** 
+
+Está diretamente relacionada à distribuição amostral da variância de uma única população. Se retirarmos infinitas amostras de uma população Normal e calcularmos a variância de cada uma, esses valores de variância (devidamente padronizados) formarão uma distribuição Qui-quadrado. Ela nasce da soma de variáveis normais padronizadas elevadas ao quadrado.
+
+**- Distribuição F:** 
+
+Está relacionada à distribuição amostral da razão entre as variâncias de duas populações independentes. É construída a partir da razão de duas variáveis independentes que seguem uma distribuição Qui-quadrado, cada uma dividida por seus respectivos graus de liberdade.
+
+
+## Funções da amostra relacionadas
+
+As "funções da amostra" referem-se às fórmulas matemáticas (estatísticas) que calculamos a partir dos dados coletados para realizar testes de hipóteses ou criar intervalos de confiança.
+
+## Para a Distribuição Qui-quadrado ($\chi^2$)
+
+A principal função da amostra relacionada é a variância amostral ($S^2$). Se tivermos uma amostra de tamanho $n$ retirada de uma população Normal com variância $\sigma^2$, a estatística relacionada é:
+
+$$\chi^2 = \frac{(n-1)S^2}{\sigma^2}$$
+Essa função segue uma distribuição Qui-quadrado com $v = n - 1$ graus de liberdade.
+
+## Para a Distribuição F
+
+A função da amostra relacionada é a razão entre duas variâncias amostrais ($S_1^2$ e $S_2^2$). Se tivermos duas amostras independentes de tamanhos $n_1$ e $n_2$, retiradas de populações Normais com variâncias $\sigma_1^2$ e $\sigma_2^2$, a estatística é:
+$$F = \frac{S_1^2 / \sigma_1^2}{S_2^2 / \sigma_2^2}$$
+Se estivermos testando a hipótese de que as variâncias populacionais são iguais ($\sigma_1^2 = \sigma_2^2$), a fórmula se simplifica para a razão direta das variâncias amostrais: $F = \frac{S_1^2}{S_2^2}$. Esta função segue uma distribuição F com $v_1 = n_1 - 1$ e $v_2 = n_2 - 1$ graus de liberdade.
+
+# Aplicações em Engenharia de Telecomunicações
+
+Nesta seção, daremos prosseguimento apresentando dois exemplos para cada distribuição, aplicados à área de Telecomunicações.
+As distribuições de probabilidade são a base da modelagem de sinais e ruídos em Telecomunicações. Portanto, primeiramente para a distribuição **Qui-quadrado** temos: 
+
+## Qui-quadrado
+
+**Exemplo nº 1:**
+
+Detecção de Energia em Rádio Cognitivo (Energy Detection): 
+
+Um receptor precisa decidir se um canal está ocupado por um sinal ou se contém apenas ruído térmico (modelado como Ruído Branco Gaussiano Aditivo - AWGN). O receptor amostra o canal, eleva os valores de tensão/corrente ao quadrado e os soma para calcular a energia. Como o ruído é Gaussiano, a soma dos quadrados dessas amostras segue uma distribuição Qui-quadrado (Central se houver apenas ruído, e Não-Central se houver sinal + ruído).
+
+ A Detecção de Energia (Energy Detection) é a técnica de sensoriamento de espectro mais popular em Rádios Cognitivos porque é "cega" — ou seja, o receptor não precisa conhecer previamente nenhuma característica do sinal do usuário primário (como modulação, frequência da portadora ou preâmbulo). Ele só precisa medir a energia. Para entender a matemática por trás disso, formulamos o problema como um clássico Teste de Hipóteses Binário:
+ 
+$H_0$ (Canal Livre): O sinal recebido $y(t)$ contém apenas ruído.
+
+$H_1$ (Canal Ocupado): O sinal recebido $y(t)$ contém o sinal do usuário primário $s(t)$ somado ao ruído.
+
+1.1 - A Estatística de Teste (A Energia): 
+
+O receptor amostra o canal contínuo, obtendo $N$ amostras discretas. A energia medida ($E$) em uma determinada janela de tempo é calculada pela soma do quadrado da magnitude dessas amostras:
+$$E = \sum_{n=1}^{N} |y(n)|^2$$
+Aqui, $N$ representa os graus de liberdade da nossa distribuição e está ligado ao tempo de observação e à largura de banda do canal.
+
+1.2 - O Comportamento Sob a Hipótese $H_0$ (Apenas Ruído):
+
+Se o canal estiver livre, o sinal recebido é apenas Ruído Branco Gaussiano Aditivo (AWGN). O ruído térmico tem uma característica aleatória com média zero e uma variância conhecida ($\sigma_w^2$).Quando você pega uma variável aleatória Gaussiana de média zero, eleva ao quadrado e soma $N$ vezes, a matemática estatística dita que o resultado obrigatoriamente seguirá uma Distribuição Qui-quadrado Central com $N$ graus de liberdade.
+
+1.3 - O Comportamento Sob a Hipótese $H_1$ (Sinal + Ruído):
+
+Se o canal estiver ocupado, as amostras não têm mais média zero, pois o sinal de informação $s(t)$ empurra essa média para cima (ele adiciona potência ao canal).Quando você soma os quadrados de variáveis Gaussianas que não têm média zero, o resultado segue uma Distribuição Qui-quadrado Não-Central. O "quão não-central" ela é depende de um parâmetro chamado de não-centralidade ($\lambda_{nc}$), que na prática é diretamente proporcional à Relação Sinal-Ruído (SNR) do sinal recebido.
+
+1.4 - O Problema do Limiar ($\lambda$):
+
+O trabalho do Rádio Cognitivo é observar o valor de $E$ calculado e tomar uma decisão usando um Limiar (Threshold), que chamaremos de $\lambda$:
+
+- Se $E > \lambda$, decide-se por $H_1$ (ocupado).
+
+- Se $E < \lambda$, decide-se por $H_0$ (livre).
+
+Como as caudas das duas distribuições (Central e Não-Central) se sobrepõem, o rádio inevitavelmente cometerá erros. Isso nos leva a duas métricas cruciais de desempenho:
+
+- Probabilidade de Falso Alarme ($P_{fa}$): O rádio mediu uma energia alta, passou do limiar $\lambda$, e declarou o canal ocupado. Mas era apenas um "pico" aleatório do ruído (Estamos na cauda direita da Qui-quadrado Central). Isso desperdiça uma oportunidade de transmissão.
+
+- Probabilidade de Detecção ($P_d$): O rádio mediu a energia, passou do limiar e declarou corretamente que o canal estava ocupado (Estamos na área principal da Qui-quadrado Não-Central). Evita interferência.
+
+1.5 - O código abaixo mostra como o formato da distribuição Qui-quadrado muda conforme aumentamos os graus de liberdade (o que, em telecomunicações, equivaleria a aumentar o número de amostras no detector de energia).
+
+```{r}
+# Configurando o layout para o gráfico da Qui-quadrado
+plot(0, 0, xlim = c(0, 20), ylim = c(0, 0.5), type = "n",
+     xlab = "Valor da Estatística Qui-Quadrado", 
+     ylab = "Densidade de Probabilidade",
+     main = "Distribuição Qui-quadrado com diferentes Graus de Liberdade (gl)")
+
+# Vetor de cores e graus de liberdade
+graus_liberdade <- c(2, 4, 6, 9)
+cores <- c("blue", "red", "darkgreen", "purple")
+
+# Desenhando as curvas
+for (i in 1:length(graus_liberdade)) {
+  curve(dchisq(x, df = graus_liberdade[i]), 
+        from = 0, to = 20, col = cores[i], lwd = 2, add = TRUE)
+}
+
+# Adicionando a legenda
+legend("topright", legend = paste("gl =", graus_liberdade), 
+       col = cores, lwd = 2, bty = "n")
+
+```
+
+**Exemplo nº 2:**
+
+Modelagem de Desvanecimento (Fading): 
+
+Em canais sem fio, o modelo de desvanecimento de Rayleigh é usado quando não há linha de visada (NLOS). A potência do sinal recebido num canal de Rayleigh é o quadrado da envoltória do sinal e segue uma distribuição Exponencial, que é um caso especial da distribuição Qui-quadrado com 2 graus de liberdade.
+
+2.1 - O Fenômeno Físico: O Multicaminho (Multipath):
+
+Imagine que estamos transmitindo um sinal em uma cidade cheia de prédios. Se não há uma linha de visão direta entre a torre e o seu celular (cenário NLOS - Non-Line-of-Sight), o sinal vai bater em prédios, carros e árvores antes de chegar a você.
+
+O seu celular não recebe um único sinal, mas sim uma "sopa" de centenas de réplicas do mesmo sinal, cada uma chegando com um atraso de tempo diferente e uma fase diferente (algumas se somando de forma construtiva, outras se cancelando).
+
+2.2 - A Matemática: Componentes I e Q (A Origem Gaussiana):
+
+Na banda base, nós representamos esse sinal complexo recebido dividindo-o em duas partes ortogonais:
+$I$: Componente em Fase (In-Phase).
+
+$Q$: Componente em Quadratura (Quadrature).
+
+Como o sinal recebido é a soma de milhares de pequenas reflexões aleatórias, o Teorema Central do Limite entra em ação. Ele dita que a soma de muitas variáveis independentes tende a uma distribuição Normal (Gaussiana). Portanto, tanto a componente $I$ quanto a componente $Q$ tornam-se variáveis aleatórias Gaussianas independentes, com média zero e uma certa variância ($\sigma^2$).
+
+2.3 - A amplitude do sinal: Distribuição de Rayleigh.
+
+A antena do receptor não enxerga $I$ e $Q$ separados no ar; ela capta a magnitude resultante desse sinal eletromagnético, que chamamos de Envoltória ($R$). A magnitude de um número complexo é calculada pelo Teorema de Pitágoras:
+$$R = \sqrt{I^2 + Q^2}$$
+Quando você tira a raiz quadrada da soma de duas variáveis Gaussianas ao quadrado, a distribuição de probabilidade dessa nova variável ($R$) deixa de ser um "sino" (Gaussiana) e passa a ter um formato assimétrico, com cauda longa à direita. Essa é a Distribuição de Rayleigh.
+
+2.4 - A Potência: 
+O Link com a Qui-quadrado e a ExponencialAqui chegamos ao cerne da sua citação. Em engenharia, muitas vezes nos importamos mais com a Potência ($P$) do sinal recebido do que com a sua tensão (envoltória). A potência instantânea é proporcional ao quadrado da amplitude:
+
+$$P = R^2 = I^2 + Q^2$$
+De forma mais estatística:
+
+- $I$ é uma Gaussiana. $I^2$ é uma Gaussiana ao quadrado.
+
+- $Q$ é uma Gaussiana. $Q^2$ é uma Gaussiana ao quadrado.
+
+Aqui estamos somando exatamente duas variáveis Gaussianas padrão (se normalizadas). Por definição estatística estrita, a soma dos quadrados de $k$ variáveis Gaussianas independentes segue uma Distribuição Qui-quadrado com $k$ graus de liberdade. Como temos apenas $I$ e $Q$, nosso $k = 2$. Logo, a potência segue uma distribuição Qui-quadrado com 2 graus de liberdade ($\chi^2_2$).
+
+E o detalhe final: se pegarmos a fórmula da distribuição Qui-quadrado com $k=2$ e simplificá-la, ela se reduz exatamente à fórmula da Distribuição Exponencial. É por isso que dizemos que, em um canal de Rayleigh, a envoltória é Rayleigh, mas a potência cai de forma Exponencial.
+
+Dando prosseguimento aos exemplos aplicados. Falaremos agora sobre aplicações da **distribuição F**.
+
+## Distribuição F
+
+**Exemplo nº 1:**
+
+Comparação de Potência de Ruído entre Canais:
+
+Se um engenheiro precisa avaliar duas antenas diferentes ou dois canais de comunicação distintos, ele pode usar um Teste F para verificar se a variância do ruído (potência do ruído) em um sistema é estatisticamente igual ou superior à do outro.
+
+Em telecomunicações, o ruído térmico (AWGN) é modelado como um sinal elétrico aleatório cuja média de tensão é zero ($\mu = 0$). Na estatística, a fórmula da variância ($\sigma^2$) mede o quanto os dados se afastam da média:
+$$\sigma^2 = E[(X - \mu)^2]$$
+
+Como a média ($\mu$) do ruído é zero, a equação se simplifica para:
+$$\sigma^2 = E[X^2]$$
+
+Na física e na engenharia elétrica, o valor esperado do quadrado da tensão ($E[X^2]$) é exatamente a definição de Potência Média (assumindo uma resistência normalizada de $1\ \Omega$). Portanto, quando um estatístico fala em "comparar variâncias", o engenheiro de telecomunicações ouve "comparar potências de ruído".
+
+Como o Teste F funciona na prática?
+
+Imagine um engenheiro responsável por escolher qual antena (Antena A ou Antena B) será instalada em uma nova torre de celular. Ambas prometem o mesmo ganho, mas você quer saber se uma delas capta mais ruído do ambiente (ou gera mais ruído interno) do que a outra.
+
+1.1 - Formulando as Hipóteses
+
+Você não pode simplesmente olhar para uma amostra de 1 milissegundo de cada antena e decidir. O ruído é aleatório. Você precisa de um teste estatístico formal. 
+
+Hipótese Nula ($H_0$): 
+
+As variâncias são iguais ($\sigma_A^2 = \sigma_B^2$). Ou seja, do ponto de vista estatístico, ambas as antenas têm a mesma potência de ruído.
+
+Hipótese Alternativa ($H_1$):
+
+A variância de uma é maior que a da outra (ex: $\sigma_A^2 > \sigma_B^2$). A Antena A é mais ruidosa.
+
+1.2 - Coletando os Dados e Calculando a Estatística ($F_{calc}$)
+
+Você liga a Antena A, sintoniza em um canal vazio (sem sinal, só ruído) e coleta $N_A$ amostras de tensão. Faz o mesmo para a Antena B, coletando $N_B$ amostras.
+Em seguida, você calcula a variância amostral (potência medida) para cada uma: 
+$S_A^2$ e $S_B^2$.A estatística de teste F é simplesmente a razão entre essas duas potências:
+
+$$F_{calc} = \frac{S_A^2}{S_B^2}$$
+
+1.3 - A Decisão (O Limiar Crítico):
+
+Se as antenas fossem idênticas ($H_0$ verdadeira), esperaríamos que $F_{calc}$ fosse muito próximo de $1$. Mas quão maior que $1$ esse valor precisa ser para você ter certeza de que a Antena A é realmente pior, e não foi apenas um "azar" na hora de coletar as amostras?
+
+É aqui que entra a Distribuição F. Usando os graus de liberdade ($d_A = N_A - 1$ e $d_B = N_B - 1$) e um nível de confiança (geralmente 95%, o que dá um $\alpha = 0.05$), você encontra um valor crítico ($F_{crit}$).
+
+Se $F_{calc} > F_{crit}$: Você rejeita $H_0$. A diferença é estatisticamente significativa. A Antena A é comprovadamente mais ruidosa.
+
+Se $F_{calc} < F_{crit}$: Você não pode rejeitar $H_0$. A diferença medida pode ser apenas flutuação estatística normal.
+
+1.4 - O código abaixo plota a distribuição F, que depende de dois graus de liberdade diferentes (numerador e denominador, referentes às duas amostras comparadas).
+```{r}
+# Configurando o layout para o gráfico da Distribuição F
+plot(0, 0, xlim = c(0, 5), ylim = c(0, 0.8), type = "n",
+     xlab = "Valor da Estatística F", 
+     ylab = "Densidade de Probabilidade",
+     main = "Distribuição F para diferentes Graus de Liberdade (d1, d2)")
+
+# Definindo pares de graus de liberdade (numerador, denominador)
+df1_vec <- c(2, 5, 10, 20)
+df2_vec <- c(2, 5, 10, 20)
+cores_f <- c("orange", "blue", "red", "black")
+
+# Desenhando as curvas
+for (i in 1:length(df1_vec)) {
+  curve(df(x, df1 = df1_vec[i], df2 = df2_vec[i]), 
+        from = 0, to = 5, col = cores_f[i], lwd = 2, add = TRUE)
+}
+
+# Adicionando a legenda
+legend("topright", legend = paste("d1=", df1_vec, ", d2=", df2_vec), 
+       col = cores_f, lwd = 2, bty = "n")
+```
+**Exemplo nº 2:**
+
+Análise de Variância em Testes de Desempenho:
+
+Para comparar se a Taxa de Erro de Bit (BER) ou o delay variam significativamente ao testar três ou mais esquemas de modulação diferentes (ex: QPSK, 16-QAM, 64-QAM) sob as mesmas condições atmosféricas, utiliza-se a ANOVA, cujo teste estatístico base é a distribuição F.
+
+Análise de Variância (ANOVA) é a ferramenta definitiva quando você sai do laboratório de testes básicos (comparar A com B) e entra no mundo real, onde um sistema de telecomunicações precisa escolher entre múltiplos esquemas de modulação em tempo real (como o Wi-Fi ou o 5G fazem constantemente).
+
+A primeira pergunta que um estudante de engenharia costuma fazer é: "Se eu tenho três modulações (QPSK, 16-QAM e 64-QAM), por que eu não faço simplesmente três Testes F ou Testes T separados (QPSK vs 16-QAM, depois 16-QAM vs 64-QAM, depois QPSK vs 64-QAM)?"
+
+A resposta curta: Falso Alarme Cumulativo.
+Se você usar um nível de confiança de 95% para cada teste individual, a cada novo par que você compara, a chance de você concluir erroneamente que existe uma diferença (quando ela foi causada só por um pico de ruído) vai se multiplicando. A ANOVA resolve isso testando todas as modulações de uma única vez.
+
+A ANOVA, ironicamente, compara médias (neste caso, a média da Taxa de Erro de Bit - BER) analisando variâncias. Ela divide a variação total dos seus dados em duas partes:
+
+Variância ENTRE os grupos (Sinal/Efeito da Modulação): O quanto a média de BER do QPSK está distante da média do 16-QAM e da média do 64-QAM. Essa é a variação que você quer medir. É o efeito real da complexidade da modulação sobre a taxa de erro.
+
+Variância DENTRO dos grupos (Ruído do Canal): O quanto o BER flutua dentro dos testes de uma mesma modulação (ex: os dados do QPSK variando entre si em 30 medições diferentes). Essa variação ocorre por causas aleatórias, como ruído térmico, interferência ou desvanecimento no instante do teste.
+
+A Estatística F na ANOVAA ANOVA junta essas duas variâncias na velha conhecida estatística F, através de uma razão direta:
+$$F = \frac{\text{Variância ENTRE os grupos (Efeito da Modulação)}}{\text{Variância DENTRO dos grupos (Ruído)}}$$
+A lógica de decisão do engenheiro fica muito intuitiva:
+
+- Se $F \approx 1$: O afastamento entre as médias das modulações é do mesmo tamanho que o ruído aleatório. Ou seja, você não pode afirmar que mudar de QPSK para 64-QAM piorou o BER; a diferença medida foi "engolida" pela incerteza do canal. Falhamos em rejeitar $H_0$.
+
+- Se $F \gg 1$ (muito maior que 1): A diferença de BER entre as modulações é gigantesca em comparação com o ruído de fundo. A mudança de esquema de modulação causou um impacto real e mensurável. Rejeitamos $H_0$.
+
+Para melhor visualização, o código abaixo cria um conjunto de dados simulando testes de BER em um laboratório, aplica a ANOVA e exibe a tabela de resultados.
+
+```{r} 
+# 1. Simulação de Dados de Teste
+set.seed(2026) # Para garantir que os resultados sejam reproduzíveis
+
+# Criando 30 medições de Taxa de Erro para cada modulação
+# (Valores em escala linear multiplicados para facilitar visualização)
+ber_qpsk   <- rnorm(30, mean = 15, sd = 4)
+ber_16qam  <- rnorm(30, mean = 22, sd = 4)
+ber_64qam  <- rnorm(30, mean = 35, sd = 4.5)
+
+# 2. Organizando os dados em um Data Frame (formato exigido pelo R)
+dados_telecom <- data.frame(
+  Taxa_Erro = c(ber_qpsk, ber_16qam, ber_64qam),
+  Modulacao = factor(rep(c("QPSK", "16-QAM", "64-QAM"), each = 30))
+)
+
+# 3. Aplicando a Análise de Variância (ANOVA)
+# Lendo a fórmula: "Taxa_Erro em função da Modulacao"
+modelo_anova <- aov(Taxa_Erro ~ Modulacao, data = dados_telecom)
+
+# 4. Exibindo a Tabela ANOVA clássica
+cat("Tabela de Resultados da ANOVA:\n")
+summary(modelo_anova)
+
+# 5. Visualização em Boxplot para o Relatório
+boxplot(Taxa_Erro ~ Modulacao, data = dados_telecom,
+        col = c("lightblue", "lightgreen", "salmon"),
+        main = "Comparação de Taxa de Erro por Esquema de Modulação",
+        xlab = "Esquema de Modulação",
+        ylab = "Taxa de Erro (Medida)",
+        border = "darkgray")
+
+# Nota para interpretação: 
+# No output do summary(modelo_anova), observe a coluna 'Pr(>F)'. 
+# Esse é o Valor-p. Se for menor que 0.05, existe diferença significativa 
+# no desempenho entre as modulações testadas.
+```
+
+# Conclusão
+
+Em suma, as distribuições Qui-quadrado ($\chi^2$) e F de Snedecor transcendem a teoria estatística pura, atuando como pilares matemáticos indispensáveis na Engenharia de Telecomunicações. Elas fornecem a base analítica necessária para modelar a imprevisibilidade dos canais de comunicação e embasar a tomada de decisão em projetos e testes de redes.
+
+A distribuição Qui-quadrado, intrinsecamente ligada à variância de uma amostra, demonstrou ser a ferramenta adequada para lidar com o acúmulo de energia de sinais aleatórios. Como explorado neste relatório, seja na detecção de espectro por rádios cognitivos (avaliando se um canal está livre ou ocupado) ou na modelagem da potência recebida sob o efeito de desvanecimento de Rayleigh (cenários sem linha de visada), essa distribuição permite quantificar o impacto do ruído térmico (AWGN) e estabelecer limiares confiáveis de operação.
+
+Por outro lado, a distribuição F, fundamentada na razão entre variâncias amostrais, consolida-se como o mecanismo definitivo para a comparação estatística. Desde a aplicação de um Teste F direto para confrontar a potência de ruído intrínseco de diferentes antenas, até o uso da Análise de Variância (ANOVA) para validar qual esquema de modulação (como QPSK, 16-QAM ou 64-QAM) oferece a melhor Taxa de Erro de Bit (BER) em um canal real, essa distribuição garante que as escolhas técnicas sejam guiadas por evidências matemáticas sólidas, isolando as métricas de desempenho das flutuações aleatórias do ambiente.
+
+Conclui-se, portanto, que o domínio destas distribuições e de suas respectivas funções amostrais — aliado à capacidade de simulação e análise de dados em ambientes como o R — é uma competência essencial. É essa base que permite projetar, avaliar e otimizar sistemas de comunicação robustos, garantindo eficiência e resiliência na complexa fronteira entre o sinal de informação desejado e o ruído inevitável.
+
+
+# Referências Bibliográficas
+
+Comunicações Sem Fio e Propagação (Desvanecimento e Rayleigh)
+
+RAPPAPORT, T. S. Comunicações Sem Fio: Princípios e Práticas. 2. ed. São Paulo: Pearson Prentice Hall, 2009. (A principal referência em engenharia para modelagem de canais sem linha de visada e desvanecimento de Rayleigh).
+
+Processamento de Sinais e Rádio Cognitivo
+
+PROAKIS, J. G.; SALEHI, M. Fundamentos de Sistemas de Comunicação. 2. ed. São Paulo: Pearson, 2014. (Base para entender esquemas de modulação como QPSK e QAM, além de análise de Taxa de Erro de Bit - BER).
