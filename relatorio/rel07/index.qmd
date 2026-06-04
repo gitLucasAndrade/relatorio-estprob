@@ -1,0 +1,267 @@
+---
+# Só mude aqui!!!!
+author: "Lucas Reis Oliveira de Andrade"
+title: "Estimadores Intervalares e Aplicações"
+bibliography: referencias.bib
+# A partir daqui nao faca alteracoes!!!!!
+link-citations: true
+csl: associacao-brasileira-de-normas-tecnicas-ipea.csl
+subtitle: "<a href='https://bendeivide.github.io/courses/epaec/' target='_blank'>Estatística e Probabilidade</a> </br> <a href='https://bendeivide.github.io' target='_blank'>Prof. Ben Dêivide (DEFIM/CAP/UFSJ)</a>"
+include-before-body: header.html
+date: now
+date-format: "DD/MM/YYYY, HH:mm"
+lang: pt-BR
+format:
+  html:
+    toc: true
+    number-sections: true
+    theme: bootstrap
+    #css: styles.css
+    code-fold: true
+    code-tools: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Introdução
+
+Na inferência estatística, estimar parâmetros populacionais com base em uma amostra é uma das tarefas mais críticas para a análise de dados e validação de sistemas reais. Enquanto as *estimativas pontuais* fornecem um único valor numérico (como a média de uma amostra), os **estimadores intervalares** (Intervalos de Confiança) oferecem uma faixa de valores na qual o verdadeiro parâmetro populacional tem uma alta probabilidade de estar contido. Isso agrega uma medida de confiabilidade e margem de erro aos nossos cálculos.
+
+A construção desses intervalos baseia-se fortemente nas distribuições amostrais (como Normal, t de Student, Qui-quadrado e F). Na Engenharia de Telecomunicações, as medições de sinais, taxas de erro e potências de ruído estão sempre sujeitas a flutuações aleatórias. Portanto, expressar o desempenho de um sistema de comunicação (como a média do atraso ou a variância do ruído térmico) por meio de intervalos de confiança confere muito mais robustez ao projeto do que depender de medições únicas.
+
+# Objetivos
+
+Este relatório tem como objetivo deduzir estimadores intervalares para médias, variâncias e proporções (parâmetro de Bernoulli), relacionar esses conceitos com as distribuições estudadas anteriormente, apresentar aplicações na área de Telecomunicações e implementar essas soluções computacionalmente na linguagem R.
+
+# Fundamentação Teórica: Dedução dos Estimadores Intervalares
+
+Para construir esses intervalos de confiança, é necessário compreender quais distribuições descrevem o comportamento das estatísticas amostrais. A partir dessas distribuições, é possível obter quantidades pivôs e, consequentemente, deduzir intervalos para parâmetros populacionais como média, variância e proporções. Assim, inicia-se a fundamentação teórica pela definição geral de um estimador intervalar.
+
+Um Intervalo de Confiança (IC) de probabilidade $1 - \alpha$ para um parâmetro $\theta$ é um intervalo $[L_{inf}, L_{sup}]$ tal que $P(L_{inf} \leq \theta \leq L_{sup}) = 1 - \alpha$. A dedução parte sempre de uma "quantidade pivotal", uma variável aleatória cuja distribuição de probabilidade é conhecida e não depende do parâmetro desconhecido.
+
+onde:
+
+LI = Limite Inferior.
+
+LS = Limite Superior.
+
+θ = parâmetro populacional.
+
+Dessa forma, interpreta-se que, um intervalo de confiança de 95% significa que, se repetíssemos o procedimento de amostragem infinitas vezes, aproximadamente 95% dos intervalos construídos conteriam o verdadeiro valor do parâmetro.
+
+## População Normal: Intervalo para a Média (Variância Conhecida)
+
+Seja $X_1, X_2, \dots, X_n$ uma amostra aleatória de uma população $N(\mu, \sigma^2)$, com $\sigma^2$ conhecida. A quantidade pivotal para a média amostral $\bar{X}$ é a estatística $Z$:
+$$Z = \frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \sim N(0,1)$$
+
+Para um nível de confiança $1-\alpha$, encontramos na tabela Normal Padrão o valor crítico $z_{\alpha/2}$ tal que:
+$$P\left(-z_{\alpha/2} < \frac{\bar{X} - \mu}{\sigma / \sqrt{n}} < z_{\alpha/2}\right) = 1 - \alpha$$
+
+Isolando $\mu$ no centro das desigualdades, temos:
+$$-z_{\alpha/2}\frac{\sigma}{\sqrt{n}} < \bar{X} - \mu < z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$$
+$$\bar{X} - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} < \mu < \bar{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$$
+
+**Estimador Intervalar para $\mu$:**
+$$IC(\mu, 1-\alpha) = \left[ \bar{X} - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \,\, , \,\, \bar{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \right]$$
+
+Usando a fórmula deduzida acima em R:
+
+```{r}
+set.seed(123)
+
+n <- 30
+sigma <- 2
+
+x <- rnorm(n,10,sigma)
+
+media <- mean(x)
+
+z <- qnorm(0.975)
+
+erro <- z*sigma/sqrt(n)
+
+IC <- c(media-erro,
+        media+erro)
+
+IC
+```
+
+O intervalo para a média populacional utiliza a distribuição Normal porque o parâmetro de interesse está associado diretamente ao comportamento da média amostral. Entretanto, quando o objetivo passa a ser a estimação da variância populacional, a distribuição Normal deixa de ser suficiente. Nesse caso, surge naturalmente a distribuição Qui-quadrado, cuja relação com a variância amostral foi estudada no relatório anterior.
+
+
+## População Normal: Intervalo para a Variância Populacional
+
+A quantidade pivotal que relaciona a variância amostral ($S^2$) com a variância populacional ($\sigma^2$) segue uma distribuição Qui-quadrado com $n-1$ graus de liberdade:
+$$\chi^2 = \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}$$
+
+Buscamos valores críticos $\chi^2_{1-\alpha/2}$ e $\chi^2_{\alpha/2}$ tais que a probabilidade no intervalo seja $1-\alpha$:
+$$P\left(\chi^2_{1-\alpha/2} < \frac{(n-1)S^2}{\sigma^2} < \chi^2_{\alpha/2}\right) = 1 - \alpha$$
+
+Invertendo os termos para isolar $\sigma^2$ (o que inverte as desigualdades):
+$$\frac{1}{\chi^2_{\alpha/2}} < \frac{\sigma^2}{(n-1)S^2} < \frac{1}{\chi^2_{1-\alpha/2}}$$
+$$\frac{(n-1)S^2}{\chi^2_{\alpha/2}} < \sigma^2 < \frac{(n-1)S^2}{\chi^2_{1-\alpha/2}}$$
+
+**Estimador Intervalar para $\sigma^2$:**
+$$IC(\sigma^2, 1-\alpha) = \left[ \frac{(n-1)S^2}{\chi^2_{\alpha/2}} \,\, , \,\, \frac{(n-1)S^2}{\chi^2_{1-\alpha/2}} \right]$$
+
+Usando a fórmula deduzida acima em R:
+
+```{r}
+var_x <- var(x)
+
+LI <- ((n-1)*var_x)/
+      qchisq(0.975,n-1)
+
+LS <- ((n-1)*var_x)/
+      qchisq(0.025,n-1)
+
+c(LI,LS)
+```
+
+Até o momento foram considerados problemas envolvendo apenas uma população. Entretanto, em aplicações práticas de Engenharia, frequentemente é necessário comparar sistemas, canais ou equipamentos distintos. Isso conduz naturalmente ao estudo de duas populações independentes e à construção de intervalos para diferenças entre médias e razões entre variâncias.
+
+
+## Duas Populações Normais Independentes
+
+### a) Diferença de Médias (Variâncias Homocedásticas - Iguais)
+
+Assumindo $\sigma_1^2 = \sigma_2^2 = \sigma^2$ (desconhecidas), utilizamos a variância amostral combinada (*pooled variance*), $S_p^2$:
+$$S_p^2 = \frac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1+n_2-2}$$
+
+A quantidade pivotal segue uma distribuição *t de Student* com $\nu = n_1 + n_2 - 2$ graus de liberdade:
+$$T = \frac{(\bar{X}_1 - \bar{X}_2) - (\mu_1 - \mu_2)}{S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} \sim t_{n_1+n_2-2}$$
+
+Isolando $(\mu_1 - \mu_2)$, obtemos:
+$$IC(\mu_1 - \mu_2) = \left[ (\bar{X}_1 - \bar{X}_2) \pm t_{\alpha/2, \nu} \cdot S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}} \right]$$
+
+Usando a fórmula deduzida acima em R:
+
+```{r}
+x1 <- rnorm(30,10,2)
+x2 <- rnorm(25,12,2)
+
+t.test(x1,x2,
+       var.equal=TRUE)
+```
+
+O resultado anterior depende da hipótese de homocedasticidade, isto é, da igualdade entre as variâncias populacionais. Embora essa simplificação seja bastante útil, nem sempre ela é compatível com situações reais. Quando não há evidências suficientes para assumir variâncias iguais, torna-se necessário utilizar uma abordagem mais geral, baseada no método de Welch.
+
+### b) Diferença de Médias (Variâncias Heterocedásticas - Diferentes)
+
+Se não podemos assumir que as variâncias são iguais, usamos a aproximação de Welch-Satterthwaite. A estatística t se torna:
+$$T = \frac{(\bar{X}_1 - \bar{X}_2) - (\mu_1 - \mu_2)}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}$$
+
+E os graus de liberdade equivalentes ($\nu$) são dados pela equação de Welch:
+$$\nu = \frac{\left( \frac{S_1^2}{n_1} + \frac{S_2^2}{n_2} \right)^2}{\frac{(S_1^2/n_1)^2}{n_1-1} + \frac{(S_2^2/n_2)^2}{n_2-1}}$$
+
+O intervalo é similar, mas utilizando as variâncias individuais e o novo $\nu$:
+$$IC(\mu_1 - \mu_2) = \left[ (\bar{X}_1 - \bar{X}_2) \pm t_{\alpha/2, \nu} \sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}} \right]$$
+
+Usando a fórmula deduzida acima em R:
+
+```{r}
+t.test(x1,x2,
+       var.equal=FALSE)
+```
+
+Nos dois casos anteriores o foco esteve na comparação das médias populacionais. Contudo, em diversos problemas de engenharia, a variabilidade dos dados é tão importante quanto a média. Por esse motivo, também é relevante construir intervalos para a razão entre variâncias, permitindo avaliar diferenças na dispersão observada entre dois sistemas.
+
+### c) Razão entre Variâncias Populacionais
+
+A razão entre as variâncias amostrais sobre as variâncias populacionais segue a distribuição F de Snedecor:
+$$F = \frac{S_1^2 / \sigma_1^2}{S_2^2 / \sigma_2^2} \sim F_{n_1-1, n_2-1}$$
+
+Para obter o intervalo $P(F_{1-\alpha/2} < F < F_{\alpha/2}) = 1 - \alpha$, isolamos $\frac{\sigma_1^2}{\sigma_2^2}$:
+$$\frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{\alpha/2}(n_1-1, n_2-1)} < \frac{\sigma_1^2}{\sigma_2^2} < \frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{1-\alpha/2}(n_1-1, n_2-1)}$$
+
+Lembrando a propriedade da distribuição F: $F_{1-\alpha/2}(v_1, v_2) = \frac{1}{F_{\alpha/2}(v_2, v_1)}$. O IC final é:
+$$IC\left(\frac{\sigma_1^2}{\sigma_2^2}\right) = \left[ \frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{\alpha/2}(n_1-1, n_2-1)} \,\, , \,\, \frac{S_1^2}{S_2^2} \cdot F_{\alpha/2}(n_2-1, n_1-1) \right]$$
+
+Usando a fórmula deduzida acima em R:
+
+```{r}
+var.test(x1,x2)
+```
+
+Todos os estimadores intervalares apresentados até aqui foram desenvolvidos sob a hipótese de populações contínuas com distribuição Normal. Entretanto, muitos problemas de Telecomunicações envolvem variáveis binárias, representadas por sucesso ou falha. Nesses casos, a modelagem adequada é fornecida pela distribuição de Bernoulli e, consequentemente, pela distribuição Binomial.
+
+## População de Bernoulli (Estimador para Proporção $p$)
+
+### a) Estimador Aproximado
+Para estimar a proporção $p$ de sucessos (parâmetro da distribuição de Bernoulli), utilizamos a proporção amostral $\hat{p} = X/n$. O intervalo aproximado (Intervalo de Wald) é:
+$$IC(p) = \left[ \hat{p} - z_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}} \,\, , \,\, \hat{p} + z_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}} \right]$$
+Usando a fórmula deduzida acima em R:
+
+```{r}
+n <- 1000
+x <- 45
+
+p_hat <- x/n
+
+erro <- qnorm(0.975)*
+         sqrt(p_hat*(1-p_hat)/n)
+
+c(p_hat-erro,
+  p_hat+erro)
+```
+
+### b) Fundamento da Construção Aproximada
+A construção do intervalo de Wald baseia-se no **Teorema Central do Limite (TCL)**. Como uma variável Binomial $X$ (soma de $n$ Bernoullis) tende à distribuição Normal para $n$ grande, a proporção amostral $\hat{p}$ tem distribuição assintoticamente Normal com média $p$ e variância $\frac{p(1-p)}{n}$. A variância desconhecida da população é substituída pela estimativa amostral
+$\hat{p}(1-\hat{p})$.
+
+O intervalo de Wald apresenta implementação simples e interpretação intuitiva. Contudo, sua qualidade depende da validade da aproximação Normal fornecida pelo Teorema Central do Limite. Em situações com amostras pequenas ou proporções próximas de 0 ou 1, essa aproximação pode produzir resultados inadequados, motivando o desenvolvimento de métodos exatos.
+
+### c) Forma Exata (Intervalo de Clopper-Pearson)
+O intervalo exato não depende da aproximação Normal e é baseado diretamente na distribuição Binomial. Para um número de sucessos $x$ em $n$ tentativas, os limites inferior ($p_L$) e superior ($p_U$) são calculados encontrando as raízes das equações de probabilidade cumulativa Binomial, frequentemente resolvidos usando a distribuição Beta:
+$$p_L = \frac{x}{x + (n-x+1)F_{\alpha/2}(2(n-x+1), 2x)}$$
+$$p_U = \frac{x+1}{x+1 + (n-x)F_{1-\alpha/2}(2(n-x), 2(x+1))}$$
+
+Usando a fórmula deduzida acima em R:
+```{r}
+binom.test(45,1000)
+```
+
+As deduções apresentadas anteriormente mostram que a construção dos intervalos de confiança depende diretamente das distribuições amostrais associadas às estatísticas utilizadas. Dessa forma, os conceitos estudados neste relatório não constituem um tema isolado, mas representam uma aplicação direta das distribuições abordadas no Relatório 6.
+
+# Simulações e Cálculos em R
+
+Anteriormente, para cada tópico foram adicionados códigos em R para melhor interpretação e visualização das fórmulas deduzidas.
+Dessa forma, as implementações desenvolvidas em R permitiram reproduzir computacionalmente os resultados teóricos obtidos ao longo deste relatório. Observou-se que cada estimador intervalar depende diretamente da distribuição amostral associada ao parâmetro estudado. Dessa forma, as simulações serviram não apenas para validar as fórmulas deduzidas, mas também para ilustrar a aplicação prática dos métodos de inferência estatística em cenários semelhantes aos encontrados na Engenharia de Telecomunicações.
+
+# Relação com as Distribuições do Relatório 6
+
+No Relatório 6, focou-se nas propriedades e comportamentos das distribuições Qui-quadrado ($\chi^2$) e F de Snedecor. O estudo atual sobre estimadores intervalares é a aplicação direta da teoria estudada no relatório anterior. 
+
+- O **estimador intervalar para a variância** (item 2) nasce da propriedade matemática (demonstrada via soma de Gaussianas) de que a variância amostral padronizada comporta-se como uma variável $\chi^2$. Sem o entendimento de como as caudas da distribuição $\chi^2$ são assimétricas (estudado no rel. 6), não seria possível entender por que o intervalo de confiança para $\sigma^2$ não é simétrico em torno da estimativa amostral.
+- O **estimador intervalar para a razão de variâncias** (item 3c) aplica o conceito da distribuição F como a razão entre duas variáveis $\chi^2$. No Relatório 6, usamos testes de hipóteses $F$ para comparar potências de ruído; agora, essa mesma função fornece a faixa de valores plausíveis para a razão de ruído entre dois canais, usando os percentis da distribuição F nos extremos do intervalo.
+
+# Aplicações na Engenharia de Telecomunicações
+
+Embora as deduções matemáticas sejam fundamentais para compreender a construção dos estimadores intervalares, seu verdadeiro valor aparece quando aplicadas a problemas reais de engenharia. Na área de Telecomunicações, intervalos de confiança são utilizados para quantificar incertezas associadas a medições de potência, ruído, atraso e taxa de erro, permitindo decisões técnicas mais robustas.
+
+A estatística intervalar é o pilar para lidar com o ruído (AWGN) e garantir Qualidade de Serviço (QoS) em Telecomunicações. 
+
+Exemplos:
+
+1. **Intervalo de Confiança para a Média ($\mu$):**
+   - **Potência de Sinal Recebido (RSSI):** Quando um celular se conecta a uma Estação Rádio Base (ERB), o sinal flutua devido ao desvanecimento e ruído. O engenheiro não projeta o sistema para uma única leitura instantânea, mas sim calcula um IC para a "Potência Média" e verifica se o limite inferior garante a margem mínima para decodificação.
+2. **Intervalo para a Variância ($\sigma^2$) e Razão de Variâncias:**
+   - **Estimativa de Potência de Ruído (Noise Floor):** Como a variância do sinal de um canal ocioso equivale fisicamente à potência do ruído térmico, usa-se o intervalo Qui-quadrado para garantir que, no pior cenário (limite superior do intervalo de confiança), os equipamentos de amplificação não saturarão. A razão (F) é usada para validar se o novo lote de LNAs (*Low Noise Amplifiers*) é realmente menos ruidoso que o lote antigo.
+3. **Intervalo para a Proporção de Bernoulli ($p$):**
+   - **Estimativa de Taxa de Erro de Bit (BER):** A transmissão digital é uma série de experimentos de Bernoulli, onde o sucesso estatístico (que na verdade é uma falha de telecom) é a recepção de um bit com erro. Se enviamos 1 milhão de bits e detectamos 100 erros, $\hat{p} = 10^{-4}$. O intervalo de confiança para proporções nos diz a margem de oscilação do verdadeiro BER do canal sob aquelas condições de relação Sinal-Ruído (SNR).
+
+# Conclusão
+
+Neste relatório foram deduzidos estimadores intervalares para média, variância, diferença de médias, razão de variâncias e proporções. A construção desses intervalos foi fundamentada nas distribuições Normal, t de Student, Qui-quadrado e F, evidenciando a importância das distribuições amostrais no processo de inferência estatística.
+
+Além da dedução matemática, foram apresentadas aplicações na Engenharia de Telecomunicações, demonstrando como intervalos de confiança podem ser utilizados para estimar potência de sinal, potência de ruído, desempenho de equipamentos e taxas de erro em sistemas digitais.
+
+Por fim, a implementação dos métodos em linguagem R permitiu validar computacionalmente os resultados obtidos e reforçou a importância das ferramentas estatísticas na análise de sistemas reais. Assim, os conceitos estudados neste relatório complementam diretamente os tópicos abordados no Relatório 6, mostrando como as distribuições Qui-quadrado e F são utilizadas na construção de procedimentos inferenciais fundamentais.
+
+# Referências Bibliográficas
+
+MONTGOMERY, D. C.; RUNGER, G. C. Estatística Aplicada e Probabilidade para Engenheiros. 6. ed. Rio de Janeiro: LTC, 2016.
+
+PROAKIS, J. G.; SALEHI, M. Fundamentos de Sistemas de Comunicação. 2. ed. São Paulo: Pearson, 2014. (Referência para modelagem de canais e taxas de erro - BER).

@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.37">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Lucas Reis Oliveira de Andrade">
+
+<title>Estimadores Intervalares e Aplicações</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap-efbb37e9afcc02144ebbc7afd12a776f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#introdução" id="toc-introdução" class="nav-link active" data-scroll-target="#introdução"><span class="header-section-number">1</span> Introdução</a></li>
+  <li><a href="#objetivos" id="toc-objetivos" class="nav-link" data-scroll-target="#objetivos"><span class="header-section-number">2</span> Objetivos</a></li>
+  <li><a href="#fundamentação-teórica-dedução-dos-estimadores-intervalares" id="toc-fundamentação-teórica-dedução-dos-estimadores-intervalares" class="nav-link" data-scroll-target="#fundamentação-teórica-dedução-dos-estimadores-intervalares"><span class="header-section-number">3</span> Fundamentação Teórica: Dedução dos Estimadores Intervalares</a>
+  <ul class="collapse">
+  <li><a href="#população-normal-intervalo-para-a-média-variância-conhecida" id="toc-população-normal-intervalo-para-a-média-variância-conhecida" class="nav-link" data-scroll-target="#população-normal-intervalo-para-a-média-variância-conhecida"><span class="header-section-number">3.1</span> População Normal: Intervalo para a Média (Variância Conhecida)</a></li>
+  <li><a href="#população-normal-intervalo-para-a-variância-populacional" id="toc-população-normal-intervalo-para-a-variância-populacional" class="nav-link" data-scroll-target="#população-normal-intervalo-para-a-variância-populacional"><span class="header-section-number">3.2</span> População Normal: Intervalo para a Variância Populacional</a></li>
+  <li><a href="#duas-populações-normais-independentes" id="toc-duas-populações-normais-independentes" class="nav-link" data-scroll-target="#duas-populações-normais-independentes"><span class="header-section-number">3.3</span> Duas Populações Normais Independentes</a>
+  <ul class="collapse">
+  <li><a href="#a-diferença-de-médias-variâncias-homocedásticas---iguais" id="toc-a-diferença-de-médias-variâncias-homocedásticas---iguais" class="nav-link" data-scroll-target="#a-diferença-de-médias-variâncias-homocedásticas---iguais"><span class="header-section-number">3.3.1</span> a) Diferença de Médias (Variâncias Homocedásticas - Iguais)</a></li>
+  <li><a href="#b-diferença-de-médias-variâncias-heterocedásticas---diferentes" id="toc-b-diferença-de-médias-variâncias-heterocedásticas---diferentes" class="nav-link" data-scroll-target="#b-diferença-de-médias-variâncias-heterocedásticas---diferentes"><span class="header-section-number">3.3.2</span> b) Diferença de Médias (Variâncias Heterocedásticas - Diferentes)</a></li>
+  <li><a href="#c-razão-entre-variâncias-populacionais" id="toc-c-razão-entre-variâncias-populacionais" class="nav-link" data-scroll-target="#c-razão-entre-variâncias-populacionais"><span class="header-section-number">3.3.3</span> c) Razão entre Variâncias Populacionais</a></li>
+  </ul></li>
+  <li><a href="#população-de-bernoulli-estimador-para-proporção-p" id="toc-população-de-bernoulli-estimador-para-proporção-p" class="nav-link" data-scroll-target="#população-de-bernoulli-estimador-para-proporção-p"><span class="header-section-number">3.4</span> População de Bernoulli (Estimador para Proporção <span class="math inline">\(p\)</span>)</a>
+  <ul class="collapse">
+  <li><a href="#a-estimador-aproximado" id="toc-a-estimador-aproximado" class="nav-link" data-scroll-target="#a-estimador-aproximado"><span class="header-section-number">3.4.1</span> a) Estimador Aproximado</a></li>
+  <li><a href="#b-fundamento-da-construção-aproximada" id="toc-b-fundamento-da-construção-aproximada" class="nav-link" data-scroll-target="#b-fundamento-da-construção-aproximada"><span class="header-section-number">3.4.2</span> b) Fundamento da Construção Aproximada</a></li>
+  <li><a href="#c-forma-exata-intervalo-de-clopper-pearson" id="toc-c-forma-exata-intervalo-de-clopper-pearson" class="nav-link" data-scroll-target="#c-forma-exata-intervalo-de-clopper-pearson"><span class="header-section-number">3.4.3</span> c) Forma Exata (Intervalo de Clopper-Pearson)</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#simulações-e-cálculos-em-r" id="toc-simulações-e-cálculos-em-r" class="nav-link" data-scroll-target="#simulações-e-cálculos-em-r"><span class="header-section-number">4</span> Simulações e Cálculos em R</a></li>
+  <li><a href="#relação-com-as-distribuições-do-relatório-6" id="toc-relação-com-as-distribuições-do-relatório-6" class="nav-link" data-scroll-target="#relação-com-as-distribuições-do-relatório-6"><span class="header-section-number">5</span> Relação com as Distribuições do Relatório 6</a></li>
+  <li><a href="#aplicações-na-engenharia-de-telecomunicações" id="toc-aplicações-na-engenharia-de-telecomunicações" class="nav-link" data-scroll-target="#aplicações-na-engenharia-de-telecomunicações"><span class="header-section-number">6</span> Aplicações na Engenharia de Telecomunicações</a></li>
+  <li><a href="#conclusão" id="toc-conclusão" class="nav-link" data-scroll-target="#conclusão"><span class="header-section-number">7</span> Conclusão</a></li>
+  <li><a href="#referências-bibliográficas" id="toc-referências-bibliográficas" class="nav-link" data-scroll-target="#referências-bibliográficas"><span class="header-section-number">8</span> Referências Bibliográficas</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Estimadores Intervalares e Aplicações</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Código</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Mostrar o código</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Esconder o código</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">Ver o código fonte</a></li></ul></div></div>
+<p class="subtitle lead"><a href="https://bendeivide.github.io/courses/epaec/" target="_blank">Estatística e Probabilidade</a> <br> <a href="https://bendeivide.github.io" target="_blank">Prof.&nbsp;Ben Dêivide (DEFIM/CAP/UFSJ)</a></p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor</div>
+    <div class="quarto-title-meta-contents">
+             <p>Lucas Reis Oliveira de Andrade </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">04/06/2026, 14:53</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introdução" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Introdução</h1>
+<p>Na inferência estatística, estimar parâmetros populacionais com base em uma amostra é uma das tarefas mais críticas para a análise de dados e validação de sistemas reais. Enquanto as <em>estimativas pontuais</em> fornecem um único valor numérico (como a média de uma amostra), os <strong>estimadores intervalares</strong> (Intervalos de Confiança) oferecem uma faixa de valores na qual o verdadeiro parâmetro populacional tem uma alta probabilidade de estar contido. Isso agrega uma medida de confiabilidade e margem de erro aos nossos cálculos.</p>
+<p>A construção desses intervalos baseia-se fortemente nas distribuições amostrais (como Normal, t de Student, Qui-quadrado e F). Na Engenharia de Telecomunicações, as medições de sinais, taxas de erro e potências de ruído estão sempre sujeitas a flutuações aleatórias. Portanto, expressar o desempenho de um sistema de comunicação (como a média do atraso ou a variância do ruído térmico) por meio de intervalos de confiança confere muito mais robustez ao projeto do que depender de medições únicas.</p>
+</section>
+<section id="objetivos" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Objetivos</h1>
+<p>Este relatório tem como objetivo deduzir estimadores intervalares para médias, variâncias e proporções (parâmetro de Bernoulli), relacionar esses conceitos com as distribuições estudadas anteriormente, apresentar aplicações na área de Telecomunicações e implementar essas soluções computacionalmente na linguagem R.</p>
+</section>
+<section id="fundamentação-teórica-dedução-dos-estimadores-intervalares" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Fundamentação Teórica: Dedução dos Estimadores Intervalares</h1>
+<p>Para construir esses intervalos de confiança, é necessário compreender quais distribuições descrevem o comportamento das estatísticas amostrais. A partir dessas distribuições, é possível obter quantidades pivôs e, consequentemente, deduzir intervalos para parâmetros populacionais como média, variância e proporções. Assim, inicia-se a fundamentação teórica pela definição geral de um estimador intervalar.</p>
+<p>Um Intervalo de Confiança (IC) de probabilidade <span class="math inline">\(1 - \alpha\)</span> para um parâmetro <span class="math inline">\(\theta\)</span> é um intervalo <span class="math inline">\([L_{inf}, L_{sup}]\)</span> tal que <span class="math inline">\(P(L_{inf} \leq \theta \leq L_{sup}) = 1 - \alpha\)</span>. A dedução parte sempre de uma “quantidade pivotal”, uma variável aleatória cuja distribuição de probabilidade é conhecida e não depende do parâmetro desconhecido.</p>
+<p>onde:</p>
+<p>LI = Limite Inferior.</p>
+<p>LS = Limite Superior.</p>
+<p>θ = parâmetro populacional.</p>
+<p>Dessa forma, interpreta-se que, um intervalo de confiança de 95% significa que, se repetíssemos o procedimento de amostragem infinitas vezes, aproximadamente 95% dos intervalos construídos conteriam o verdadeiro valor do parâmetro.</p>
+<section id="população-normal-intervalo-para-a-média-variância-conhecida" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="população-normal-intervalo-para-a-média-variância-conhecida"><span class="header-section-number">3.1</span> População Normal: Intervalo para a Média (Variância Conhecida)</h2>
+<p>Seja <span class="math inline">\(X_1, X_2, \dots, X_n\)</span> uma amostra aleatória de uma população <span class="math inline">\(N(\mu, \sigma^2)\)</span>, com <span class="math inline">\(\sigma^2\)</span> conhecida. A quantidade pivotal para a média amostral <span class="math inline">\(\bar{X}\)</span> é a estatística <span class="math inline">\(Z\)</span>: <span class="math display">\[Z = \frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \sim N(0,1)\]</span></p>
+<p>Para um nível de confiança <span class="math inline">\(1-\alpha\)</span>, encontramos na tabela Normal Padrão o valor crítico <span class="math inline">\(z_{\alpha/2}\)</span> tal que: <span class="math display">\[P\left(-z_{\alpha/2} &lt; \frac{\bar{X} - \mu}{\sigma / \sqrt{n}} &lt; z_{\alpha/2}\right) = 1 - \alpha\]</span></p>
+<p>Isolando <span class="math inline">\(\mu\)</span> no centro das desigualdades, temos: <span class="math display">\[-z_{\alpha/2}\frac{\sigma}{\sqrt{n}} &lt; \bar{X} - \mu &lt; z_{\alpha/2}\frac{\sigma}{\sqrt{n}}\]</span> <span class="math display">\[\bar{X} - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} &lt; \mu &lt; \bar{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}\]</span></p>
+<p><strong>Estimador Intervalar para <span class="math inline">\(\mu\)</span>:</strong> <span class="math display">\[IC(\mu, 1-\alpha) = \left[ \bar{X} - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \,\, , \,\, \bar{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \right]\]</span></p>
+<p>Usando a fórmula deduzida acima em R:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n,<span class="dv">10</span>,sigma)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>media <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>erro <span class="ot">&lt;-</span> z<span class="sc">*</span>sigma<span class="sc">/</span><span class="fu">sqrt</span>(n)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>IC <span class="ot">&lt;-</span> <span class="fu">c</span>(media<span class="sc">-</span>erro,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        media<span class="sc">+</span>erro)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>IC</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  9.190115 10.621470</code></pre>
+</div>
+</div>
+<p>O intervalo para a média populacional utiliza a distribuição Normal porque o parâmetro de interesse está associado diretamente ao comportamento da média amostral. Entretanto, quando o objetivo passa a ser a estimação da variância populacional, a distribuição Normal deixa de ser suficiente. Nesse caso, surge naturalmente a distribuição Qui-quadrado, cuja relação com a variância amostral foi estudada no relatório anterior.</p>
+</section>
+<section id="população-normal-intervalo-para-a-variância-populacional" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="população-normal-intervalo-para-a-variância-populacional"><span class="header-section-number">3.2</span> População Normal: Intervalo para a Variância Populacional</h2>
+<p>A quantidade pivotal que relaciona a variância amostral (<span class="math inline">\(S^2\)</span>) com a variância populacional (<span class="math inline">\(\sigma^2\)</span>) segue uma distribuição Qui-quadrado com <span class="math inline">\(n-1\)</span> graus de liberdade: <span class="math display">\[\chi^2 = \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}\]</span></p>
+<p>Buscamos valores críticos <span class="math inline">\(\chi^2_{1-\alpha/2}\)</span> e <span class="math inline">\(\chi^2_{\alpha/2}\)</span> tais que a probabilidade no intervalo seja <span class="math inline">\(1-\alpha\)</span>: <span class="math display">\[P\left(\chi^2_{1-\alpha/2} &lt; \frac{(n-1)S^2}{\sigma^2} &lt; \chi^2_{\alpha/2}\right) = 1 - \alpha\]</span></p>
+<p>Invertendo os termos para isolar <span class="math inline">\(\sigma^2\)</span> (o que inverte as desigualdades): <span class="math display">\[\frac{1}{\chi^2_{\alpha/2}} &lt; \frac{\sigma^2}{(n-1)S^2} &lt; \frac{1}{\chi^2_{1-\alpha/2}}\]</span> <span class="math display">\[\frac{(n-1)S^2}{\chi^2_{\alpha/2}} &lt; \sigma^2 &lt; \frac{(n-1)S^2}{\chi^2_{1-\alpha/2}}\]</span></p>
+<p><strong>Estimador Intervalar para <span class="math inline">\(\sigma^2\)</span>:</strong> <span class="math display">\[IC(\sigma^2, 1-\alpha) = \left[ \frac{(n-1)S^2}{\chi^2_{\alpha/2}} \,\, , \,\, \frac{(n-1)S^2}{\chi^2_{1-\alpha/2}} \right]\]</span></p>
+<p>Usando a fórmula deduzida acima em R:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>var_x <span class="ot">&lt;-</span> <span class="fu">var</span>(x)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>LI <span class="ot">&lt;-</span> ((n<span class="dv">-1</span>)<span class="sc">*</span>var_x)<span class="sc">/</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">qchisq</span>(<span class="fl">0.975</span>,n<span class="dv">-1</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>LS <span class="ot">&lt;-</span> ((n<span class="dv">-1</span>)<span class="sc">*</span>var_x)<span class="sc">/</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">qchisq</span>(<span class="fl">0.025</span>,n<span class="dv">-1</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(LI,LS)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.441717 6.957086</code></pre>
+</div>
+</div>
+<p>Até o momento foram considerados problemas envolvendo apenas uma população. Entretanto, em aplicações práticas de Engenharia, frequentemente é necessário comparar sistemas, canais ou equipamentos distintos. Isso conduz naturalmente ao estudo de duas populações independentes e à construção de intervalos para diferenças entre médias e razões entre variâncias.</p>
+</section>
+<section id="duas-populações-normais-independentes" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="duas-populações-normais-independentes"><span class="header-section-number">3.3</span> Duas Populações Normais Independentes</h2>
+<section id="a-diferença-de-médias-variâncias-homocedásticas---iguais" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="a-diferença-de-médias-variâncias-homocedásticas---iguais"><span class="header-section-number">3.3.1</span> a) Diferença de Médias (Variâncias Homocedásticas - Iguais)</h3>
+<p>Assumindo <span class="math inline">\(\sigma_1^2 = \sigma_2^2 = \sigma^2\)</span> (desconhecidas), utilizamos a variância amostral combinada (<em>pooled variance</em>), <span class="math inline">\(S_p^2\)</span>: <span class="math display">\[S_p^2 = \frac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1+n_2-2}\]</span></p>
+<p>A quantidade pivotal segue uma distribuição <em>t de Student</em> com <span class="math inline">\(\nu = n_1 + n_2 - 2\)</span> graus de liberdade: <span class="math display">\[T = \frac{(\bar{X}_1 - \bar{X}_2) - (\mu_1 - \mu_2)}{S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} \sim t_{n_1+n_2-2}\]</span></p>
+<p>Isolando <span class="math inline">\((\mu_1 - \mu_2)\)</span>, obtemos: <span class="math display">\[IC(\mu_1 - \mu_2) = \left[ (\bar{X}_1 - \bar{X}_2) \pm t_{\alpha/2, \nu} \cdot S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}} \right]\]</span></p>
+<p>Usando a fórmula deduzida acima em R:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>,<span class="dv">10</span>,<span class="dv">2</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">25</span>,<span class="dv">12</span>,<span class="dv">2</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(x1,x2,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">var.equal=</span><span class="cn">TRUE</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Two Sample t-test
+
+data:  x1 and x2
+t = -3.1964, df = 53, p-value = 0.002346
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -2.4200773 -0.5539187
+sample estimates:
+mean of x mean of y 
+ 10.35668  11.84367 </code></pre>
+</div>
+</div>
+<p>O resultado anterior depende da hipótese de homocedasticidade, isto é, da igualdade entre as variâncias populacionais. Embora essa simplificação seja bastante útil, nem sempre ela é compatível com situações reais. Quando não há evidências suficientes para assumir variâncias iguais, torna-se necessário utilizar uma abordagem mais geral, baseada no método de Welch.</p>
+</section>
+<section id="b-diferença-de-médias-variâncias-heterocedásticas---diferentes" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="b-diferença-de-médias-variâncias-heterocedásticas---diferentes"><span class="header-section-number">3.3.2</span> b) Diferença de Médias (Variâncias Heterocedásticas - Diferentes)</h3>
+<p>Se não podemos assumir que as variâncias são iguais, usamos a aproximação de Welch-Satterthwaite. A estatística t se torna: <span class="math display">\[T = \frac{(\bar{X}_1 - \bar{X}_2) - (\mu_1 - \mu_2)}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}\]</span></p>
+<p>E os graus de liberdade equivalentes (<span class="math inline">\(\nu\)</span>) são dados pela equação de Welch: <span class="math display">\[\nu = \frac{\left( \frac{S_1^2}{n_1} + \frac{S_2^2}{n_2} \right)^2}{\frac{(S_1^2/n_1)^2}{n_1-1} + \frac{(S_2^2/n_2)^2}{n_2-1}}\]</span></p>
+<p>O intervalo é similar, mas utilizando as variâncias individuais e o novo <span class="math inline">\(\nu\)</span>: <span class="math display">\[IC(\mu_1 - \mu_2) = \left[ (\bar{X}_1 - \bar{X}_2) \pm t_{\alpha/2, \nu} \sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}} \right]\]</span></p>
+<p>Usando a fórmula deduzida acima em R:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(x1,x2,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">var.equal=</span><span class="cn">FALSE</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  x1 and x2
+t = -3.1787, df = 49.986, p-value = 0.002539
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -2.4266026 -0.5473934
+sample estimates:
+mean of x mean of y 
+ 10.35668  11.84367 </code></pre>
+</div>
+</div>
+<p>Nos dois casos anteriores o foco esteve na comparação das médias populacionais. Contudo, em diversos problemas de engenharia, a variabilidade dos dados é tão importante quanto a média. Por esse motivo, também é relevante construir intervalos para a razão entre variâncias, permitindo avaliar diferenças na dispersão observada entre dois sistemas.</p>
+</section>
+<section id="c-razão-entre-variâncias-populacionais" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="c-razão-entre-variâncias-populacionais"><span class="header-section-number">3.3.3</span> c) Razão entre Variâncias Populacionais</h3>
+<p>A razão entre as variâncias amostrais sobre as variâncias populacionais segue a distribuição F de Snedecor: <span class="math display">\[F = \frac{S_1^2 / \sigma_1^2}{S_2^2 / \sigma_2^2} \sim F_{n_1-1, n_2-1}\]</span></p>
+<p>Para obter o intervalo <span class="math inline">\(P(F_{1-\alpha/2} &lt; F &lt; F_{\alpha/2}) = 1 - \alpha\)</span>, isolamos <span class="math inline">\(\frac{\sigma_1^2}{\sigma_2^2}\)</span>: <span class="math display">\[\frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{\alpha/2}(n_1-1, n_2-1)} &lt; \frac{\sigma_1^2}{\sigma_2^2} &lt; \frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{1-\alpha/2}(n_1-1, n_2-1)}\]</span></p>
+<p>Lembrando a propriedade da distribuição F: <span class="math inline">\(F_{1-\alpha/2}(v_1, v_2) = \frac{1}{F_{\alpha/2}(v_2, v_1)}\)</span>. O IC final é: <span class="math display">\[IC\left(\frac{\sigma_1^2}{\sigma_2^2}\right) = \left[ \frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{\alpha/2}(n_1-1, n_2-1)} \,\, , \,\, \frac{S_1^2}{S_2^2} \cdot F_{\alpha/2}(n_2-1, n_1-1) \right]\]</span></p>
+<p>Usando a fórmula deduzida acima em R:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">var.test</span>(x1,x2)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    F test to compare two variances
+
+data:  x1 and x2
+F = 0.88675, num df = 29, denom df = 24, p-value = 0.7505
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 0.3998959 1.9100568
+sample estimates:
+ratio of variances 
+         0.8867463 </code></pre>
+</div>
+</div>
+<p>Todos os estimadores intervalares apresentados até aqui foram desenvolvidos sob a hipótese de populações contínuas com distribuição Normal. Entretanto, muitos problemas de Telecomunicações envolvem variáveis binárias, representadas por sucesso ou falha. Nesses casos, a modelagem adequada é fornecida pela distribuição de Bernoulli e, consequentemente, pela distribuição Binomial.</p>
+</section>
+</section>
+<section id="população-de-bernoulli-estimador-para-proporção-p" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="população-de-bernoulli-estimador-para-proporção-p"><span class="header-section-number">3.4</span> População de Bernoulli (Estimador para Proporção <span class="math inline">\(p\)</span>)</h2>
+<section id="a-estimador-aproximado" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="a-estimador-aproximado"><span class="header-section-number">3.4.1</span> a) Estimador Aproximado</h3>
+<p>Para estimar a proporção <span class="math inline">\(p\)</span> de sucessos (parâmetro da distribuição de Bernoulli), utilizamos a proporção amostral <span class="math inline">\(\hat{p} = X/n\)</span>. O intervalo aproximado (Intervalo de Wald) é: <span class="math display">\[IC(p) = \left[ \hat{p} - z_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}} \,\, , \,\, \hat{p} + z_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}} \right]\]</span> Usando a fórmula deduzida acima em R:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">45</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>p_hat <span class="ot">&lt;-</span> x<span class="sc">/</span>n</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>erro <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>)<span class="sc">*</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>         <span class="fu">sqrt</span>(p_hat<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p_hat)<span class="sc">/</span>n)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(p_hat<span class="sc">-</span>erro,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  p_hat<span class="sc">+</span>erro)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.03215139 0.05784861</code></pre>
+</div>
+</div>
+</section>
+<section id="b-fundamento-da-construção-aproximada" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="b-fundamento-da-construção-aproximada"><span class="header-section-number">3.4.2</span> b) Fundamento da Construção Aproximada</h3>
+<p>A construção do intervalo de Wald baseia-se no <strong>Teorema Central do Limite (TCL)</strong>. Como uma variável Binomial <span class="math inline">\(X\)</span> (soma de <span class="math inline">\(n\)</span> Bernoullis) tende à distribuição Normal para <span class="math inline">\(n\)</span> grande, a proporção amostral <span class="math inline">\(\hat{p}\)</span> tem distribuição assintoticamente Normal com média <span class="math inline">\(p\)</span> e variância <span class="math inline">\(\frac{p(1-p)}{n}\)</span>. A variância desconhecida da população é substituída pela estimativa amostral <span class="math inline">\(\hat{p}(1-\hat{p})\)</span>.</p>
+<p>O intervalo de Wald apresenta implementação simples e interpretação intuitiva. Contudo, sua qualidade depende da validade da aproximação Normal fornecida pelo Teorema Central do Limite. Em situações com amostras pequenas ou proporções próximas de 0 ou 1, essa aproximação pode produzir resultados inadequados, motivando o desenvolvimento de métodos exatos.</p>
+</section>
+<section id="c-forma-exata-intervalo-de-clopper-pearson" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="c-forma-exata-intervalo-de-clopper-pearson"><span class="header-section-number">3.4.3</span> c) Forma Exata (Intervalo de Clopper-Pearson)</h3>
+<p>O intervalo exato não depende da aproximação Normal e é baseado diretamente na distribuição Binomial. Para um número de sucessos <span class="math inline">\(x\)</span> em <span class="math inline">\(n\)</span> tentativas, os limites inferior (<span class="math inline">\(p_L\)</span>) e superior (<span class="math inline">\(p_U\)</span>) são calculados encontrando as raízes das equações de probabilidade cumulativa Binomial, frequentemente resolvidos usando a distribuição Beta: <span class="math display">\[p_L = \frac{x}{x + (n-x+1)F_{\alpha/2}(2(n-x+1), 2x)}\]</span> <span class="math display">\[p_U = \frac{x+1}{x+1 + (n-x)F_{1-\alpha/2}(2(n-x), 2(x+1))}\]</span></p>
+<p>Usando a fórmula deduzida acima em R:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="dv">45</span>,<span class="dv">1000</span>)</span></code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Exact binomial test
+
+data:  45 and 1000
+number of successes = 45, number of trials = 1000, p-value &lt; 2.2e-16
+alternative hypothesis: true probability of success is not equal to 0.5
+95 percent confidence interval:
+ 0.03300963 0.05975283
+sample estimates:
+probability of success 
+                 0.045 </code></pre>
+</div>
+</div>
+<p>As deduções apresentadas anteriormente mostram que a construção dos intervalos de confiança depende diretamente das distribuições amostrais associadas às estatísticas utilizadas. Dessa forma, os conceitos estudados neste relatório não constituem um tema isolado, mas representam uma aplicação direta das distribuições abordadas no Relatório 6.</p>
+</section>
+</section>
+</section>
+<section id="simulações-e-cálculos-em-r" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> Simulações e Cálculos em R</h1>
+<p>Anteriormente, para cada tópico foram adicionados códigos em R para melhor interpretação e visualização das fórmulas deduzidas. Dessa forma, as implementações desenvolvidas em R permitiram reproduzir computacionalmente os resultados teóricos obtidos ao longo deste relatório. Observou-se que cada estimador intervalar depende diretamente da distribuição amostral associada ao parâmetro estudado. Dessa forma, as simulações serviram não apenas para validar as fórmulas deduzidas, mas também para ilustrar a aplicação prática dos métodos de inferência estatística em cenários semelhantes aos encontrados na Engenharia de Telecomunicações.</p>
+</section>
+<section id="relação-com-as-distribuições-do-relatório-6" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Relação com as Distribuições do Relatório 6</h1>
+<p>No Relatório 6, focou-se nas propriedades e comportamentos das distribuições Qui-quadrado (<span class="math inline">\(\chi^2\)</span>) e F de Snedecor. O estudo atual sobre estimadores intervalares é a aplicação direta da teoria estudada no relatório anterior.</p>
+<ul>
+<li>O <strong>estimador intervalar para a variância</strong> (item 2) nasce da propriedade matemática (demonstrada via soma de Gaussianas) de que a variância amostral padronizada comporta-se como uma variável <span class="math inline">\(\chi^2\)</span>. Sem o entendimento de como as caudas da distribuição <span class="math inline">\(\chi^2\)</span> são assimétricas (estudado no rel. 6), não seria possível entender por que o intervalo de confiança para <span class="math inline">\(\sigma^2\)</span> não é simétrico em torno da estimativa amostral.</li>
+<li>O <strong>estimador intervalar para a razão de variâncias</strong> (item 3c) aplica o conceito da distribuição F como a razão entre duas variáveis <span class="math inline">\(\chi^2\)</span>. No Relatório 6, usamos testes de hipóteses <span class="math inline">\(F\)</span> para comparar potências de ruído; agora, essa mesma função fornece a faixa de valores plausíveis para a razão de ruído entre dois canais, usando os percentis da distribuição F nos extremos do intervalo.</li>
+</ul>
+</section>
+<section id="aplicações-na-engenharia-de-telecomunicações" class="level1" data-number="6">
+<h1 data-number="6"><span class="header-section-number">6</span> Aplicações na Engenharia de Telecomunicações</h1>
+<p>Embora as deduções matemáticas sejam fundamentais para compreender a construção dos estimadores intervalares, seu verdadeiro valor aparece quando aplicadas a problemas reais de engenharia. Na área de Telecomunicações, intervalos de confiança são utilizados para quantificar incertezas associadas a medições de potência, ruído, atraso e taxa de erro, permitindo decisões técnicas mais robustas.</p>
+<p>A estatística intervalar é o pilar para lidar com o ruído (AWGN) e garantir Qualidade de Serviço (QoS) em Telecomunicações.</p>
+<p>Exemplos:</p>
+<ol type="1">
+<li><strong>Intervalo de Confiança para a Média (<span class="math inline">\(\mu\)</span>):</strong>
+<ul>
+<li><strong>Potência de Sinal Recebido (RSSI):</strong> Quando um celular se conecta a uma Estação Rádio Base (ERB), o sinal flutua devido ao desvanecimento e ruído. O engenheiro não projeta o sistema para uma única leitura instantânea, mas sim calcula um IC para a “Potência Média” e verifica se o limite inferior garante a margem mínima para decodificação.</li>
+</ul></li>
+<li><strong>Intervalo para a Variância (<span class="math inline">\(\sigma^2\)</span>) e Razão de Variâncias:</strong>
+<ul>
+<li><strong>Estimativa de Potência de Ruído (Noise Floor):</strong> Como a variância do sinal de um canal ocioso equivale fisicamente à potência do ruído térmico, usa-se o intervalo Qui-quadrado para garantir que, no pior cenário (limite superior do intervalo de confiança), os equipamentos de amplificação não saturarão. A razão (F) é usada para validar se o novo lote de LNAs (<em>Low Noise Amplifiers</em>) é realmente menos ruidoso que o lote antigo.</li>
+</ul></li>
+<li><strong>Intervalo para a Proporção de Bernoulli (<span class="math inline">\(p\)</span>):</strong>
+<ul>
+<li><strong>Estimativa de Taxa de Erro de Bit (BER):</strong> A transmissão digital é uma série de experimentos de Bernoulli, onde o sucesso estatístico (que na verdade é uma falha de telecom) é a recepção de um bit com erro. Se enviamos 1 milhão de bits e detectamos 100 erros, <span class="math inline">\(\hat{p} = 10^{-4}\)</span>. O intervalo de confiança para proporções nos diz a margem de oscilação do verdadeiro BER do canal sob aquelas condições de relação Sinal-Ruído (SNR).</li>
+</ul></li>
+</ol>
+</section>
+<section id="conclusão" class="level1" data-number="7">
+<h1 data-number="7"><span class="header-section-number">7</span> Conclusão</h1>
+<p>Neste relatório foram deduzidos estimadores intervalares para média, variância, diferença de médias, razão de variâncias e proporções. A construção desses intervalos foi fundamentada nas distribuições Normal, t de Student, Qui-quadrado e F, evidenciando a importância das distribuições amostrais no processo de inferência estatística.</p>
+<p>Além da dedução matemática, foram apresentadas aplicações na Engenharia de Telecomunicações, demonstrando como intervalos de confiança podem ser utilizados para estimar potência de sinal, potência de ruído, desempenho de equipamentos e taxas de erro em sistemas digitais.</p>
+<p>Por fim, a implementação dos métodos em linguagem R permitiu validar computacionalmente os resultados obtidos e reforçou a importância das ferramentas estatísticas na análise de sistemas reais. Assim, os conceitos estudados neste relatório complementam diretamente os tópicos abordados no Relatório 6, mostrando como as distribuições Qui-quadrado e F são utilizadas na construção de procedimentos inferenciais fundamentais.</p>
+</section>
+<section id="referências-bibliográficas" class="level1" data-number="8">
+<h1 data-number="8"><span class="header-section-number">8</span> Referências Bibliográficas</h1>
+<p>MONTGOMERY, D. C.; RUNGER, G. C. Estatística Aplicada e Probabilidade para Engenheiros. 6. ed.&nbsp;Rio de Janeiro: LTC, 2016.</p>
+<p>PROAKIS, J. G.; SALEHI, M. Fundamentos de Sistemas de Comunicação. 2. ed.&nbsp;São Paulo: Pearson, 2014. (Referência para modelagem de canais e taxas de erro - BER).</p>
+<!-- -->
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiada");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiada");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Código fonte</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Só mude aqui!!!!</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "Lucas Reis Oliveira de Andrade"</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Estimadores Intervalares e Aplicações"</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> referencias.bib</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># A partir daqui nao faca alteracoes!!!!!</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="an">link-citations:</span><span class="co"> true</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="an">csl:</span><span class="co"> associacao-brasileira-de-normas-tecnicas-ipea.csl</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "&lt;a href='https://bendeivide.github.io/courses/epaec/' target='_blank'&gt;Estatística e Probabilidade&lt;/a&gt; &lt;/br&gt; &lt;a href='https://bendeivide.github.io' target='_blank'&gt;Prof. Ben Dêivide (DEFIM/CAP/UFSJ)&lt;/a&gt;"</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="an">include-before-body:</span><span class="co"> header.html</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> now</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="an">date-format:</span><span class="co"> "DD/MM/YYYY, HH:mm"</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-BR</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="co">    theme: bootstrap</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co">    #css: styles.css</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a><span class="fu"># Introdução</span></span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>Na inferência estatística, estimar parâmetros populacionais com base em uma amostra é uma das tarefas mais críticas para a análise de dados e validação de sistemas reais. Enquanto as *estimativas pontuais* fornecem um único valor numérico (como a média de uma amostra), os **estimadores intervalares** (Intervalos de Confiança) oferecem uma faixa de valores na qual o verdadeiro parâmetro populacional tem uma alta probabilidade de estar contido. Isso agrega uma medida de confiabilidade e margem de erro aos nossos cálculos.</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a>A construção desses intervalos baseia-se fortemente nas distribuições amostrais (como Normal, t de Student, Qui-quadrado e F). Na Engenharia de Telecomunicações, as medições de sinais, taxas de erro e potências de ruído estão sempre sujeitas a flutuações aleatórias. Portanto, expressar o desempenho de um sistema de comunicação (como a média do atraso ou a variância do ruído térmico) por meio de intervalos de confiança confere muito mais robustez ao projeto do que depender de medições únicas.</span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a><span class="fu"># Objetivos</span></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>Este relatório tem como objetivo deduzir estimadores intervalares para médias, variâncias e proporções (parâmetro de Bernoulli), relacionar esses conceitos com as distribuições estudadas anteriormente, apresentar aplicações na área de Telecomunicações e implementar essas soluções computacionalmente na linguagem R.</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a><span class="fu"># Fundamentação Teórica: Dedução dos Estimadores Intervalares</span></span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>Para construir esses intervalos de confiança, é necessário compreender quais distribuições descrevem o comportamento das estatísticas amostrais. A partir dessas distribuições, é possível obter quantidades pivôs e, consequentemente, deduzir intervalos para parâmetros populacionais como média, variância e proporções. Assim, inicia-se a fundamentação teórica pela definição geral de um estimador intervalar.</span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>Um Intervalo de Confiança (IC) de probabilidade $1 - \alpha$ para um parâmetro $\theta$ é um intervalo $<span class="co">[</span><span class="ot">L_{inf}, L_{sup}</span><span class="co">]</span>$ tal que $P(L_{inf} \leq \theta \leq L_{sup}) = 1 - \alpha$. A dedução parte sempre de uma "quantidade pivotal", uma variável aleatória cuja distribuição de probabilidade é conhecida e não depende do parâmetro desconhecido.</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a>onde:</span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a>LI = Limite Inferior.</span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>LS = Limite Superior.</span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a>θ = parâmetro populacional.</span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>Dessa forma, interpreta-se que, um intervalo de confiança de 95% significa que, se repetíssemos o procedimento de amostragem infinitas vezes, aproximadamente 95% dos intervalos construídos conteriam o verdadeiro valor do parâmetro.</span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a><span class="fu">## População Normal: Intervalo para a Média (Variância Conhecida)</span></span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a>Seja $X_1, X_2, \dots, X_n$ uma amostra aleatória de uma população $N(\mu, \sigma^2)$, com $\sigma^2$ conhecida. A quantidade pivotal para a média amostral $\bar{X}$ é a estatística $Z$:</span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a>$$Z = \frac{\bar{X} - \mu}{\sigma / \sqrt{n}} \sim N(0,1)$$</span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>Para um nível de confiança $1-\alpha$, encontramos na tabela Normal Padrão o valor crítico $z_{\alpha/2}$ tal que:</span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>$$P\left(-z_{\alpha/2} &lt; \frac{\bar{X} - \mu}{\sigma / \sqrt{n}} &lt; z_{\alpha/2}\right) = 1 - \alpha$$</span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a>Isolando $\mu$ no centro das desigualdades, temos:</span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a>$$-z_{\alpha/2}\frac{\sigma}{\sqrt{n}} &lt; \bar{X} - \mu &lt; z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$$</span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a>$$\bar{X} - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} &lt; \mu &lt; \bar{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}}$$</span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a>**Estimador Intervalar para $\mu$:**</span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a>$$IC(\mu, 1-\alpha) = \left<span class="co">[</span><span class="ot"> \bar{X} - z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \,\, , \,\, \bar{X} + z_{\alpha/2}\frac{\sigma}{\sqrt{n}} \right</span><span class="co">]</span>$$</span>
+<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a>Usando a fórmula deduzida acima em R:</span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a>sigma <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n,<span class="dv">10</span>,sigma)</span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a>media <span class="ot">&lt;-</span> <span class="fu">mean</span>(x)</span>
+<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>)</span>
+<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a>erro <span class="ot">&lt;-</span> z<span class="sc">*</span>sigma<span class="sc">/</span><span class="fu">sqrt</span>(n)</span>
+<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a>IC <span class="ot">&lt;-</span> <span class="fu">c</span>(media<span class="sc">-</span>erro,</span>
+<span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a>        media<span class="sc">+</span>erro)</span>
+<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-90"><a href="#cb15-90" aria-hidden="true" tabindex="-1"></a>IC</span>
+<span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a>O intervalo para a média populacional utiliza a distribuição Normal porque o parâmetro de interesse está associado diretamente ao comportamento da média amostral. Entretanto, quando o objetivo passa a ser a estimação da variância populacional, a distribuição Normal deixa de ser suficiente. Nesse caso, surge naturalmente a distribuição Qui-quadrado, cuja relação com a variância amostral foi estudada no relatório anterior.</span>
+<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a><span class="fu">## População Normal: Intervalo para a Variância Populacional</span></span>
+<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a>A quantidade pivotal que relaciona a variância amostral ($S^2$) com a variância populacional ($\sigma^2$) segue uma distribuição Qui-quadrado com $n-1$ graus de liberdade:</span>
+<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a>$$\chi^2 = \frac{(n-1)S^2}{\sigma^2} \sim \chi^2_{n-1}$$</span>
+<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a>Buscamos valores críticos $\chi^2_{1-\alpha/2}$ e $\chi^2_{\alpha/2}$ tais que a probabilidade no intervalo seja $1-\alpha$:</span>
+<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a>$$P\left(\chi^2_{1-\alpha/2} &lt; \frac{(n-1)S^2}{\sigma^2} &lt; \chi^2_{\alpha/2}\right) = 1 - \alpha$$</span>
+<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a>Invertendo os termos para isolar $\sigma^2$ (o que inverte as desigualdades):</span>
+<span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a>$$\frac{1}{\chi^2_{\alpha/2}} &lt; \frac{\sigma^2}{(n-1)S^2} &lt; \frac{1}{\chi^2_{1-\alpha/2}}$$</span>
+<span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a>$$\frac{(n-1)S^2}{\chi^2_{\alpha/2}} &lt; \sigma^2 &lt; \frac{(n-1)S^2}{\chi^2_{1-\alpha/2}}$$</span>
+<span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a>**Estimador Intervalar para $\sigma^2$:**</span>
+<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a>$$IC(\sigma^2, 1-\alpha) = \left<span class="co">[</span><span class="ot"> \frac{(n-1)S^2}{\chi^2_{\alpha/2}} \,\, , \,\, \frac{(n-1)S^2}{\chi^2_{1-\alpha/2}} \right</span><span class="co">]</span>$$</span>
+<span id="cb15-110"><a href="#cb15-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-111"><a href="#cb15-111" aria-hidden="true" tabindex="-1"></a>Usando a fórmula deduzida acima em R:</span>
+<span id="cb15-112"><a href="#cb15-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-116"><a href="#cb15-116" aria-hidden="true" tabindex="-1"></a>var_x <span class="ot">&lt;-</span> <span class="fu">var</span>(x)</span>
+<span id="cb15-117"><a href="#cb15-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-118"><a href="#cb15-118" aria-hidden="true" tabindex="-1"></a>LI <span class="ot">&lt;-</span> ((n<span class="dv">-1</span>)<span class="sc">*</span>var_x)<span class="sc">/</span></span>
+<span id="cb15-119"><a href="#cb15-119" aria-hidden="true" tabindex="-1"></a>      <span class="fu">qchisq</span>(<span class="fl">0.975</span>,n<span class="dv">-1</span>)</span>
+<span id="cb15-120"><a href="#cb15-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-121"><a href="#cb15-121" aria-hidden="true" tabindex="-1"></a>LS <span class="ot">&lt;-</span> ((n<span class="dv">-1</span>)<span class="sc">*</span>var_x)<span class="sc">/</span></span>
+<span id="cb15-122"><a href="#cb15-122" aria-hidden="true" tabindex="-1"></a>      <span class="fu">qchisq</span>(<span class="fl">0.025</span>,n<span class="dv">-1</span>)</span>
+<span id="cb15-123"><a href="#cb15-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-124"><a href="#cb15-124" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(LI,LS)</span>
+<span id="cb15-125"><a href="#cb15-125" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-126"><a href="#cb15-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-127"><a href="#cb15-127" aria-hidden="true" tabindex="-1"></a>Até o momento foram considerados problemas envolvendo apenas uma população. Entretanto, em aplicações práticas de Engenharia, frequentemente é necessário comparar sistemas, canais ou equipamentos distintos. Isso conduz naturalmente ao estudo de duas populações independentes e à construção de intervalos para diferenças entre médias e razões entre variâncias.</span>
+<span id="cb15-128"><a href="#cb15-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-129"><a href="#cb15-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-130"><a href="#cb15-130" aria-hidden="true" tabindex="-1"></a><span class="fu">## Duas Populações Normais Independentes</span></span>
+<span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a><span class="fu">### a) Diferença de Médias (Variâncias Homocedásticas - Iguais)</span></span>
+<span id="cb15-133"><a href="#cb15-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a>Assumindo $\sigma_1^2 = \sigma_2^2 = \sigma^2$ (desconhecidas), utilizamos a variância amostral combinada (*pooled variance*), $S_p^2$:</span>
+<span id="cb15-135"><a href="#cb15-135" aria-hidden="true" tabindex="-1"></a>$$S_p^2 = \frac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1+n_2-2}$$</span>
+<span id="cb15-136"><a href="#cb15-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-137"><a href="#cb15-137" aria-hidden="true" tabindex="-1"></a>A quantidade pivotal segue uma distribuição *t de Student* com $\nu = n_1 + n_2 - 2$ graus de liberdade:</span>
+<span id="cb15-138"><a href="#cb15-138" aria-hidden="true" tabindex="-1"></a>$$T = \frac{(\bar{X}_1 - \bar{X}_2) - (\mu_1 - \mu_2)}{S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}} \sim t_{n_1+n_2-2}$$</span>
+<span id="cb15-139"><a href="#cb15-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-140"><a href="#cb15-140" aria-hidden="true" tabindex="-1"></a>Isolando $(\mu_1 - \mu_2)$, obtemos:</span>
+<span id="cb15-141"><a href="#cb15-141" aria-hidden="true" tabindex="-1"></a>$$IC(\mu_1 - \mu_2) = \left<span class="co">[</span><span class="ot"> (\bar{X}_1 - \bar{X}_2) \pm t_{\alpha/2, \nu} \cdot S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}} \right</span><span class="co">]</span>$$</span>
+<span id="cb15-142"><a href="#cb15-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-143"><a href="#cb15-143" aria-hidden="true" tabindex="-1"></a>Usando a fórmula deduzida acima em R:</span>
+<span id="cb15-144"><a href="#cb15-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-148"><a href="#cb15-148" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">30</span>,<span class="dv">10</span>,<span class="dv">2</span>)</span>
+<span id="cb15-149"><a href="#cb15-149" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">25</span>,<span class="dv">12</span>,<span class="dv">2</span>)</span>
+<span id="cb15-150"><a href="#cb15-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-151"><a href="#cb15-151" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(x1,x2,</span>
+<span id="cb15-152"><a href="#cb15-152" aria-hidden="true" tabindex="-1"></a>       <span class="at">var.equal=</span><span class="cn">TRUE</span>)</span>
+<span id="cb15-153"><a href="#cb15-153" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-154"><a href="#cb15-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a>O resultado anterior depende da hipótese de homocedasticidade, isto é, da igualdade entre as variâncias populacionais. Embora essa simplificação seja bastante útil, nem sempre ela é compatível com situações reais. Quando não há evidências suficientes para assumir variâncias iguais, torna-se necessário utilizar uma abordagem mais geral, baseada no método de Welch.</span>
+<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a><span class="fu">### b) Diferença de Médias (Variâncias Heterocedásticas - Diferentes)</span></span>
+<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a>Se não podemos assumir que as variâncias são iguais, usamos a aproximação de Welch-Satterthwaite. A estatística t se torna:</span>
+<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a>$$T = \frac{(\bar{X}_1 - \bar{X}_2) - (\mu_1 - \mu_2)}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}$$</span>
+<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a>E os graus de liberdade equivalentes ($\nu$) são dados pela equação de Welch:</span>
+<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a>$$\nu = \frac{\left( \frac{S_1^2}{n_1} + \frac{S_2^2}{n_2} \right)^2}{\frac{(S_1^2/n_1)^2}{n_1-1} + \frac{(S_2^2/n_2)^2}{n_2-1}}$$</span>
+<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a>O intervalo é similar, mas utilizando as variâncias individuais e o novo $\nu$:</span>
+<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a>$$IC(\mu_1 - \mu_2) = \left<span class="co">[</span><span class="ot"> (\bar{X}_1 - \bar{X}_2) \pm t_{\alpha/2, \nu} \sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}} \right</span><span class="co">]</span>$$</span>
+<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a>Usando a fórmula deduzida acima em R:</span>
+<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(x1,x2,</span>
+<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a>       <span class="at">var.equal=</span><span class="cn">FALSE</span>)</span>
+<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a>Nos dois casos anteriores o foco esteve na comparação das médias populacionais. Contudo, em diversos problemas de engenharia, a variabilidade dos dados é tão importante quanto a média. Por esse motivo, também é relevante construir intervalos para a razão entre variâncias, permitindo avaliar diferenças na dispersão observada entre dois sistemas.</span>
+<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a><span class="fu">### c) Razão entre Variâncias Populacionais</span></span>
+<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a>A razão entre as variâncias amostrais sobre as variâncias populacionais segue a distribuição F de Snedecor:</span>
+<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a>$$F = \frac{S_1^2 / \sigma_1^2}{S_2^2 / \sigma_2^2} \sim F_{n_1-1, n_2-1}$$</span>
+<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a>Para obter o intervalo $P(F_{1-\alpha/2} &lt; F &lt; F_{\alpha/2}) = 1 - \alpha$, isolamos $\frac{\sigma_1^2}{\sigma_2^2}$:</span>
+<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a>$$\frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{\alpha/2}(n_1-1, n_2-1)} &lt; \frac{\sigma_1^2}{\sigma_2^2} &lt; \frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{1-\alpha/2}(n_1-1, n_2-1)}$$</span>
+<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a>Lembrando a propriedade da distribuição F: $F_{1-\alpha/2}(v_1, v_2) = \frac{1}{F_{\alpha/2}(v_2, v_1)}$. O IC final é:</span>
+<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a>$$IC\left(\frac{\sigma_1^2}{\sigma_2^2}\right) = \left<span class="co">[</span><span class="ot"> \frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{\alpha/2}(n_1-1, n_2-1)} \,\, , \,\, \frac{S_1^2}{S_2^2} \cdot F_{\alpha/2}(n_2-1, n_1-1) \right</span><span class="co">]</span>$$</span>
+<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a>Usando a fórmula deduzida acima em R:</span>
+<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a><span class="fu">var.test</span>(x1,x2)</span>
+<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a>Todos os estimadores intervalares apresentados até aqui foram desenvolvidos sob a hipótese de populações contínuas com distribuição Normal. Entretanto, muitos problemas de Telecomunicações envolvem variáveis binárias, representadas por sucesso ou falha. Nesses casos, a modelagem adequada é fornecida pela distribuição de Bernoulli e, consequentemente, pela distribuição Binomial.</span>
+<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a><span class="fu">## População de Bernoulli (Estimador para Proporção $p$)</span></span>
+<span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a><span class="fu">### a) Estimador Aproximado</span></span>
+<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a>Para estimar a proporção $p$ de sucessos (parâmetro da distribuição de Bernoulli), utilizamos a proporção amostral $\hat{p} = X/n$. O intervalo aproximado (Intervalo de Wald) é:</span>
+<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a>$$IC(p) = \left<span class="co">[</span><span class="ot"> \hat{p} - z_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}} \,\, , \,\, \hat{p} + z_{\alpha/2}\sqrt{\frac{\hat{p}(1-\hat{p})}{n}} \right</span><span class="co">]</span>$$</span>
+<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a>Usando a fórmula deduzida acima em R:</span>
+<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">45</span></span>
+<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a>p_hat <span class="ot">&lt;-</span> x<span class="sc">/</span>n</span>
+<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a>erro <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="fl">0.975</span>)<span class="sc">*</span></span>
+<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a>         <span class="fu">sqrt</span>(p_hat<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>p_hat)<span class="sc">/</span>n)</span>
+<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(p_hat<span class="sc">-</span>erro,</span>
+<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a>  p_hat<span class="sc">+</span>erro)</span>
+<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a><span class="fu">### b) Fundamento da Construção Aproximada</span></span>
+<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a>A construção do intervalo de Wald baseia-se no **Teorema Central do Limite (TCL)**. Como uma variável Binomial $X$ (soma de $n$ Bernoullis) tende à distribuição Normal para $n$ grande, a proporção amostral $\hat{p}$ tem distribuição assintoticamente Normal com média $p$ e variância $\frac{p(1-p)}{n}$. A variância desconhecida da população é substituída pela estimativa amostral</span>
+<span id="cb15-224"><a href="#cb15-224" aria-hidden="true" tabindex="-1"></a>$\hat{p}(1-\hat{p})$.</span>
+<span id="cb15-225"><a href="#cb15-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-226"><a href="#cb15-226" aria-hidden="true" tabindex="-1"></a>O intervalo de Wald apresenta implementação simples e interpretação intuitiva. Contudo, sua qualidade depende da validade da aproximação Normal fornecida pelo Teorema Central do Limite. Em situações com amostras pequenas ou proporções próximas de 0 ou 1, essa aproximação pode produzir resultados inadequados, motivando o desenvolvimento de métodos exatos.</span>
+<span id="cb15-227"><a href="#cb15-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-228"><a href="#cb15-228" aria-hidden="true" tabindex="-1"></a><span class="fu">### c) Forma Exata (Intervalo de Clopper-Pearson)</span></span>
+<span id="cb15-229"><a href="#cb15-229" aria-hidden="true" tabindex="-1"></a>O intervalo exato não depende da aproximação Normal e é baseado diretamente na distribuição Binomial. Para um número de sucessos $x$ em $n$ tentativas, os limites inferior ($p_L$) e superior ($p_U$) são calculados encontrando as raízes das equações de probabilidade cumulativa Binomial, frequentemente resolvidos usando a distribuição Beta:</span>
+<span id="cb15-230"><a href="#cb15-230" aria-hidden="true" tabindex="-1"></a>$$p_L = \frac{x}{x + (n-x+1)F_{\alpha/2}(2(n-x+1), 2x)}$$</span>
+<span id="cb15-231"><a href="#cb15-231" aria-hidden="true" tabindex="-1"></a>$$p_U = \frac{x+1}{x+1 + (n-x)F_{1-\alpha/2}(2(n-x), 2(x+1))}$$</span>
+<span id="cb15-232"><a href="#cb15-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-233"><a href="#cb15-233" aria-hidden="true" tabindex="-1"></a>Usando a fórmula deduzida acima em R:</span>
+<span id="cb15-236"><a href="#cb15-236" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb15-237"><a href="#cb15-237" aria-hidden="true" tabindex="-1"></a><span class="fu">binom.test</span>(<span class="dv">45</span>,<span class="dv">1000</span>)</span>
+<span id="cb15-238"><a href="#cb15-238" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb15-239"><a href="#cb15-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-240"><a href="#cb15-240" aria-hidden="true" tabindex="-1"></a>As deduções apresentadas anteriormente mostram que a construção dos intervalos de confiança depende diretamente das distribuições amostrais associadas às estatísticas utilizadas. Dessa forma, os conceitos estudados neste relatório não constituem um tema isolado, mas representam uma aplicação direta das distribuições abordadas no Relatório 6.</span>
+<span id="cb15-241"><a href="#cb15-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-242"><a href="#cb15-242" aria-hidden="true" tabindex="-1"></a><span class="fu"># Simulações e Cálculos em R</span></span>
+<span id="cb15-243"><a href="#cb15-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-244"><a href="#cb15-244" aria-hidden="true" tabindex="-1"></a>Anteriormente, para cada tópico foram adicionados códigos em R para melhor interpretação e visualização das fórmulas deduzidas.</span>
+<span id="cb15-245"><a href="#cb15-245" aria-hidden="true" tabindex="-1"></a>Dessa forma, as implementações desenvolvidas em R permitiram reproduzir computacionalmente os resultados teóricos obtidos ao longo deste relatório. Observou-se que cada estimador intervalar depende diretamente da distribuição amostral associada ao parâmetro estudado. Dessa forma, as simulações serviram não apenas para validar as fórmulas deduzidas, mas também para ilustrar a aplicação prática dos métodos de inferência estatística em cenários semelhantes aos encontrados na Engenharia de Telecomunicações.</span>
+<span id="cb15-246"><a href="#cb15-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-247"><a href="#cb15-247" aria-hidden="true" tabindex="-1"></a><span class="fu"># Relação com as Distribuições do Relatório 6</span></span>
+<span id="cb15-248"><a href="#cb15-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-249"><a href="#cb15-249" aria-hidden="true" tabindex="-1"></a>No Relatório 6, focou-se nas propriedades e comportamentos das distribuições Qui-quadrado ($\chi^2$) e F de Snedecor. O estudo atual sobre estimadores intervalares é a aplicação direta da teoria estudada no relatório anterior. </span>
+<span id="cb15-250"><a href="#cb15-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-251"><a href="#cb15-251" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>O **estimador intervalar para a variância** (item 2) nasce da propriedade matemática (demonstrada via soma de Gaussianas) de que a variância amostral padronizada comporta-se como uma variável $\chi^2$. Sem o entendimento de como as caudas da distribuição $\chi^2$ são assimétricas (estudado no rel. 6), não seria possível entender por que o intervalo de confiança para $\sigma^2$ não é simétrico em torno da estimativa amostral.</span>
+<span id="cb15-252"><a href="#cb15-252" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>O **estimador intervalar para a razão de variâncias** (item 3c) aplica o conceito da distribuição F como a razão entre duas variáveis $\chi^2$. No Relatório 6, usamos testes de hipóteses $F$ para comparar potências de ruído; agora, essa mesma função fornece a faixa de valores plausíveis para a razão de ruído entre dois canais, usando os percentis da distribuição F nos extremos do intervalo.</span>
+<span id="cb15-253"><a href="#cb15-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-254"><a href="#cb15-254" aria-hidden="true" tabindex="-1"></a><span class="fu"># Aplicações na Engenharia de Telecomunicações</span></span>
+<span id="cb15-255"><a href="#cb15-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-256"><a href="#cb15-256" aria-hidden="true" tabindex="-1"></a>Embora as deduções matemáticas sejam fundamentais para compreender a construção dos estimadores intervalares, seu verdadeiro valor aparece quando aplicadas a problemas reais de engenharia. Na área de Telecomunicações, intervalos de confiança são utilizados para quantificar incertezas associadas a medições de potência, ruído, atraso e taxa de erro, permitindo decisões técnicas mais robustas.</span>
+<span id="cb15-257"><a href="#cb15-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-258"><a href="#cb15-258" aria-hidden="true" tabindex="-1"></a>A estatística intervalar é o pilar para lidar com o ruído (AWGN) e garantir Qualidade de Serviço (QoS) em Telecomunicações. </span>
+<span id="cb15-259"><a href="#cb15-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-260"><a href="#cb15-260" aria-hidden="true" tabindex="-1"></a>Exemplos:</span>
+<span id="cb15-261"><a href="#cb15-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-262"><a href="#cb15-262" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**Intervalo de Confiança para a Média ($\mu$):**</span>
+<span id="cb15-263"><a href="#cb15-263" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>**Potência de Sinal Recebido (RSSI):** Quando um celular se conecta a uma Estação Rádio Base (ERB), o sinal flutua devido ao desvanecimento e ruído. O engenheiro não projeta o sistema para uma única leitura instantânea, mas sim calcula um IC para a "Potência Média" e verifica se o limite inferior garante a margem mínima para decodificação.</span>
+<span id="cb15-264"><a href="#cb15-264" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Intervalo para a Variância ($\sigma^2$) e Razão de Variâncias:**</span>
+<span id="cb15-265"><a href="#cb15-265" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>**Estimativa de Potência de Ruído (Noise Floor):** Como a variância do sinal de um canal ocioso equivale fisicamente à potência do ruído térmico, usa-se o intervalo Qui-quadrado para garantir que, no pior cenário (limite superior do intervalo de confiança), os equipamentos de amplificação não saturarão. A razão (F) é usada para validar se o novo lote de LNAs (*Low Noise Amplifiers*) é realmente menos ruidoso que o lote antigo.</span>
+<span id="cb15-266"><a href="#cb15-266" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Intervalo para a Proporção de Bernoulli ($p$):**</span>
+<span id="cb15-267"><a href="#cb15-267" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>**Estimativa de Taxa de Erro de Bit (BER):** A transmissão digital é uma série de experimentos de Bernoulli, onde o sucesso estatístico (que na verdade é uma falha de telecom) é a recepção de um bit com erro. Se enviamos 1 milhão de bits e detectamos 100 erros, $\hat{p} = 10^{-4}$. O intervalo de confiança para proporções nos diz a margem de oscilação do verdadeiro BER do canal sob aquelas condições de relação Sinal-Ruído (SNR).</span>
+<span id="cb15-268"><a href="#cb15-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-269"><a href="#cb15-269" aria-hidden="true" tabindex="-1"></a><span class="fu"># Conclusão</span></span>
+<span id="cb15-270"><a href="#cb15-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-271"><a href="#cb15-271" aria-hidden="true" tabindex="-1"></a>Neste relatório foram deduzidos estimadores intervalares para média, variância, diferença de médias, razão de variâncias e proporções. A construção desses intervalos foi fundamentada nas distribuições Normal, t de Student, Qui-quadrado e F, evidenciando a importância das distribuições amostrais no processo de inferência estatística.</span>
+<span id="cb15-272"><a href="#cb15-272" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-273"><a href="#cb15-273" aria-hidden="true" tabindex="-1"></a>Além da dedução matemática, foram apresentadas aplicações na Engenharia de Telecomunicações, demonstrando como intervalos de confiança podem ser utilizados para estimar potência de sinal, potência de ruído, desempenho de equipamentos e taxas de erro em sistemas digitais.</span>
+<span id="cb15-274"><a href="#cb15-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-275"><a href="#cb15-275" aria-hidden="true" tabindex="-1"></a>Por fim, a implementação dos métodos em linguagem R permitiu validar computacionalmente os resultados obtidos e reforçou a importância das ferramentas estatísticas na análise de sistemas reais. Assim, os conceitos estudados neste relatório complementam diretamente os tópicos abordados no Relatório 6, mostrando como as distribuições Qui-quadrado e F são utilizadas na construção de procedimentos inferenciais fundamentais.</span>
+<span id="cb15-276"><a href="#cb15-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-277"><a href="#cb15-277" aria-hidden="true" tabindex="-1"></a><span class="fu"># Referências Bibliográficas</span></span>
+<span id="cb15-278"><a href="#cb15-278" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-279"><a href="#cb15-279" aria-hidden="true" tabindex="-1"></a>MONTGOMERY, D. C.; RUNGER, G. C. Estatística Aplicada e Probabilidade para Engenheiros. 6. ed. Rio de Janeiro: LTC, 2016.</span>
+<span id="cb15-280"><a href="#cb15-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-281"><a href="#cb15-281" aria-hidden="true" tabindex="-1"></a>PROAKIS, J. G.; SALEHI, M. Fundamentos de Sistemas de Comunicação. 2. ed. São Paulo: Pearson, 2014. (Referência para modelagem de canais e taxas de erro - BER).</span>
+</code></pre></div><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
