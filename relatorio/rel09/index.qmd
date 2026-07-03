@@ -241,4 +241,3 @@ O processamento computacional dos dados validou o método dos Mínimos Quadrados
 Além disso, a análise do coeficiente de determinação ($R^2$) ratificou que o modelo linear constitui uma ferramenta adequada para descrever e prever esse comportamento físico em primeira aproximação. A visualização gráfica final consolidou o entendimento da dinâmica do sistema, destacando que os lançamentos na faixa de $100^\circ$ a $110^\circ$ representam o ponto de máxima eficiência do equipamento para as condições dadas. Isso demonstra a eficácia da estatística modelar como instrumento vital para a calibração e otimização de projetos de engenharia.
 
 
-
