@@ -26,7 +26,7 @@ execute:
 ---
 
 # Introdução 
-
+ 
 Na inferência estatística aplicada à engenharia, frequentemente o pesquisador necessita ir além da simples comparação de médias entre grupos isolados (como realizado nos testes de hipóteses). Muitas vezes, o objetivo central é compreender a natureza da relação entre variáveis quantitativas, permitindo não apenas explicar um fenômeno, mas também prever o comportamento de um sistema sob diferentes condições. É nesse cenário que se destaca a Análise de Regressão Linear.
 
 A regressão linear é uma técnica estatística robusta que busca modelar o relacionamento matemático entre uma variável dependente (ou variável de resposta, $Y$) e uma ou mais variáveis independentes (ou variáveis preditoras, $X$). No contexto da otimização de processos mecânicos e físicos, como o arremesso de um projétil por uma catapulta, a regressão nos permite traçar uma função empírica que descreve como a manipulação do ângulo de lançamento afeta diretamente a distância percorrida pela bolinha.
