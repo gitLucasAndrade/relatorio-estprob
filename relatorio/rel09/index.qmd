@@ -1,0 +1,244 @@
+---
+# Só mude aqui!!!!
+author: "Lucas Reis Oliveira de Andrade"
+title: "Regressão Linear"
+bibliography: referencias.bib
+# A partir daqui nao faca alteracoes!!!!!
+link-citations: true
+csl: associacao-brasileira-de-normas-tecnicas-ipea.csl
+subtitle: "<a href='https://bendeivide.github.io/courses/epaec/' target='_blank'>Estatística e Probabilidade</a> </br> <a href='https://bendeivide.github.io' target='_blank'>Prof. Ben Dêivide (DEFIM/CAP/UFSJ)</a>"
+include-before-body: header.html
+date: now
+date-format: "DD/MM/YYYY, HH:mm"
+lang: pt-BR
+format:
+  html:
+    toc: true
+    number-sections: true
+    theme: bootstrap
+    #css: styles.css
+    code-fold: true
+    code-tools: true
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Introdução 
+
+Na inferência estatística aplicada à engenharia, frequentemente o pesquisador necessita ir além da simples comparação de médias entre grupos isolados (como realizado nos testes de hipóteses). Muitas vezes, o objetivo central é compreender a natureza da relação entre variáveis quantitativas, permitindo não apenas explicar um fenômeno, mas também prever o comportamento de um sistema sob diferentes condições. É nesse cenário que se destaca a Análise de Regressão Linear.
+
+A regressão linear é uma técnica estatística robusta que busca modelar o relacionamento matemático entre uma variável dependente (ou variável de resposta, $Y$) e uma ou mais variáveis independentes (ou variáveis preditoras, $X$). No contexto da otimização de processos mecânicos e físicos, como o arremesso de um projétil por uma catapulta, a regressão nos permite traçar uma função empírica que descreve como a manipulação do ângulo de lançamento afeta diretamente a distância percorrida pela bolinha.
+
+Dessa forma, o estudo de regressão transcende a análise descritiva, fornecendo parâmetros quantitativos essenciais para calibrar o equipamento e encontrar as condições operacionais que maximizem o seu desempenho.
+
+# Objetivos
+
+Este relatório tem como propósito central a aplicação do estudo de regressão linear aos dados experimentais da catapulta. Especificamente, busca-se:
+
+**Investigar a associação:** Verificar estatisticamente se existe uma relação funcional entre o ângulo selecionado na variável $B^+$ ($X$) e a distância de arremesso alcançada ($Y$).
+
+**Modelagem matemática:** Determinar a equação da reta (ou curva) de regressão que melhor se ajusta aos dados observados no experimento.
+
+**Validação do modelo:** Avaliar a significância do modelo de regressão encontrado através de testes de hipóteses e verificar sua adequação para explicar a variabilidade dos dados.
+
+**Otimização:** Utilizar o modelo validado para identificar qual ângulo de arremesso proporciona a maior distância média percorrida pela bolinha em metros.
+
+
+# Descrição do experimento
+
+Para a execução do experimento foram usados os seguintes materiais:
+
+- 1 Catapulta de mesa
+
+- 1 Bolinha de tênis de mesa
+
+- 1 Trena
+
+- 2 Grampos de mesa
+
+O experimento foi executado após fixarmos a catapulta em uma mesa. Uma pessoa ficou responsável pelo lançamento e pela anotação das medidas. Enquanto outros dois ficaram responsáveis pelo apontamento e medição das distâncias dos lançamentos. Para os lançamentos referentes a este relatório, foram executados 2 lançamentos em cada nível da variável B+. Totalizando, dessa forma, 18 arremessos. O experimento ocorreu conforme o esperado, apenas com a ressalva de que quando nós, da turma de Telecomunicações fomos executar a prática, a bolinha estava rachada.
+
+# Fundamentação Teórica
+
+Enquanto os testes de hipóteses convencionais (como o Teste t) são ideais para comparar parâmetros entre categorias discretas (ex: Nível V vs. Nível VII), a Análise de Regressão Linear Simples é a ferramenta estatística adequada quando ambas as variáveis de interesse são quantitativas e contínuas.
+
+Neste experimento, desejamos entender como a variável preditora, que chamaremos de $X$ (o ângulo da catapulta), influencia a variável resposta, $Y$ (a distância percorrida). O objetivo é encontrar uma função linear que descreva essa relação com o menor erro possível.
+
+## O modelo matemático
+
+A regressão linear simples postula que a relação verdadeira entre $X$ e $Y$ na população pode ser descrita pela equação de uma reta, acrescida de um termo de erro aleatório:
+
+$$Y_i = \beta_0 + \beta_1 X_i + \epsilon_i$$
+
+Onde:
+
+- $Y_i$: É o valor observado da variável dependente (distância).
+
+- $X_i$: É o valor observado da variável independente (ângulo).
+
+- $\beta_0$: É o intercepto (o valor esperado de $Y$ quando $X = 0$).
+
+- $\beta_1$: É o coeficiente angular (a taxa de variação média em $Y$ para cada unidade de incremento em $X$).
+
+- $\epsilon_i$: É o erro aleatório (resíduo), que engloba todas as influências sobre $Y$ que não são explicadas por $X$. Assume-se que os erros são independentes e seguem uma distribuição normal com média zero e variância constante, $\epsilon \sim N(0, \sigma^2)$.
+
+## Estimação dos Parâmetros: O Método dos Mínimos Quadrados
+
+Na prática, os verdadeiros parâmetros populacionais ($\beta_0$ e $\beta_1$) são desconhecidos. Eles devem ser estimados a partir da amostra (nossos $n = 18$ lançamentos). O método estatístico padrão para isso é o Método dos Mínimos Quadrados Ordinários (MQO).
+
+O MQO busca encontrar os estimadores $\hat{\beta}_0$ e $\hat{\beta}_1$ que minimizam a soma dos quadrados dos resíduos (a diferença entre os valores observados $Y_i$ e os valores preditos pela reta $\hat{Y}_i$):
+
+$$\text{Minimizar: } \sum_{i=1}^{n} (Y_i - \hat{Y}_i)^2 = \sum_{i=1}^{n} (Y_i - (\hat{\beta}_0 + \hat{\beta}_1 X_i))^2$$
+
+Através do cálculo diferencial, as equações normais que solucionam esse problema fornecem as seguintes fórmulas exatas para os coeficientes:
+
+$$\hat{\beta}_1 = \frac{\sum_{i=1}^{n} (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^{n} (X_i - \bar{X})^2}$$
+
+$$\hat{\beta}_0 = \bar{Y} - \hat{\beta}_1 \bar{X}$$
+
+Onde $\bar{X}$ e $\bar{Y}$ são as médias amostrais do ângulo e da distância, respectivamente.
+
+## Avaliação da Significância e Adequação do Modelo
+
+Após calcular a reta de regressão, é imperativo validar se o modelo possui significância estatística. Isso é feito respondendo a duas perguntas fundamentais:
+
+**1. O modelo de regressão é significativo?** (Teste de Hipóteses)Para verificar se existe, de fato, uma associação linear estatisticamente válida entre as variáveis, testamos o coeficiente angular ($\beta_1$). Se o ângulo não tiver efeito algum sobre a distância, a reta será horizontal ($\beta_1 = 0$). Portanto, formulam-se as seguintes hipóteses:
+
+- Hipótese Nula ($H_0$): $\beta_1 = 0$ (Não existe associação linear entre $X$ e $Y$).
+
+- Hipótese Alternativa ($H_1$): $\beta_1 \neq 0$ (Existe associação linear significativa entre $X$ e $Y$).
+
+A validação dessa hipótese é tipicamente conduzida através da Tabela de Análise de Variância (ANOVA) da regressão (Teste F) ou pelo Teste t de Student aplicado ao coeficiente $\hat{\beta}_1$. Em ambos os casos, a decisão baseia-se na comparação do Valor-p com o nível de significância $\alpha$.
+
+**2. O modelo é adequado para explicar a relação? (Coeficiente de Determinação)** Mesmo que a associação seja significativa, precisamos medir a "qualidade" desse ajuste. Isso é feito através do Coeficiente de Determinação ($R^2$):
+
+$$R^2 = \frac{\text{Soma dos Quadrados da Regressão}}{\text{Soma dos Quadrados Totais}}$$
+
+O $R^2$ varia de $0$ a $1$ (ou $0\%$ a $100\%$). Ele representa a proporção da variabilidade total da variável resposta (distância) que é matematicamente explicada pelo modelo de regressão (ângulo). Quanto mais próximo de $1$, mais os pontos experimentais se alinham perfeitamente sobre a reta ajustada.
+
+## Demonstração computacional inicial
+
+Para aplicar os conceitos teóricos aos dados do experimento, transcrevemos as observações do Grupo 1 (onde variamos o ângulo). Conforme solicitado no roteiro, a distância arremessada ($Y$) deve ser analisada em metros, portanto, os dados anotados originalmente em centímetros foram convertidos.
+
+Abaixo, apresentamos o código em R utilizado para construir o modelo linear, calcular os coeficientes e estruturar a Tabela de Análise de Variância (ANOVA).
+
+```{r}
+#| label: modelo-regressao
+#| echo: true
+
+# 1. Entrada de Dados: Ângulos (X) e Distâncias anotadas no caderno (em cm)
+angulo <- c(170, 170, 160, 160, 150, 150, 140, 140, 130, 
+            130, 120, 120, 110, 110, 100, 100, 90, 90)
+
+distancia_cm <- c(21, 47, 106, 105, 159, 174, 234, 233, 279, 
+                  277, 290, 313, 295, 295.5, 306, 305, 292, 277)
+
+# 2. Conversão para metros (Y)
+distancia_m <- distancia_cm / 100
+
+# 3. Criação do Modelo de Regressão Linear Simples
+modelo <- lm(distancia_m ~ angulo)
+
+# 4. Extração e Tradução dos Coeficientes
+coeficientes <- summary(modelo)$coefficients
+tabela_coef <- data.frame(
+  Estimativa = round(coeficientes[, 1], 4),
+  Erro_Padrao = round(coeficientes[, 2], 4),
+  Valor_t = round(coeficientes[, 3], 3),
+  Valor_p = formatC(coeficientes[, 4], format = "e", digits = 3)
+)
+rownames(tabela_coef) <- c("Intercepto (β0)", "Ângulo (β1)")
+
+knitr::kable(tabela_coef, 
+             caption = "Tabela 1: Estimativa dos Coeficientes da Regressão Linear",
+             align = "c")
+
+# 5. Extração e Tradução das Métricas do Modelo (R² e Teste F)
+R_quadrado <- round(summary(modelo)$r.squared * 100, 2)
+estatistica_f <- summary(modelo)$fstatistic
+p_valor_modelo <- pf(estatistica_f[1], estatistica_f[2], estatistica_f[3], lower.tail = FALSE)
+
+metricas_modelo <- data.frame(
+  R_Quadrado_Perc = paste0(R_quadrado, "%"),
+  Estatistica_F = round(estatistica_f[1], 2),
+  Graus_Liberdade = paste0(estatistica_f[2], " e ", estatistica_f[3]),
+  Valor_p_Global = formatC(p_valor_modelo, format = "e", digits = 3)
+)
+
+knitr::kable(metricas_modelo, 
+             caption = "Tabela 2: Métricas de Adequação Global do Modelo",
+             align = "c",
+             col.names = c("R² (%)", "Estatística F", "Graus de Liberdade", "Valor-p (Global)"))
+```
+
+# Respostas as questões propostas
+
+**1.** Existe associação entre a distância percorrida pela bolinha e o ângulo escolhido na variável $B^+$ na catapulta?
+
+Sim, existe uma forte associação estatística. A observação dos dados indica que a variação do ângulo de lançamento afeta diretamente a distância alcançada pela bolinha, configurando uma relação de dependência entre essas variáveis no domínio testado ($90^\circ$ a $170^\circ$).
+
+**2.** Qual a forma dessa associação (modelo de regressão)?
+
+A associação foi modelada através de uma Regressão Linear Simples. A forma matemática que descreve essa relação é dada pela equação da reta:
+
+$$\hat{Y} = \hat{\beta}_0 + \hat{\beta}_1 X$$
+
+Onde $\hat{Y}$ é a distância estimada em metros, $X$ é o ângulo selecionado, $\hat{\beta}_0$ é o intercepto e $\hat{\beta}_1$ é o coeficiente angular da reta (cujos valores numéricos foram calculados e apresentados na Tabela 1).
+
+**3.** Qual o nível de significância?
+
+Como o roteiro não estabelece um valor explícito, adota-se o padrão consagrado em experimentos de engenharia e ciências exatas: o nível de significância é $\alpha = 0,05$ (ou $5\%$).
+
+**4.** Quais hipóteses são estudadas para verificar se o modelo de regressão é significativo?
+Para validar a significância do modelo, testa-se o coeficiente angular ($\beta_1$). Se o ângulo não influenciasse a distância, a reta seria horizontal (inclinação zero). Logo, as hipóteses estatísticas são:
+
+- Hipótese Nula ($H_0$): $\beta_1 = 0$ (O ângulo não possui efeito linear sobre a distância).
+
+- Hipótese Alternativa ($H_1$): $\beta_1 \neq 0$ (Existe uma associação linear significativa entre o ângulo e a distância).
+
+**5.** O modelo de regressão encontrado é adequado para explicar a relação entre as variáveis envolvidas?
+
+Sim, o modelo linear demonstra adequação para explicar a relação geral de descida observada. Essa adequação é comprovada numericamente pelo Coeficiente de Determinação ($R^2$) e pelo Teste F da ANOVA (apresentados na Tabela 2). O valor de $p$ do modelo é estritamente menor que $\alpha = 0,05$, o que nos leva a rejeitar $H_0$, e o alto percentual de $R^2$ indica que a maior parte da variabilidade da distância é explicada com sucesso pela variação do ângulo imposta na catapulta.
+
+**6.** Apresente o gráfico de regressão linear.
+
+A representação visual do modelo permite inspecionar o ajuste da reta aos pontos experimentais reais. Abaixo, o código utilizado para a geração do gráfico de dispersão com a reta de regressão sobreposta:
+
+```{r}
+#| label: grafico-regressao
+#| echo: true
+#| fig-align: "center"
+
+# Utilizando os vetores criados na seção anterior (angulo e distancia_m)
+
+# Plotando o gráfico de dispersão
+plot(angulo, distancia_m, 
+     main = "Gráfico de Dispersão e Reta de Regressão Linear",
+     xlab = "Ângulo da Variável B+ (Graus)",
+     ylab = "Distância Arremessada (Metros)",
+     pch = 16,        # Formato do ponto (círculo preenchido)
+     col = "blue",    # Cor dos pontos
+     cex = 1.2,       # Tamanho dos pontos
+     xlim = c(80, 180), 
+     ylim = c(0, 3.5))
+
+# Sobrepondo a reta de regressão calculada
+abline(modelo, col = "red", lwd = 2)
+
+# Adicionando linhas de grade para facilitar a leitura
+grid(nx = NULL, ny = NULL, col = "lightgray", lty = "dotted")
+
+```
+
+# Conclusão
+
+Neste relatório, aplicamos a Análise de Regressão Linear Simples para estudar a cinemática de lançamento de uma catapulta. Ao investigar a variável $B^+$ (ângulo) como preditora para a distância alcançada ($Y$), constatamos a existência de uma relação funcional mensurável.
+
+O processamento computacional dos dados validou o método dos Mínimos Quadrados Ordinários (MQO), gerando estimativas consistentes para os coeficientes do modelo. Por meio dos testes de hipóteses estatísticos ($H_0: \beta_1 = 0$) operando a um nível de significância de $5\%$, as evidências comprovaram a validade da regressão, rejeitando a alegação de que o ângulo não influencia o arremesso.
+
+Além disso, a análise do coeficiente de determinação ($R^2$) ratificou que o modelo linear constitui uma ferramenta adequada para descrever e prever esse comportamento físico em primeira aproximação. A visualização gráfica final consolidou o entendimento da dinâmica do sistema, destacando que os lançamentos na faixa de $100^\circ$ a $110^\circ$ representam o ponto de máxima eficiência do equipamento para as condições dadas. Isso demonstra a eficácia da estatística modelar como instrumento vital para a calibração e otimização de projetos de engenharia.
+
+
+
